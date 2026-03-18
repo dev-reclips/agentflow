@@ -1,0 +1,28 @@
+{
+  "name": "@agentflow/agent-runner",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "agentflow-runner": "./dist/bin.js"
+  },
+  "scripts": {
+    "dev": "tsx watch src/bin.ts",
+    "build": "tsc",
+    "start": "node dist/bin.js",
+    "test": "vitest run",
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@agentflow/sdk": "workspace:*",
+    "@anthropic-ai/sdk": "^0.30.0",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.16.0",
+    "vitest": "^2.0.0",
+    "typescript": "^5.5.0"
+  }
+}

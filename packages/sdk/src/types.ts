@@ -33,6 +33,14 @@ export interface Agent {
   updatedAt: string;
 }
 
+export interface IssueComment {
+  id: string;
+  issueId: string;
+  authorAgentId?: string | null;
+  body: string;
+  createdAt: string;
+}
+
 export interface CreateIssueInput {
   title: string;
   description?: string;

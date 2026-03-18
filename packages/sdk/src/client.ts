@@ -1,4 +1,4 @@
-import type { Issue, Agent, CreateIssueInput, UpdateIssueInput } from "./types.js";
+import type { Issue, Agent, IssueComment, CreateIssueInput, UpdateIssueInput } from "./types.js";
 
 export class AgentFlowClient {
   private baseUrl: string;
@@ -44,6 +44,18 @@ export class AgentFlowClient {
     return this.request<Issue>(`/api/v1/issues/${id}`, {
       method: "PATCH",
       body: JSON.stringify(input),
+    });
+  }
+
+  // Comments
+  listComments(issueId: string): Promise<IssueComment[]> {
+    return this.request<IssueComment[]>(`/api/v1/issues/${issueId}/comments`);
+  }
+
+  addComment(issueId: string, body: string, authorAgentId?: string): Promise<IssueComment> {
+    return this.request<IssueComment>(`/api/v1/issues/${issueId}/comments`, {
+      method: "POST",
+      body: JSON.stringify({ body, authorAgentId }),
     });
   }
 
