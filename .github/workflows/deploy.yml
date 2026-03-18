@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-api:
+    name: Deploy API
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+
+      # TODO: add actual deploy step once hosting is decided
+      # e.g. Railway, Fly.io, or AWS ECS
+      - run: echo "Deploy target not configured yet"
+
+  deploy-web:
+    name: Deploy Web
+    runs-on: ubuntu-latest
+    environment: production
+    needs: [deploy-api]
+    steps:
+      - uses: actions/checkout@v4
+
+      # TODO: add Vercel / Netlify deploy action once configured
+      - run: echo "Deploy target not configured yet"

@@ -1,0 +1,33 @@
+import type { Request, Response, NextFunction } from "express";
+import { ZodError } from "zod";
+import { log } from "./logger.js";
+
+export class AppError extends Error {
+  constructor(
+    public statusCode: number,
+    message: string,
+  ) {
+    super(message);
+    this.name = "AppError";
+  }
+}
+
+export function errorHandler(
+  err: unknown,
+  _req: Request,
+  res: Response,
+  _next: NextFunction,
+): void {
+  if (err instanceof ZodError) {
+    res.status(400).json({ error: "Validation error", details: err.errors });
+    return;
+  }
+
+  if (err instanceof AppError) {
+    res.status(err.statusCode).json({ error: err.message });
+    return;
+  }
+
+  log.error(err, "unhandled error");
+  res.status(500).json({ error: "Internal server error" });
+}
