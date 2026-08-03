@@ -23,8 +23,40 @@ export const agentStatusEnum = pgEnum("agent_status", [
   "error",
 ]);
 
+export const userRoleEnum = pgEnum("user_role", ["owner", "member"]);
+
+export const companies = pgTable("companies", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" }),
+  email: text("email").notNull(),
+  role: userRoleEnum("role").notNull().default("member"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const apiKeys = pgTable("api_keys", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" }),
+  keyHash: text("key_hash").notNull().unique(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 export const issues = pgTable("issues", {
   id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   description: text("description"),
   status: issueStatusEnum("status").notNull().default("backlog"),
@@ -38,6 +70,9 @@ export const issues = pgTable("issues", {
 
 export const agents = pgTable("agents", {
   id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   capabilities: text("capabilities"),
   status: agentStatusEnum("status").notNull().default("idle"),

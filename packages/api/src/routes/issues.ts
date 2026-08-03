@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { type Router as IRouter, Router } from "express";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { db } from "../db/client.js";
 import { issues } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
 
-export const issuesRouter = Router();
+export const issuesRouter: IRouter = Router();
 
 const createIssueSchema = z.object({
   title: z.string().min(1).max(500),
@@ -24,9 +24,10 @@ const updateIssueSchema = z.object({
   assigneeAgentId: z.string().uuid().nullable().optional(),
 });
 
-issuesRouter.get("/", async (_req, res, next) => {
+issuesRouter.get("/", async (req, res, next) => {
   try {
     const rows = await db.query.issues.findMany({
+      where: eq(issues.companyId, req.companyId),
       orderBy: (t, { desc }) => [desc(t.createdAt)],
       limit: 100,
     });
@@ -41,7 +42,13 @@ issuesRouter.post("/", async (req, res, next) => {
     const body = createIssueSchema.parse(req.body);
     const [issue] = await db
       .insert(issues)
-      .values({ ...body })
+      .values({
+        companyId: req.companyId,
+        title: body.title,
+        description: body.description ?? null,
+        priority: body.priority,
+        parentId: body.parentId ?? null,
+      })
       .returning();
     res.status(201).json(issue);
   } catch (err) {
@@ -52,7 +59,7 @@ issuesRouter.post("/", async (req, res, next) => {
 issuesRouter.get("/:id", async (req, res, next) => {
   try {
     const issue = await db.query.issues.findFirst({
-      where: eq(issues.id, req.params.id!),
+      where: and(eq(issues.id, req.params.id!), eq(issues.companyId, req.companyId)),
     });
     if (!issue) throw new AppError(404, "Issue not found");
     res.json(issue);
@@ -64,15 +71,27 @@ issuesRouter.get("/:id", async (req, res, next) => {
 issuesRouter.patch("/:id", async (req, res, next) => {
   try {
     const body = updateIssueSchema.parse(req.body);
-    const updates: Partial<typeof body & { updatedAt: Date; completedAt: Date | null }> = {
-      ...body,
-      updatedAt: new Date(),
-    };
+    const updates: {
+      title?: string;
+      description?: string | null;
+      status?: "backlog" | "todo" | "in_progress" | "in_review" | "done" | "blocked" | "cancelled";
+      priority?: "critical" | "high" | "medium" | "low";
+      assigneeAgentId?: string | null;
+      updatedAt: Date;
+      completedAt?: Date | null;
+    } = { updatedAt: new Date() };
+
+    if (body.title !== undefined) updates.title = body.title;
+    if (body.description !== undefined) updates.description = body.description;
+    if (body.status !== undefined) updates.status = body.status;
+    if (body.priority !== undefined) updates.priority = body.priority;
+    if (body.assigneeAgentId !== undefined) updates.assigneeAgentId = body.assigneeAgentId;
     if (body.status === "done") updates.completedAt = new Date();
+
     const [issue] = await db
       .update(issues)
       .set(updates)
-      .where(eq(issues.id, req.params.id!))
+      .where(and(eq(issues.id, req.params.id!), eq(issues.companyId, req.companyId)))
       .returning();
     if (!issue) throw new AppError(404, "Issue not found");
     res.json(issue);

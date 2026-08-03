@@ -1,22 +1,35 @@
+import { createHash } from "crypto";
 import type { Request, Response, NextFunction } from "express";
+import { eq } from "drizzle-orm";
+import { db } from "../db/client.js";
+import { apiKeys } from "../db/schema.js";
 import { AppError } from "./error.js";
 
-/**
- * Simple API key auth. Keys are stored in env as comma-separated list.
- * Replace with proper JWT/DB-backed auth for multi-tenant use.
- */
-export function requireApiKey(req: Request, _res: Response, next: NextFunction): void {
-  const header = req.headers.authorization;
-  if (!header?.startsWith("Bearer ")) {
-    throw new AppError(401, "Missing Authorization header");
+export function hashApiKey(raw: string): string {
+  return createHash("sha256").update(raw).digest("hex");
+}
+
+export async function requireApiKey(req: Request, _res: Response, next: NextFunction): Promise<void> {
+  try {
+    const header = req.headers.authorization;
+    if (!header?.startsWith("Bearer ")) {
+      throw new AppError(401, "Missing Authorization header");
+    }
+
+    const raw = header.slice(7);
+    const keyHash = hashApiKey(raw);
+
+    const row = await db.query.apiKeys.findFirst({
+      where: eq(apiKeys.keyHash, keyHash),
+    });
+
+    if (!row) {
+      throw new AppError(401, "Invalid API key");
+    }
+
+    req.companyId = row.companyId;
+    next();
+  } catch (err) {
+    next(err);
   }
-
-  const token = header.slice(7);
-  const validKeys = (process.env.API_KEYS ?? "").split(",").filter(Boolean);
-
-  if (validKeys.length > 0 && !validKeys.includes(token)) {
-    throw new AppError(401, "Invalid API key");
-  }
-
-  next();
 }

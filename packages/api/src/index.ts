@@ -1,4 +1,5 @@
 import "dotenv/config";
+import "./types.js";
 import express from "express";
 import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/error.js";
@@ -7,6 +8,7 @@ import { healthRouter } from "./routes/health.js";
 import { issuesRouter } from "./routes/issues.js";
 import { agentsRouter } from "./routes/agents.js";
 import { commentsRouter } from "./routes/comments.js";
+import { companiesRouter, apiKeysRouter } from "./routes/companies.js";
 
 const app = express();
 const port = process.env.PORT ?? 3000;
@@ -15,6 +17,8 @@ app.use(express.json());
 app.use(logger);
 
 app.use("/health", healthRouter);
+app.use("/api/v1/companies", requireApiKey, companiesRouter);
+app.use("/api/v1/api-keys", requireApiKey, apiKeysRouter);
 app.use("/api/v1/issues", requireApiKey, issuesRouter);
 app.use("/api/v1/issues/:issueId/comments", requireApiKey, commentsRouter);
 app.use("/api/v1/agents", requireApiKey, agentsRouter);
