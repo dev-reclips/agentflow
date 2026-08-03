@@ -37,7 +37,8 @@ export const users = pgTable("users", {
   companyId: uuid("company_id")
     .notNull()
     .references(() => companies.id, { onDelete: "cascade" }),
-  email: text("email").notNull(),
+  email: text("email").notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
   role: userRoleEnum("role").notNull().default("member"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
