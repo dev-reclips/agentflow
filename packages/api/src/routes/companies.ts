@@ -36,7 +36,7 @@ companiesRouter.post("/", async (req, res, next) => {
   }
 });
 
-export const apiKeysRouter = Router();
+export const apiKeysRouter: IRouter = Router();
 
 const createApiKeySchema = z.object({
   name: z.string().min(1).max(200),

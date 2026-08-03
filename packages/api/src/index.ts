@@ -1,6 +1,6 @@
 import "dotenv/config";
 import "./types.js";
-import express from "express";
+import express, { type Express } from "express";
 import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/error.js";
 import { requireApiKey } from "./middleware/auth.js";
@@ -10,7 +10,7 @@ import { agentsRouter } from "./routes/agents.js";
 import { commentsRouter } from "./routes/comments.js";
 import { companiesRouter, apiKeysRouter } from "./routes/companies.js";
 
-const app = express();
+const app: Express = express();
 const port = process.env.PORT ?? 3000;
 
 app.use(express.json());
