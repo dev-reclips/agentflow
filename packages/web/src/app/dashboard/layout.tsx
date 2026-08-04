@@ -4,6 +4,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { getToken, clearToken } from "@/lib/auth";
 import { api, type MeResult } from "@/lib/api";
+import { identifyUser, resetAnalytics } from "@/lib/posthog";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -15,13 +16,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     const token = getToken();
     if (!token) { router.replace("/login"); return; }
     api.me(token)
-      .then(setMe)
+      .then(data => {
+        setMe(data);
+        identifyUser(data.user.id, data.company.id);
+      })
       .catch(() => { clearToken(); router.replace("/login"); })
       .finally(() => setLoading(false));
   }, [router]);
 
   function handleLogout() {
     clearToken();
+    resetAnalytics();
     router.push("/");
   }
 

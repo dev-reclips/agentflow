@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api, type Agent, type IssuePriority } from "@/lib/api";
+import { capture } from "@/lib/posthog";
 
 export default function NewIssuePage() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function NewIssuePage() {
       if (description.trim()) createData.description = description.trim();
       if (assigneeAgentId) createData.assigneeAgentId = assigneeAgentId;
       const issue = await api.issues.create(createData);
+      capture("issue_created", { issue_id: issue.id, priority: issue.priority });
       router.push(`/dashboard/issues/${issue.id}`);
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "Failed to create issue");

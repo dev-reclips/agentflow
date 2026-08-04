@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { setToken } from "@/lib/auth";
+import { capture, identifyUser } from "@/lib/posthog";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -19,6 +20,9 @@ export default function RegisterPage() {
       const result = await api.register(form.email, form.password, form.companyName);
       setToken(result.token);
       sessionStorage.setItem("agentflow_new_api_key", result.apiKey);
+      identifyUser(result.user.id, result.company.id);
+      capture("user_signed_up", { company_id: result.company.id });
+      capture("trial_started", { company_id: result.company.id });
       router.push("/onboarding");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");

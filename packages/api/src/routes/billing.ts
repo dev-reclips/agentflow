@@ -4,6 +4,7 @@ import { db } from "../db/client.js";
 import { subscriptions, stripeEvents, companies } from "../db/schema.js";
 import { getStripe, PRICE_IDS, stripePlanFromPriceId } from "../services/stripe.js";
 import { AppError } from "../middleware/error.js";
+import { captureServer } from "../services/posthog.js";
 
 export const billingRouter: IRouter = Router();
 
@@ -146,6 +147,11 @@ async function handleStripeEvent(event: import("stripe").Stripe.Event) {
       const status = stripeStatusToLocal(stripeSub.status);
       const currentPeriodEnd = new Date((stripeSub as any).current_period_end * 1000);
 
+      // Check previous status before updating to detect trial → active upgrade
+      const existing = await db.query.subscriptions.findFirst({
+        where: eq(subscriptions.companyId, companyId),
+      });
+
       await db
         .insert(subscriptions)
         .values({
@@ -168,6 +174,14 @@ async function handleStripeEvent(event: import("stripe").Stripe.Event) {
             updatedAt: new Date(),
           },
         });
+
+      if (status === "active" && existing?.status !== "active") {
+        captureServer(companyId, "plan_upgraded", {
+          company_id: companyId,
+          plan,
+          previous_status: existing?.status ?? null,
+        });
+      }
       break;
     }
     case "customer.subscription.deleted": {
@@ -175,10 +189,21 @@ async function handleStripeEvent(event: import("stripe").Stripe.Event) {
       const companyId = stripeSub.metadata?.companyId;
       if (!companyId) return;
 
+      const existing = await db.query.subscriptions.findFirst({
+        where: eq(subscriptions.companyId, companyId),
+      });
+
       await db
         .update(subscriptions)
         .set({ status: "canceled", updatedAt: new Date() })
         .where(eq(subscriptions.companyId, companyId));
+
+      if (existing?.status === "trialing") {
+        captureServer(companyId, "trial_expired", {
+          company_id: companyId,
+          plan: existing.plan,
+        });
+      }
       break;
     }
     case "invoice.payment_failed": {

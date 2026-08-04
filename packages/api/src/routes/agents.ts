@@ -5,6 +5,7 @@ import { db } from "../db/client.js";
 import { agents, subscriptions } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
 import { PLAN_AGENT_LIMITS } from "../services/stripe.js";
+import { captureServer } from "../services/posthog.js";
 
 export const agentsRouter: IRouter = Router();
 
@@ -50,6 +51,11 @@ agentsRouter.post("/", async (req, res, next) => {
       .insert(agents)
       .values({ companyId: req.companyId, name: body.name, capabilities: body.capabilities ?? null })
       .returning();
+    captureServer(req.companyId, "agent_created", {
+      agent_id: agent!.id,
+      company_id: req.companyId,
+      is_first_agent: agentCount === 0,
+    });
     res.status(201).json(agent);
   } catch (err) {
     next(err);
