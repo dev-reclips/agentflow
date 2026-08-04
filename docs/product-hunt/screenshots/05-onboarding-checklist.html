@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>AgentFlow — Onboarding Checklist (1280×800)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --border: #222230;
+    --text: #e8e8f0; --muted: #888899; --accent: #6366f1;
+    --green: #22c55e; --red: #ef4444; --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+  body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; display: flex; }
+
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 20px 24px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .logo-box { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 8px; margin: 0 12px 2px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; }
+  .nav-item.active { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-title { font-size: 18px; font-weight: 700; }
+  .content { flex: 1; padding: 40px; display: flex; gap: 40px; overflow: auto; align-items: flex-start; justify-content: center; }
+
+  .onboarding-col { width: 560px; display: flex; flex-direction: column; gap: 24px; }
+  .welcome-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; }
+  .welcome-emoji { font-size: 36px; margin-bottom: 12px; }
+  .welcome-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .welcome-sub { color: var(--muted); font-size: 14px; }
+
+  .checklist-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; }
+  .checklist-title { font-size: 14px; font-weight: 600; margin-bottom: 20px; color: var(--text); display: flex; align-items: center; justify-content: space-between; }
+  .progress-text { font-size: 12px; color: var(--muted); }
+  .progress-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; }
+  .progress-fill { height: 4px; background: var(--accent); border-radius: 2px; width: 60%; }
+
+  .check-item { display: flex; align-items: flex-start; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .check-item:last-child { border-bottom: none; }
+  .check-box { width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; }
+  .check-box.done { background: var(--green); }
+  .check-box.pending { border: 2px solid var(--border); }
+  .check-box.active { border: 2px solid var(--accent); background: rgba(99,102,241,0.08); }
+  .check-label { font-size: 14px; font-weight: 500; }
+  .check-label.done { color: var(--muted); text-decoration: line-through; }
+  .check-label.active { color: var(--text); }
+  .check-label.pending { color: var(--muted); }
+  .check-desc { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+  .action-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+  .code-block { background: #0d0d14; border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; font-family: var(--mono); font-size: 12px; color: #a5b4fc; margin-top: 8px; }
+
+  /* Right: tips */
+  .tips-col { width: 280px; display: flex; flex-direction: column; gap: 16px; }
+  .tip-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .tip-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .tip-item { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 8px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .tip-icon { flex-shrink: 0; }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo"><div class="logo-box">A</div>AgentFlow</div>
+    <div class="nav-item active"><span>⬛</span> Dashboard</div>
+    <div class="nav-item"><span>📋</span> Issues</div>
+    <div class="nav-item"><span>🤖</span> Agents</div>
+    <div style="flex:1;"></div>
+    <div style="padding: 0 20px;">
+      <div style="font-size:12px;color:var(--muted);">acme-corp</div>
+      <div style="font-size:11px;color:var(--accent);margin-top:2px;">Trial · 14 days left</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Get started</div>
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;">A</div>
+    </div>
+
+    <div class="content">
+      <div class="onboarding-col">
+        <div class="welcome-card">
+          <div class="welcome-emoji">🎉</div>
+          <div class="welcome-title">Welcome to AgentFlow, Alex!</div>
+          <div class="welcome-sub">You're set up on the Growth plan. Complete the steps below to ship your first agent-written PR.</div>
+        </div>
+
+        <div class="checklist-card">
+          <div class="checklist-title">
+            <span>Setup checklist</span>
+            <span class="progress-text">3 of 5 done</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+
+          <!-- Done -->
+          <div class="check-item">
+            <div class="check-box done">
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="check-label done">Create your account</div>
+              <div class="check-desc">Signed up with GitHub OAuth</div>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box done">
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="check-label done">Install the GitHub App</div>
+              <div class="check-desc">Connected to acme-corp/backend</div>
+            </div>
+          </div>
+
+          <div class="check-item">
+            <div class="check-box done">
+              <svg width="12" height="9" viewBox="0 0 12 9" fill="none"><path d="M1 4.5l3.5 3.5 6.5-7" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <div class="check-label done">Create your first agent</div>
+              <div class="check-desc">Founding Engineer is live</div>
+            </div>
+          </div>
+
+          <!-- Active step -->
+          <div class="check-item" style="background:rgba(99,102,241,0.04);border-radius:8px;padding:12px;margin:-2px -4px;border:none;">
+            <div class="check-box active">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--accent);"></div>
+            </div>
+            <div>
+              <div class="check-label active">Assign your first issue to an agent</div>
+              <div class="check-desc">Go to Issues → create or pick a ticket → assign to an agent</div>
+              <button class="action-btn">
+                <span>→</span> Open Issues
+              </button>
+            </div>
+          </div>
+
+          <!-- Pending -->
+          <div class="check-item">
+            <div class="check-box pending"></div>
+            <div>
+              <div class="check-label pending">Merge your first agent PR</div>
+              <div class="check-desc">Once an agent opens a PR, review and merge it</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tips-col">
+        <div class="tip-card">
+          <div class="tip-title">Quick tips</div>
+          <div class="tip-item"><span class="tip-icon">⚡</span><span>Write a short, clear issue title. Agents use it to plan the approach.</span></div>
+          <div class="tip-item"><span class="tip-icon">🔗</span><span>Link related issues in the description so the agent has full context.</span></div>
+          <div class="tip-item"><span class="tip-icon">📁</span><span>Smaller, scoped issues close faster. Split big features into sub-tickets.</span></div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-title">Need help?</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6;">
+            <div style="margin-bottom:8px;color:#a5b4fc;cursor:pointer;">📖 Read the docs →</div>
+            <div style="margin-bottom:8px;color:#a5b4fc;cursor:pointer;">💬 Join our Discord →</div>
+            <div style="color:#a5b4fc;cursor:pointer;">✉️ Email founders →</div>
+          </div>
+        </div>
+        <div class="tip-card" style="border-color:rgba(99,102,241,0.3);background:rgba(99,102,241,0.04);">
+          <div class="tip-title" style="color:var(--accent);">Trial info</div>
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;">Growth plan</div>
+          <div style="font-size:12px;color:var(--muted);">14 days remaining. No card required to start.</div>
+          <div style="font-size:12px;color:var(--accent);margin-top:8px;cursor:pointer;">Upgrade early for 20% off →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

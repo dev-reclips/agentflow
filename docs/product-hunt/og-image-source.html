@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1200">
+<title>AgentFlow OG Image — 1200×630</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { width: 1200px; height: 630px; overflow: hidden; background: #0a0a0f; }
+  .root {
+    width: 1200px;
+    height: 630px;
+    background: #0a0a0f;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 64px 80px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wordmark { display: flex; align-items: center; gap: 12px; }
+  .logo-box {
+    width: 40px; height: 40px;
+    background: #6366f1;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 22px; font-weight: 800;
+  }
+  .wordmark-name { color: #e8e8f0; font-size: 22px; font-weight: 700; }
+  .mid { display: flex; align-items: center; justify-content: space-between; flex: 1; padding-top: 56px; }
+  .copy { max-width: 620px; display: flex; flex-direction: column; }
+  .badge {
+    display: inline-block;
+    background: rgba(99,102,241,0.15);
+    border: 1px solid rgba(99,102,241,0.3);
+    border-radius: 100px;
+    padding: 4px 16px;
+    color: #a5b4fc;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    width: fit-content;
+  }
+  .headline {
+    color: #e8e8f0;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .headline span { color: #6366f1; }
+  .subline { color: #888899; font-size: 20px; line-height: 1.5; max-width: 540px; }
+  .card {
+    background: #111118;
+    border: 1px solid #222230;
+    border-radius: 12px;
+    padding: 24px 28px;
+    width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-status { display: flex; align-items: center; gap: 8px; }
+  .dot-green { width: 10px; height: 10px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+  .dot-indigo { width: 8px; height: 8px; border-radius: 50%; background: #6366f1; flex-shrink: 0; }
+  .status-label { color: #888899; font-size: 12px; font-weight: 600; }
+  .card-title { color: #e8e8f0; font-size: 15px; font-weight: 600; line-height: 1.4; }
+  .card-assignee { color: #888899; font-size: 13px; }
+  .card-assignee span { color: #a5b4fc; }
+  .terminal {
+    background: #0d0d14;
+    border: 1px solid #222230;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-family: "SF Mono", "Fira Code", Consolas, monospace;
+    font-size: 12px;
+    color: #a5b4fc;
+    line-height: 1.6;
+    white-space: pre;
+  }
+  .pr-line { display: flex; align-items: center; gap: 8px; color: #6366f1; font-size: 12px; font-weight: 600; }
+  .footer { color: #444455; font-size: 15px; font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="root">
+  <!-- Wordmark -->
+  <div class="wordmark">
+    <div class="logo-box">A</div>
+    <div class="wordmark-name">AgentFlow</div>
+  </div>
+
+  <!-- Middle -->
+  <div class="mid">
+    <div class="copy">
+      <div class="badge">Product Hunt Launch</div>
+      <div class="headline">Your GitHub backlog,<br><span>on autopilot.</span></div>
+      <div class="subline">Assign an issue. Agent writes code. PR opens. Ticket closes.</div>
+    </div>
+
+    <!-- Mock card -->
+    <div class="card">
+      <div class="card-status">
+        <div class="dot-green"></div>
+        <div class="status-label">IN PROGRESS</div>
+      </div>
+      <div class="card-title">Add user auth flow with JWT tokens</div>
+      <div class="card-assignee">Assigned to <span>Founding Engineer</span></div>
+      <div class="terminal">▸ Writing src/auth/jwt.ts
+▸ Tests passing (12/12)
+▸ Opening PR…</div>
+      <div class="pr-line">
+        <div class="dot-indigo"></div>
+        PR #42 opened
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">agentflow.ai</div>
+</div>
+</body>
+</html>

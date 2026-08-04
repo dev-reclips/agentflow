@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>AgentFlow — Agent Working (1280×800)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --border: #222230;
+    --text: #e8e8f0; --muted: #888899; --accent: #6366f1;
+    --green: #22c55e; --red: #ef4444; --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+  body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; display: flex; }
+
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 20px 24px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .logo-box { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 8px; margin: 0 12px 2px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; }
+  .nav-item.active { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); }
+  .breadcrumb-cur { color: var(--text); font-weight: 600; }
+  .content { flex: 1; padding: 28px; display: flex; gap: 24px; overflow: hidden; }
+
+  .issue-main { flex: 1; display: flex; flex-direction: column; gap: 20px; overflow: hidden; }
+  .issue-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .issue-title-lg { font-size: 20px; font-weight: 700; line-height: 1.3; }
+  .status-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 600; background: rgba(99,102,241,0.12); color: var(--accent); white-space: nowrap; }
+  .spinner { width: 10px; height: 10px; border-radius: 50%; border: 2px solid rgba(99,102,241,0.3); border-top-color: var(--accent); animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .activity-log { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+  .log-header { padding: 14px 20px; border-bottom: 1px solid var(--border); font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+  .log-live { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--green); font-weight: 500; }
+  .dot-pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .log-body { flex: 1; overflow-y: auto; padding: 16px 20px; font-family: var(--mono); font-size: 12px; line-height: 1.7; }
+  .log-entry { display: flex; gap: 12px; margin-bottom: 4px; }
+  .log-time { color: var(--muted); flex-shrink: 0; }
+  .log-text { color: var(--text); }
+  .log-text.dim { color: var(--muted); }
+  .log-text.ok { color: var(--green); }
+  .log-text.info { color: #a5b4fc; }
+  .log-cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left: 2px; }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  /* Right sidebar */
+  .right-panel { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 18px; }
+  .panel-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 14px; }
+  .field { margin-bottom: 12px; }
+  .field-label { font-size: 11px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .field-val { font-size: 13px; }
+  .avatar { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; margin-right: 6px; vertical-align: middle; }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo"><div class="logo-box">A</div>AgentFlow</div>
+    <div class="nav-item"><span>⬛</span> Dashboard</div>
+    <div class="nav-item active"><span>📋</span> Issues</div>
+    <div class="nav-item"><span>🤖</span> Agents</div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb">
+        <span>Issues</span>
+        <span>/</span>
+        <span class="breadcrumb-cur">ANI-24 · Agent working</span>
+      </div>
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;">A</div>
+    </div>
+
+    <div class="content">
+      <div class="issue-main">
+        <div class="issue-header">
+          <div class="issue-title-lg">Implement Stripe webhook for subscription lifecycle events</div>
+          <div class="status-pill"><div class="spinner"></div>In Progress</div>
+        </div>
+
+        <div class="activity-log">
+          <div class="log-header">
+            <span>Agent Activity Log</span>
+            <div class="log-live"><div class="dot-pulse"></div>Live</div>
+          </div>
+          <div class="log-body">
+            <div class="log-entry"><span class="log-time">09:14:02</span><span class="log-text info">▸ Checking out issue ANI-24</span></div>
+            <div class="log-entry"><span class="log-time">09:14:03</span><span class="log-text dim">  Reading existing stripe integration in packages/api/src/stripe/</span></div>
+            <div class="log-entry"><span class="log-time">09:14:05</span><span class="log-text dim">  Reading packages/api/src/routes/billing.ts (220 lines)</span></div>
+            <div class="log-entry"><span class="log-time">09:14:07</span><span class="log-text dim">  Reading packages/db/src/schema/subscriptions.ts</span></div>
+            <div class="log-entry"><span class="log-time">09:14:09</span><span class="log-text info">▸ Planning: 4 webhook handlers + signature verification</span></div>
+            <div class="log-entry"><span class="log-time">09:14:11</span><span class="log-text ok">✓ Creating packages/api/src/stripe/webhooks.ts</span></div>
+            <div class="log-entry"><span class="log-time">09:14:14</span><span class="log-text ok">✓ Handling customer.subscription.created</span></div>
+            <div class="log-entry"><span class="log-time">09:14:16</span><span class="log-text ok">✓ Handling customer.subscription.updated</span></div>
+            <div class="log-entry"><span class="log-time">09:14:18</span><span class="log-text ok">✓ Handling invoice.payment_failed → status past_due</span></div>
+            <div class="log-entry"><span class="log-time">09:14:21</span><span class="log-text ok">✓ Handling customer.subscription.deleted</span></div>
+            <div class="log-entry"><span class="log-time">09:14:22</span><span class="log-text info">▸ Adding STRIPE_WEBHOOK_SECRET signature verification</span></div>
+            <div class="log-entry"><span class="log-time">09:14:25</span><span class="log-text ok">✓ Wiring route POST /api/billing/webhook</span></div>
+            <div class="log-entry"><span class="log-time">09:14:27</span><span class="log-text info">▸ Writing tests in packages/api/src/stripe/__tests__/webhooks.test.ts</span></div>
+            <div class="log-entry"><span class="log-time">09:14:31</span><span class="log-text dim">  Running: pnpm test packages/api/src/stripe</span></div>
+            <div class="log-entry"><span class="log-time">09:14:38</span><span class="log-text ok">✓ Tests passed (8/8)</span></div>
+            <div class="log-entry"><span class="log-time">09:14:39</span><span class="log-text info">▸ Opening pull request…<span class="log-cursor"></span></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right panel -->
+      <div class="right-panel">
+        <div class="panel">
+          <div class="panel-title">Details</div>
+          <div class="field"><div class="field-label">Assignee</div><div class="field-val"><span class="avatar">FE</span>Founding Engineer</div></div>
+          <div class="field"><div class="field-label">Status</div><div class="field-val" style="color:var(--accent);">In Progress</div></div>
+          <div class="field"><div class="field-label">Priority</div><div class="field-val" style="color:var(--accent);">Medium</div></div>
+          <div class="field"><div class="field-label">Started</div><div class="field-val" style="color:var(--muted);font-size:12px;">3 minutes ago</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Run Info</div>
+          <div class="field"><div class="field-label">Run ID</div><div class="field-val" style="font-family:monospace;font-size:11px;color:var(--muted);">run_5f2a9b</div></div>
+          <div class="field"><div class="field-label">Model</div><div class="field-val" style="font-size:12px;">claude-sonnet-5</div></div>
+          <div class="field"><div class="field-label">Tokens used</div><div class="field-val" style="font-size:12px;color:var(--muted);">14,820 / 200k</div></div>
+          <div style="width:100%;height:4px;background:var(--border);border-radius:2px;margin-top:4px;"><div style="width:7%;height:4px;background:var(--accent);border-radius:2px;"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

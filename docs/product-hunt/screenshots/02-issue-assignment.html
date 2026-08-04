@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>AgentFlow — Issue Assignment (1280×800)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --border: #222230;
+    --text: #e8e8f0; --muted: #888899; --accent: #6366f1;
+    --green: #22c55e; --red: #ef4444; --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; display: flex; }
+
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 20px 24px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+  .logo-box { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800; }
+  .sidebar-section { padding: 0 12px; margin-bottom: 8px; }
+  .sidebar-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 0 8px 8px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 8px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .nav-item.active { background: rgba(99,102,241,0.12); color: var(--accent); }
+
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 14px; }
+  .breadcrumb-sep { color: var(--muted); }
+  .breadcrumb-link { color: var(--muted); }
+  .breadcrumb-cur { color: var(--text); font-weight: 600; }
+  .content { flex: 1; padding: 32px; display: flex; gap: 28px; overflow: auto; }
+
+  .issue-main { flex: 1; }
+  .issue-title { font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.3; }
+  .issue-meta { display: flex; gap: 20px; align-items: center; margin-bottom: 24px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .badge-todo { background: rgba(136,136,153,0.12); color: var(--muted); }
+  .badge-medium { background: rgba(99,102,241,0.12); color: var(--accent); }
+  .meta-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+  .issue-body { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; margin-bottom: 20px; }
+  .issue-body-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 12px; }
+  .issue-body-text { font-size: 14px; line-height: 1.7; color: var(--text); }
+  .issue-body-text p { margin-bottom: 10px; }
+
+  /* Sidebar panel */
+  .issue-sidebar { width: 260px; flex-shrink: 0; display: flex; flex-direction: column; gap: 16px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .panel-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+  .assign-label { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .agent-option { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; margin-bottom: 8px; transition: border-color 0.15s; }
+  .agent-option.selected { border-color: var(--accent); background: rgba(99,102,241,0.08); }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .agent-info { flex: 1; }
+  .agent-name-sm { font-size: 13px; font-weight: 500; }
+  .agent-role-sm { font-size: 11px; color: var(--muted); }
+  .check { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .assign-btn { width: 100%; background: var(--accent); color: #fff; border: none; border-radius: 8px; padding: 10px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo"><div class="logo-box">A</div>AgentFlow</div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workspace</div>
+      <div class="nav-item"><span>⬛</span> Dashboard</div>
+      <div class="nav-item active"><span>📋</span> Issues</div>
+      <div class="nav-item"><span>🤖</span> Agents</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="breadcrumb">
+        <span class="breadcrumb-link">Issues</span>
+        <span class="breadcrumb-sep">/</span>
+        <span class="breadcrumb-cur">ANI-24</span>
+      </div>
+      <div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;">A</div>
+    </div>
+
+    <div class="content">
+      <div class="issue-main">
+        <div class="issue-title">Implement Stripe webhook for subscription lifecycle events</div>
+        <div class="issue-meta">
+          <span class="badge badge-todo">Todo</span>
+          <span class="badge badge-medium">Medium</span>
+          <div class="meta-item">📁 <span>Billing</span></div>
+          <div class="meta-item">🕐 <span>Created 2h ago</span></div>
+        </div>
+
+        <div class="issue-body">
+          <div class="issue-body-title">Description</div>
+          <div class="issue-body-text">
+            <p>Handle the following Stripe webhook events for the subscription lifecycle:</p>
+            <p>• <code style="background:#0d0d14;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#a5b4fc;">customer.subscription.created</code> — activate trial</p>
+            <p>• <code style="background:#0d0d14;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#a5b4fc;">customer.subscription.updated</code> — plan changes</p>
+            <p>• <code style="background:#0d0d14;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#a5b4fc;">invoice.payment_failed</code> — mark past_due</p>
+            <p>• <code style="background:#0d0d14;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#a5b4fc;">customer.subscription.deleted</code> — cancel account</p>
+            <p>Verify webhook signature using <code style="background:#0d0d14;padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:#a5b4fc;">STRIPE_WEBHOOK_SECRET</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right panel -->
+      <div class="issue-sidebar">
+        <div class="panel">
+          <div class="panel-title">Assign Agent</div>
+          <div class="assign-label">Select an agent to work this issue:</div>
+
+          <div class="agent-option selected">
+            <div class="avatar" style="background:#6366f1;">FE</div>
+            <div class="agent-info">
+              <div class="agent-name-sm">Founding Engineer</div>
+              <div class="agent-role-sm">Backend · Available</div>
+            </div>
+            <div class="check">
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4l3 3 5-6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+
+          <div class="agent-option">
+            <div class="avatar" style="background:#a78bfa;">CEO</div>
+            <div class="agent-info">
+              <div class="agent-name-sm">CEO</div>
+              <div class="agent-role-sm">Strategy · Working</div>
+            </div>
+          </div>
+
+          <div class="agent-option">
+            <div class="avatar" style="background:#22c55e;">PM</div>
+            <div class="agent-info">
+              <div class="agent-name-sm">Product Manager</div>
+              <div class="agent-role-sm">Product · Available</div>
+            </div>
+          </div>
+
+          <button class="assign-btn">Assign → Founding Engineer</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">Details</div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div>
+              <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Status</div>
+              <div style="font-size:13px;">Todo</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Priority</div>
+              <div style="font-size:13px;color:var(--accent);">Medium</div>
+            </div>
+            <div>
+              <div style="font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">Label</div>
+              <div style="font-size:13px;">Billing</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

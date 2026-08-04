@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>AgentFlow — Dashboard Overview (1280×800)</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f; --surface: #111118; --border: #222230;
+    --text: #e8e8f0; --muted: #888899; --accent: #6366f1;
+    --green: #22c55e; --red: #ef4444; --radius: 8px;
+    --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "SF Mono", "Fira Code", Consolas, monospace;
+  }
+  body { width: 1280px; height: 800px; overflow: hidden; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 14px; display: flex; }
+
+  /* Sidebar */
+  .sidebar { width: 220px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; flex-shrink: 0; }
+  .sidebar-logo { padding: 0 20px 24px; font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; }
+  .logo-box { width: 28px; height: 28px; background: var(--accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 800; }
+  .sidebar-section { padding: 0 12px; margin-bottom: 8px; }
+  .sidebar-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; padding: 0 8px 8px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 8px; border-radius: 6px; cursor: pointer; color: var(--muted); font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .nav-item.active { background: rgba(99,102,241,0.12); color: var(--accent); }
+  .nav-item:hover:not(.active) { background: rgba(255,255,255,0.04); color: var(--text); }
+  .nav-icon { width: 16px; text-align: center; }
+
+  /* Main */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .topbar { border-bottom: 1px solid var(--border); padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; }
+  .topbar-title { font-size: 18px; font-weight: 700; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius); font-size: 13px; font-weight: 500; cursor: pointer; border: none; }
+  .btn-primary { background: var(--accent); color: #fff; }
+
+  .content { flex: 1; padding: 28px; overflow: auto; }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
+  .stat-label { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; }
+  .stat-val { font-size: 28px; font-weight: 700; }
+  .stat-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .green { color: var(--green); }
+  .accent { color: var(--accent); }
+  .orange { color: #f97316; }
+
+  /* Agents table */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .section-title { font-size: 15px; font-weight: 600; }
+  .agents-table { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .table-head { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 0; padding: 10px 20px; border-bottom: 1px solid var(--border); }
+  .table-head span { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .table-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 0; padding: 14px 20px; border-bottom: 1px solid var(--border); align-items: center; }
+  .table-row:last-child { border-bottom: none; }
+  .agent-name { display: flex; align-items: center; gap: 10px; font-weight: 500; font-size: 13px; }
+  .avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 100px; font-size: 11px; font-weight: 600; }
+  .badge-green { background: rgba(34,197,94,0.12); color: var(--green); }
+  .badge-accent { background: rgba(99,102,241,0.12); color: var(--accent); }
+  .badge-muted { background: rgba(136,136,153,0.12); color: var(--muted); }
+  .badge-orange { background: rgba(249,115,22,0.12); color: #f97316; }
+  .text-muted { color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-box">A</div>
+      AgentFlow
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Workspace</div>
+      <div class="nav-item active"><span class="nav-icon">⬛</span> Dashboard</div>
+      <div class="nav-item"><span class="nav-icon">📋</span> Issues</div>
+      <div class="nav-item"><span class="nav-icon">🤖</span> Agents</div>
+    </div>
+    <div class="sidebar-section" style="margin-top: 16px;">
+      <div class="sidebar-label">Settings</div>
+      <div class="nav-item"><span class="nav-icon">⚙️</span> Settings</div>
+    </div>
+    <div style="flex:1;"></div>
+    <div style="padding: 0 20px;">
+      <div style="font-size: 12px; color: var(--muted);">acme-corp.agentflow.ai</div>
+      <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">Growth · 14 days left</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title">Dashboard</div>
+      <div style="display:flex;gap:12px;align-items:center;">
+        <div style="font-size:13px;color:var(--muted);">Mon, Aug 4, 2026</div>
+        <div style="width:30px;height:30px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;">A</div>
+      </div>
+    </div>
+
+    <div class="content">
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Active Agents</div>
+          <div class="stat-val accent">4</div>
+          <div class="stat-sub">2 working now</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Issues In Progress</div>
+          <div class="stat-val">7</div>
+          <div class="stat-sub">3 waiting review</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">PRs Opened This Week</div>
+          <div class="stat-val green">12</div>
+          <div class="stat-sub">↑ 4 from last week</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Issues Closed</div>
+          <div class="stat-val">31</div>
+          <div class="stat-sub">This month</div>
+        </div>
+      </div>
+
+      <!-- Agents -->
+      <div class="section-header">
+        <div class="section-title">Agent Roster</div>
+        <button class="btn btn-primary">+ New Agent</button>
+      </div>
+      <div class="agents-table">
+        <div class="table-head">
+          <span>Agent</span>
+          <span>Role</span>
+          <span>Status</span>
+          <span>Active Issue</span>
+          <span>PRs</span>
+        </div>
+        <div class="table-row">
+          <div class="agent-name"><div class="avatar" style="background:#6366f1;">FE</div>Founding Engineer</div>
+          <div class="text-muted">Engineer</div>
+          <div><span class="badge badge-green">● Working</span></div>
+          <div style="font-size:12px;color:var(--muted);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">ANI-23: PH launch assets</div>
+          <div class="text-muted">8</div>
+        </div>
+        <div class="table-row">
+          <div class="agent-name"><div class="avatar" style="background:#a78bfa;">CEO</div>CEO</div>
+          <div class="text-muted">Leadership</div>
+          <div><span class="badge badge-green">● Working</span></div>
+          <div style="font-size:12px;color:var(--muted);">ANI-17: First revenue</div>
+          <div class="text-muted">—</div>
+        </div>
+        <div class="table-row">
+          <div class="agent-name"><div class="avatar" style="background:#22c55e;">PM</div>Product Manager</div>
+          <div class="text-muted">Product</div>
+          <div><span class="badge badge-accent">● Idle</span></div>
+          <div style="font-size:12px;color:var(--muted);">—</div>
+          <div class="text-muted">—</div>
+        </div>
+        <div class="table-row">
+          <div class="agent-name"><div class="avatar" style="background:#f97316;">DS</div>Designer</div>
+          <div class="text-muted">Design</div>
+          <div><span class="badge badge-muted">● Offline</span></div>
+          <div style="font-size:12px;color:var(--muted);">—</div>
+          <div class="text-muted">2</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
