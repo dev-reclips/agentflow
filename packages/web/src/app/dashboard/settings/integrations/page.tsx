@@ -46,7 +46,7 @@ export default function IntegrationsPage() {
         .split(",")
         .map((r) => r.trim())
         .filter(Boolean);
-      const updated = await api.integrations.upsertGithub({
+      const updated = await api.integrations.saveGithub({
         githubToken: form.githubToken || "KEEP",
         webhookSecret: form.webhookSecret || (integration?.webhookSecret ?? ""),
         repos,

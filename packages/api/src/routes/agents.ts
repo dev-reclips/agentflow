@@ -1,9 +1,10 @@
 import { type Router as IRouter, Router } from "express";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, count } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { agents } from "../db/schema.js";
+import { agents, subscriptions } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
+import { PLAN_AGENT_LIMITS } from "../services/stripe.js";
 
 export const agentsRouter: IRouter = Router();
 
@@ -27,6 +28,23 @@ agentsRouter.get("/", async (req, res, next) => {
 agentsRouter.post("/", async (req, res, next) => {
   try {
     const body = createAgentSchema.parse(req.body);
+
+    // Enforce plan agent limit
+    const sub = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.companyId, req.companyId),
+    });
+    const plan = sub?.status === "active" || sub?.status === "trialing" ? (sub.plan ?? "trial") : "trial";
+    const limit = PLAN_AGENT_LIMITS[plan] ?? 1;
+
+    const [{ value: agentCount }] = await db
+      .select({ value: count() })
+      .from(agents)
+      .where(eq(agents.companyId, req.companyId));
+
+    if (agentCount >= limit) {
+      throw new AppError(403, `Plan limit reached: your ${plan} plan allows ${limit} agent(s). Upgrade to add more.`);
+    }
+
     const [agent] = await db
       .insert(agents)
       .values({ companyId: req.companyId, name: body.name, capabilities: body.capabilities ?? null })

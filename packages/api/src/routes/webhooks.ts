@@ -68,7 +68,7 @@ webhooksRouter.post(
       }
 
       // Verify signature using the matching integration's secret
-      const rawBody = Buffer.from(JSON.stringify(payload));
+      const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(payload));
       if (!verifyGithubSignature(integration.webhookSecret, rawBody, sig)) {
         res.status(401).json({ error: "Invalid signature" });
         return;

@@ -37,6 +37,8 @@ export interface MeResult {
 export type IssueStatus = "backlog" | "todo" | "in_progress" | "in_review" | "done" | "blocked" | "cancelled";
 export type IssuePriority = "critical" | "high" | "medium" | "low";
 export type AgentStatus = "idle" | "running" | "error";
+export type SubscriptionPlan = "trial" | "starter" | "growth" | "scale";
+export type SubscriptionStatus = "trialing" | "active" | "past_due" | "canceled" | "incomplete";
 
 export interface Issue {
   id: string;
@@ -73,10 +75,23 @@ export interface IssueComment {
 export interface GithubIntegration {
   id: string;
   companyId: string;
+  hasToken: boolean;
   webhookSecret: string;
   repos: string[];
   defaultAgentId: string | null;
-  hasToken: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Subscription {
+  id: string;
+  companyId: string;
+  stripeCustomerId: string;
+  stripeSubscriptionId: string | null;
+  plan: SubscriptionPlan;
+  status: SubscriptionStatus;
+  currentPeriodEnd: string | null;
+  cancelAtPeriodEnd: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -104,20 +119,20 @@ export const api = {
 
   issues: {
     list(): Promise<Issue[]> {
-      return request("/issues", { headers: authHeaders() });
+      return request("/api/v1/issues", { headers: authHeaders() });
     },
     get(id: string): Promise<Issue> {
-      return request(`/issues/${id}`, { headers: authHeaders() });
+      return request(`/api/v1/issues/${id}`, { headers: authHeaders() });
     },
     create(data: { title: string; description?: string; priority?: IssuePriority; assigneeAgentId?: string }): Promise<Issue> {
-      return request("/issues", {
+      return request("/api/v1/issues", {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify(data),
       });
     },
     update(id: string, data: { title?: string; description?: string; status?: IssueStatus; priority?: IssuePriority; assigneeAgentId?: string | null }): Promise<Issue> {
-      return request(`/issues/${id}`, {
+      return request(`/api/v1/issues/${id}`, {
         method: "PATCH",
         headers: authHeaders(),
         body: JSON.stringify(data),
@@ -127,19 +142,26 @@ export const api = {
 
   agents: {
     list(): Promise<Agent[]> {
-      return request("/agents", { headers: authHeaders() });
+      return request("/api/v1/agents", { headers: authHeaders() });
     },
     get(id: string): Promise<Agent> {
-      return request(`/agents/${id}`, { headers: authHeaders() });
+      return request(`/api/v1/agents/${id}`, { headers: authHeaders() });
+    },
+    create(data: { name: string; capabilities?: string }): Promise<Agent> {
+      return request("/api/v1/agents", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify(data),
+      });
     },
   },
 
   comments: {
     list(issueId: string): Promise<IssueComment[]> {
-      return request(`/issues/${issueId}/comments`, { headers: authHeaders() });
+      return request(`/api/v1/issues/${issueId}/comments`, { headers: authHeaders() });
     },
     create(issueId: string, body: string): Promise<IssueComment> {
-      return request(`/issues/${issueId}/comments`, {
+      return request(`/api/v1/issues/${issueId}/comments`, {
         method: "POST",
         headers: authHeaders(),
         body: JSON.stringify({ body }),
@@ -149,31 +171,39 @@ export const api = {
 
   integrations: {
     getGithub(): Promise<GithubIntegration | null> {
-      return request("/integrations/github", { headers: authHeaders() });
+      return request("/api/v1/integrations/github", { headers: authHeaders() });
     },
-    upsertGithub(data: { githubToken: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
-      return request("/integrations/github", {
+    saveGithub(data: { githubToken: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
+      return request("/api/v1/integrations/github", {
         method: "PUT",
         headers: authHeaders(),
         body: JSON.stringify(data),
       });
     },
     deleteGithub(): Promise<void> {
-      return request("/integrations/github", {
+      return request("/api/v1/integrations/github", {
         method: "DELETE",
         headers: authHeaders(),
       });
     },
   },
-};
 
-export interface GithubIntegration {
-  id: string;
-  companyId: string;
-  hasToken: boolean;
-  webhookSecret: string;
-  repos: string[];
-  defaultAgentId: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
+  billing: {
+    get(): Promise<Subscription | null> {
+      return request("/api/v1/billing", { headers: authHeaders() });
+    },
+    createCheckout(plan: "starter" | "growth"): Promise<{ url: string }> {
+      return request("/api/v1/billing/checkout", {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ plan }),
+      });
+    },
+    createPortal(): Promise<{ url: string }> {
+      return request("/api/v1/billing/portal", {
+        method: "POST",
+        headers: authHeaders(),
+      });
+    },
+  },
+};
