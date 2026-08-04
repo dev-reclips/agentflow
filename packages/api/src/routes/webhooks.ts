@@ -27,7 +27,7 @@ webhooksRouter.post(
       const event = req.headers["x-github-event"] as string | undefined;
       const sig = req.headers["x-hub-signature-256"] as string | undefined;
 
-      if (event !== "issues") {
+      if (event !== "issues" && event !== "pull_request") {
         res.status(200).json({ ok: true, skipped: true });
         return;
       }
@@ -35,24 +35,15 @@ webhooksRouter.post(
       const payload = req.body as {
         action?: string;
         label?: { name: string };
-        issue?: {
-          number: number;
-          title: string;
-          body?: string;
-          html_url: string;
-        };
+        issue?: { number: number; title: string; body?: string; html_url: string };
+        pull_request?: { number: number; title: string; body?: string; html_url: string; state: string; merged?: boolean };
         repository?: { full_name: string };
         installation?: { id: number };
       };
 
-      if (payload.action !== "labeled" || payload.label?.name !== "agentflow") {
-        res.status(200).json({ ok: true, skipped: true });
-        return;
-      }
-
       const repoFullName = payload.repository?.full_name;
-      if (!repoFullName || !payload.issue) {
-        res.status(400).json({ error: "Missing repo or issue data" });
+      if (!repoFullName) {
+        res.status(400).json({ error: "Missing repository data" });
         return;
       }
 
@@ -71,6 +62,34 @@ webhooksRouter.post(
       const rawBody = req.rawBody ?? Buffer.from(JSON.stringify(payload));
       if (!verifyGithubSignature(integration.webhookSecret, rawBody, sig)) {
         res.status(401).json({ error: "Invalid signature" });
+        return;
+      }
+
+      // Handle pull_request events: update PR state on linked AgentFlow issues
+      if (event === "pull_request" && payload.pull_request) {
+        const pr = payload.pull_request;
+        const prState = pr.merged ? "merged" : pr.state;
+        await db
+          .update(issues)
+          .set({ githubPrState: prState, updatedAt: new Date() })
+          .where(
+            and(
+              eq(issues.companyId, integration.companyId),
+              eq(issues.githubPrNumber, pr.number),
+            ),
+          );
+        res.status(200).json({ ok: true, event: "pull_request", prNumber: pr.number, state: prState });
+        return;
+      }
+
+      // Handle issues events: create AgentFlow issue when labeled "agentflow"
+      if (!payload.issue) {
+        res.status(400).json({ error: "Missing issue data" });
+        return;
+      }
+
+      if (payload.action !== "labeled" || payload.label?.name !== "agentflow") {
+        res.status(200).json({ ok: true, skipped: true });
         return;
       }
 

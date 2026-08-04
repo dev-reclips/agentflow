@@ -4,7 +4,7 @@ import { and, eq } from "drizzle-orm";
 import { db } from "../db/client.js";
 import { githubIntegrations, issues } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
-import { postIssueComment } from "../services/github.js";
+import { postIssueComment, createPullRequest, getPullRequest } from "../services/github.js";
 
 export const issuesRouter: IRouter = Router();
 
@@ -113,6 +113,81 @@ issuesRouter.patch("/:id", async (req, res, next) => {
     }
 
     res.json(issue);
+  } catch (err) {
+    next(err);
+  }
+});
+
+const openPrSchema = z.object({
+  owner: z.string().min(1),
+  repo: z.string().min(1),
+  title: z.string().min(1),
+  head: z.string().min(1),
+  base: z.string().min(1),
+  body: z.string().optional(),
+});
+
+// POST /issues/:id/pr — agent calls this to open a GitHub PR and link it to the issue
+issuesRouter.post("/:id/pr", async (req, res, next) => {
+  try {
+    const issue = await db.query.issues.findFirst({
+      where: and(eq(issues.id, req.params.id!), eq(issues.companyId, req.companyId)),
+    });
+    if (!issue) throw new AppError(404, "Issue not found");
+
+    const integration = await db.query.githubIntegrations.findFirst({
+      where: eq(githubIntegrations.companyId, req.companyId),
+    });
+    if (!integration) throw new AppError(400, "GitHub integration not configured");
+
+    const body = openPrSchema.parse(req.body);
+    const pr = await createPullRequest(integration.githubToken, body);
+
+    const [updated] = await db
+      .update(issues)
+      .set({
+        githubPrUrl: pr.html_url,
+        githubPrNumber: pr.number,
+        githubPrState: pr.state,
+        updatedAt: new Date(),
+      })
+      .where(eq(issues.id, issue.id))
+      .returning();
+
+    res.status(201).json({ pr, issue: updated });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET /issues/:id/pr — fetch latest PR state from GitHub and refresh on the issue
+issuesRouter.get("/:id/pr", async (req, res, next) => {
+  try {
+    const issue = await db.query.issues.findFirst({
+      where: and(eq(issues.id, req.params.id!), eq(issues.companyId, req.companyId)),
+    });
+    if (!issue) throw new AppError(404, "Issue not found");
+    if (!issue.githubPrNumber || !issue.githubPrUrl) {
+      res.json(null);
+      return;
+    }
+
+    const integration = await db.query.githubIntegrations.findFirst({
+      where: eq(githubIntegrations.companyId, req.companyId),
+    });
+    if (!integration) { res.json({ prUrl: issue.githubPrUrl, prState: issue.githubPrState }); return; }
+
+    const match = issue.githubPrUrl.match(/github\.com\/([^/]+)\/([^/]+)\/pull\/(\d+)/);
+    if (!match) { res.json({ prUrl: issue.githubPrUrl, prState: issue.githubPrState }); return; }
+    const [, owner, repo] = match;
+
+    const pr = await getPullRequest(integration.githubToken, owner!, repo!, issue.githubPrNumber);
+
+    if (pr.state !== issue.githubPrState) {
+      await db.update(issues).set({ githubPrState: pr.state, updatedAt: new Date() }).where(eq(issues.id, issue.id));
+    }
+
+    res.json({ prUrl: issue.githubPrUrl, prNumber: issue.githubPrNumber, prState: pr.state, prTitle: pr.title });
   } catch (err) {
     next(err);
   }

@@ -1,13 +1,17 @@
 import Stripe from "stripe";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey) {
-  throw new Error("STRIPE_SECRET_KEY is required");
-}
+let _stripe: Stripe | null = null;
 
-export const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: "2025-06-30.basil",
-});
+// Lazy init — don't throw at module load so the API starts without Stripe creds.
+// Each caller that needs Stripe gets it via getStripe() which throws only if missing.
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) throw new Error("STRIPE_SECRET_KEY is not configured");
+    _stripe = new Stripe(key, { apiVersion: "2026-07-29.dahlia" });
+  }
+  return _stripe;
+}
 
 // Stripe Price IDs (set in env)
 export const PRICE_IDS = {
