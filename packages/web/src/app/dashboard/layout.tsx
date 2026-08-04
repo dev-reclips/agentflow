@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { getToken, clearToken } from "@/lib/auth";
-import { api, type MeResult } from "@/lib/api";
+import { api, type MeResult, type Subscription } from "@/lib/api";
 import { identifyUser, resetAnalytics } from "@/lib/posthog";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [me, setMe] = useState<MeResult | null>(null);
+  const [sub, setSub] = useState<Subscription | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pastDueDismissed, setPastDueDismissed] = useState(false);
 
   useEffect(() => {
     const token = getToken();
@@ -19,6 +21,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       .then(data => {
         setMe(data);
         identifyUser(data.user.id, data.company.id);
+        // Load subscription status for past_due banner (best-effort)
+        api.billing.get().then(setSub).catch(() => {});
       })
       .catch(() => { clearToken(); router.replace("/login"); })
       .finally(() => setLoading(false));
@@ -38,8 +42,36 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
+  const showPastDueBanner = !pastDueDismissed && sub?.status === "past_due";
+
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      {showPastDueBanner && (
+        <div style={{
+          background: "#78350f",
+          borderBottom: "1px solid #92400e",
+          padding: "10px 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          fontSize: 14,
+          color: "#fef3c7",
+        }}>
+          <span>
+            ⚠️ Your payment failed. Update your payment method to avoid service interruption.{" "}
+            <Link href="/dashboard/settings/billing" style={{ color: "#fde68a", fontWeight: 600, textDecoration: "underline" }}>
+              Manage billing →
+            </Link>
+          </span>
+          <button
+            onClick={() => setPastDueDismissed(true)}
+            style={{ background: "none", border: "none", color: "#fef3c7", cursor: "pointer", fontSize: 16, lineHeight: 1, padding: "0 4px" }}
+            aria-label="Dismiss"
+          >
+            ×
+          </button>
+        </div>
+      )}
       <nav className="dash-topnav">
         <div className="container nav-inner">
           <div style={{ display: "flex", alignItems: "center", gap: 32 }}>

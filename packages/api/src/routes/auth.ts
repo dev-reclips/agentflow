@@ -7,6 +7,7 @@ import { companies, users, apiKeys } from "../db/schema.js";
 import { hashApiKey } from "../middleware/auth.js";
 import { signToken, requireSession } from "../middleware/session.js";
 import { AppError } from "../middleware/error.js";
+import { sendWelcomeEmail } from "../services/email.js";
 
 export const authRouter: IRouter = Router();
 
@@ -72,6 +73,11 @@ authRouter.post("/register", async (req, res, next) => {
     if (!apiKey) throw new AppError(500, "Failed to create API key");
 
     const token = await signToken({ userId: user.id, companyId: company.id });
+
+    // Fire-and-forget: don't let email failure break registration
+    sendWelcomeEmail(company.id, email, company.name).catch((err) => {
+      console.error("[email] Failed to send welcome email:", err);
+    });
 
     res.status(201).json({
       token,

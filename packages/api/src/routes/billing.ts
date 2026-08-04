@@ -1,10 +1,11 @@
 import { type Router as IRouter, Router, type Request, type Response, type NextFunction } from "express";
 import { eq } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { subscriptions, stripeEvents, companies } from "../db/schema.js";
+import { subscriptions, stripeEvents, companies, users } from "../db/schema.js";
 import { getStripe, PRICE_IDS, stripePlanFromPriceId } from "../services/stripe.js";
 import { AppError } from "../middleware/error.js";
 import { captureServer } from "../services/posthog.js";
+import { sendTrialEndingSoonEmail } from "../services/email.js";
 
 export const billingRouter: IRouter = Router();
 
@@ -215,6 +216,31 @@ async function handleStripeEvent(event: import("stripe").Stripe.Event) {
         .update(subscriptions)
         .set({ status: "past_due", updatedAt: new Date() })
         .where(eq(subscriptions.stripeSubscriptionId, subId));
+      break;
+    }
+    case "customer.subscription.trial_will_end": {
+      const stripeSub = event.data.object as import("stripe").Stripe.Subscription;
+      const companyId = stripeSub.metadata?.companyId;
+      if (!companyId) return;
+
+      const trialEndTs = (stripeSub as any).trial_end as number | null;
+      const trialEndDate = trialEndTs ? new Date(trialEndTs * 1000) : new Date();
+
+      const owner = await db.query.users.findFirst({
+        where: eq(users.companyId, companyId),
+      });
+      if (!owner) return;
+
+      const company = await db.query.companies.findFirst({
+        where: eq(companies.id, companyId),
+      });
+
+      await sendTrialEndingSoonEmail(
+        companyId,
+        owner.email,
+        company?.name ?? companyId,
+        trialEndDate,
+      );
       break;
     }
   }

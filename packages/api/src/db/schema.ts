@@ -146,3 +146,18 @@ export const issueComments = pgTable("issue_comments", {
   body: text("body").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const emailTypeEnum = pgEnum("email_type", [
+  "welcome",
+  "mid_trial",
+  "trial_ending",
+]);
+
+export const emailLogs = pgTable("email_logs", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" }),
+  emailType: emailTypeEnum("email_type").notNull(),
+  sentAt: timestamp("sent_at").notNull().defaultNow(),
+});
