@@ -10,6 +10,8 @@ import { agentsRouter } from "./routes/agents.js";
 import { commentsRouter } from "./routes/comments.js";
 import { companiesRouter, apiKeysRouter } from "./routes/companies.js";
 import { authRouter } from "./routes/auth.js";
+import { integrationsRouter } from "./routes/integrations.js";
+import { webhooksRouter } from "./routes/webhooks.js";
 
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
@@ -33,6 +35,8 @@ app.use("/api/v1/api-keys", requireApiKey, apiKeysRouter);
 app.use("/api/v1/issues", requireApiKey, issuesRouter);
 app.use("/api/v1/issues/:issueId/comments", requireApiKey, commentsRouter);
 app.use("/api/v1/agents", requireApiKey, agentsRouter);
+app.use("/api/v1/integrations", requireApiKey, integrationsRouter);
+app.use("/webhooks", webhooksRouter);
 
 app.use(errorHandler);
 

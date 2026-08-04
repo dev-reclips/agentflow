@@ -70,6 +70,17 @@ export interface IssueComment {
   createdAt: string;
 }
 
+export interface GithubIntegration {
+  id: string;
+  companyId: string;
+  webhookSecret: string;
+  repos: string[];
+  defaultAgentId: string | null;
+  hasToken: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export const api = {
   register(email: string, password: string, companyName: string): Promise<RegisterResult> {
     return request("/auth/register", {
@@ -135,4 +146,34 @@ export const api = {
       });
     },
   },
+
+  integrations: {
+    getGithub(): Promise<GithubIntegration | null> {
+      return request("/integrations/github", { headers: authHeaders() });
+    },
+    upsertGithub(data: { githubToken: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
+      return request("/integrations/github", {
+        method: "PUT",
+        headers: authHeaders(),
+        body: JSON.stringify(data),
+      });
+    },
+    deleteGithub(): Promise<void> {
+      return request("/integrations/github", {
+        method: "DELETE",
+        headers: authHeaders(),
+      });
+    },
+  },
 };
+
+export interface GithubIntegration {
+  id: string;
+  companyId: string;
+  hasToken: boolean;
+  webhookSecret: string;
+  repos: string[];
+  defaultAgentId: string | null;
+  createdAt: string;
+  updatedAt: string;
+}

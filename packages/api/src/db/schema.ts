@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, pgEnum, integer, boolean } from "drizzle-orm/pg-core";
 
 export const issueStatusEnum = pgEnum("issue_status", [
   "backlog",
@@ -24,6 +24,21 @@ export const agentStatusEnum = pgEnum("agent_status", [
 ]);
 
 export const userRoleEnum = pgEnum("user_role", ["owner", "member"]);
+
+export const subscriptionPlanEnum = pgEnum("subscription_plan", [
+  "trial",
+  "starter",
+  "growth",
+  "scale",
+]);
+
+export const subscriptionStatusEnum = pgEnum("subscription_status", [
+  "trialing",
+  "active",
+  "past_due",
+  "canceled",
+  "incomplete",
+]);
 
 export const companies = pgTable("companies", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -64,6 +79,8 @@ export const issues = pgTable("issues", {
   priority: issuePriorityEnum("priority").notNull().default("medium"),
   assigneeAgentId: uuid("assignee_agent_id").references(() => agents.id),
   parentId: uuid("parent_id"),
+  githubRepo: text("github_repo"),
+  githubIssueNumber: integer("github_issue_number"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   completedAt: timestamp("completed_at"),
@@ -79,6 +96,42 @@ export const agents = pgTable("agents", {
   status: agentStatusEnum("status").notNull().default("idle"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const githubIntegrations = pgTable("github_integrations", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" })
+    .unique(),
+  githubToken: text("github_token").notNull(),
+  webhookSecret: text("webhook_secret").notNull(),
+  repos: text("repos").array().notNull().default([]),
+  defaultAgentId: uuid("default_agent_id").references(() => agents.id),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  companyId: uuid("company_id")
+    .notNull()
+    .references(() => companies.id, { onDelete: "cascade" })
+    .unique(),
+  stripeCustomerId: text("stripe_customer_id").notNull().unique(),
+  stripeSubscriptionId: text("stripe_subscription_id").unique(),
+  plan: subscriptionPlanEnum("plan").notNull().default("trial"),
+  status: subscriptionStatusEnum("status").notNull().default("trialing"),
+  currentPeriodEnd: timestamp("current_period_end"),
+  cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const stripeEvents = pgTable("stripe_events", {
+  id: text("id").primaryKey(),
+  type: text("type").notNull(),
+  processedAt: timestamp("processed_at").notNull().defaultNow(),
 });
 
 export const issueComments = pgTable("issue_comments", {

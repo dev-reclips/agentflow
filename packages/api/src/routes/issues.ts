@@ -2,8 +2,9 @@ import { type Router as IRouter, Router } from "express";
 import { z } from "zod";
 import { and, eq } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { issues } from "../db/schema.js";
+import { githubIntegrations, issues } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
+import { postIssueComment } from "../services/github.js";
 
 export const issuesRouter: IRouter = Router();
 
@@ -94,6 +95,23 @@ issuesRouter.patch("/:id", async (req, res, next) => {
       .where(and(eq(issues.id, req.params.id!), eq(issues.companyId, req.companyId)))
       .returning();
     if (!issue) throw new AppError(404, "Issue not found");
+
+    // Post completion comment back to GitHub if this issue originated from a GitHub webhook
+    if (body.status === "done" && issue.githubRepo && issue.githubIssueNumber) {
+      const integration = await db.query.githubIntegrations.findFirst({
+        where: eq(githubIntegrations.companyId, issue.companyId),
+      });
+      if (integration) {
+        const summary = issue.description ? `\n\n> ${issue.description.slice(0, 500)}` : "";
+        postIssueComment(
+          integration.githubToken,
+          issue.githubRepo,
+          issue.githubIssueNumber,
+          `✅ **AgentFlow completed this issue.**${summary}`,
+        ).catch((e) => console.error("[github] failed to post completion comment:", e));
+      }
+    }
+
     res.json(issue);
   } catch (err) {
     next(err);

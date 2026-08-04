@@ -42,6 +42,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="dash-nav-links">
               <Link href="/dashboard/issues" className={`dash-nav-link${pathname?.startsWith("/dashboard/issues") ? " active" : ""}`}>Issues</Link>
               <Link href="/dashboard/agents" className={`dash-nav-link${pathname?.startsWith("/dashboard/agents") ? " active" : ""}`}>Agents</Link>
+              <Link href="/dashboard/settings/integrations" className={`dash-nav-link${pathname?.startsWith("/dashboard/settings") ? " active" : ""}`}>Integrations</Link>
             </div>
           </div>
           <div className="nav-links">
