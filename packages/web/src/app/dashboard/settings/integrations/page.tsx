@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { api, type GithubIntegration, type Agent } from "@/lib/api";
 
 export default function IntegrationsPage() {
@@ -26,7 +27,7 @@ export default function IntegrationsPage() {
         if (gh) {
           setForm({
             githubToken: "",
-            webhookSecret: "",
+            webhookSecret: gh.webhookSecret,
             repos: gh.repos.join(", "),
             defaultAgentId: gh.defaultAgentId ?? "",
           });
@@ -46,17 +47,17 @@ export default function IntegrationsPage() {
         .split(",")
         .map((r) => r.trim())
         .filter(Boolean);
-      const updated = await api.integrations.saveGithub({
-        githubToken: form.githubToken || "KEEP",
-        webhookSecret: form.webhookSecret || (integration?.webhookSecret ?? ""),
+      const updated = await api.integrations.upsertGithub({
+        ...(form.githubToken ? { githubToken: form.githubToken } : {}),
+        webhookSecret: form.webhookSecret,
         repos,
         defaultAgentId: form.defaultAgentId || null,
       });
       setIntegration(updated);
-      setForm((f) => ({ ...f, githubToken: "" }));
+      setForm((f) => ({ ...f, githubToken: "", webhookSecret: updated.webhookSecret }));
       setSuccess(true);
     } catch (e) {
-      setError(String(e));
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setSaving(false);
     }
@@ -70,54 +71,55 @@ export default function IntegrationsPage() {
       setIntegration(null);
       setForm({ githubToken: "", webhookSecret: "", repos: "", defaultAgentId: "" });
     } catch (e) {
-      setError(String(e));
+      setError(e instanceof Error ? e.message : String(e));
     } finally {
       setSaving(false);
     }
   }
 
-  if (loading) return <div className="p-8 text-gray-500">Loading…</div>;
+  if (loading) return <div className="dash-loading">Loading…</div>;
 
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <h1 className="text-2xl font-bold mb-2">Integrations</h1>
-      <p className="text-gray-500 mb-8">Connect external services to AgentFlow.</p>
+    <div className="dash-page" style={{ maxWidth: 680 }}>
+      <div style={{ marginBottom: 20 }}>
+        <Link href="/dashboard" style={{ color: "var(--muted)", fontSize: 13 }}>← Dashboard</Link>
+      </div>
 
-      <section className="border rounded-lg p-6 mb-6">
-        <div className="flex items-center gap-3 mb-4">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 fill-current" aria-hidden="true">
+      <div className="dash-page-header">
+        <h1 className="dash-page-title">Integrations</h1>
+      </div>
+
+      <div className="card">
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+          <svg viewBox="0 0 24 24" width="22" height="22" style={{ fill: "var(--text)", flexShrink: 0 }} aria-hidden="true">
             <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
           </svg>
-          <h2 className="text-lg font-semibold">GitHub</h2>
+          <h2 style={{ fontSize: 17, fontWeight: 600 }}>GitHub</h2>
           {integration && (
-            <span className="ml-auto text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">
-              Connected
+            <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 600, color: "var(--green)", background: "rgba(34,197,94,0.1)", padding: "3px 8px", borderRadius: 12, border: "1px solid rgba(34,197,94,0.3)" }}>
+              CONNECTED
             </span>
           )}
         </div>
 
-        {error && (
-          <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 rounded p-3">
-            {error}
-          </div>
-        )}
+        {error && <p className="form-error" style={{ marginBottom: 16 }}>{error}</p>}
         {success && (
-          <div className="mb-4 text-sm text-green-700 bg-green-50 border border-green-200 rounded p-3">
+          <p style={{ fontSize: 14, color: "var(--green)", marginBottom: 16 }}>
             GitHub integration saved.
-          </div>
+          </p>
         )}
 
-        <form onSubmit={handleSave} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-1">
+        <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div className="form-group">
+            <label className="form-label">
               Installation Token / PAT
               {integration?.hasToken && (
-                <span className="ml-2 text-xs text-gray-400 font-normal">(leave blank to keep existing)</span>
+                <span style={{ marginLeft: 8, fontWeight: 400 }}>(leave blank to keep existing)</span>
               )}
             </label>
             <input
               type="password"
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               placeholder={integration?.hasToken ? "••••••••" : "ghp_… or GitHub App installation token"}
               value={form.githubToken}
               onChange={(e) => setForm((f) => ({ ...f, githubToken: e.target.value }))}
@@ -125,54 +127,48 @@ export default function IntegrationsPage() {
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Webhook Secret</label>
+          <div className="form-group">
+            <label className="form-label">Webhook Secret</label>
             <input
-              type="password"
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={integration ? "••••••••" : "A random secret to verify GitHub webhooks"}
+              type="text"
+              className="form-input"
+              placeholder="A random secret to verify GitHub webhooks"
               value={form.webhookSecret}
               onChange={(e) => setForm((f) => ({ ...f, webhookSecret: e.target.value }))}
-              required={!integration}
+              required
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">
+          <div className="form-group">
+            <label className="form-label">
               Connected Repos
-              <span className="ml-1 text-xs text-gray-400 font-normal">(comma-separated, e.g. org/repo — leave blank to accept all)</span>
+              <span style={{ marginLeft: 6, fontWeight: 400 }}>(comma-separated, e.g. org/repo — leave blank to accept all)</span>
             </label>
             <input
               type="text"
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               placeholder="acme/backend, acme/frontend"
               value={form.repos}
               onChange={(e) => setForm((f) => ({ ...f, repos: e.target.value }))}
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium mb-1">Default Agent (for webhook-created issues)</label>
+          <div className="form-group">
+            <label className="form-label">Default Agent (for webhook-created issues)</label>
             <select
-              className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="form-input"
               value={form.defaultAgentId}
               onChange={(e) => setForm((f) => ({ ...f, defaultAgentId: e.target.value }))}
             >
               <option value="">— none —</option>
               {agents.map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
+                <option key={a.id} value={a.id}>{a.name}</option>
               ))}
             </select>
           </div>
 
-          <div className="flex gap-3 pt-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700 disabled:opacity-50"
-            >
+          <div style={{ display: "flex", gap: 12, paddingTop: 4 }}>
+            <button type="submit" className="btn btn-primary" disabled={saving} style={{ padding: "9px 20px", fontSize: 14 }}>
               {saving ? "Saving…" : integration ? "Update" : "Connect GitHub"}
             </button>
             {integration && (
@@ -180,7 +176,8 @@ export default function IntegrationsPage() {
                 type="button"
                 onClick={handleDisconnect}
                 disabled={saving}
-                className="px-4 py-2 border border-red-300 text-red-600 text-sm font-medium rounded hover:bg-red-50 disabled:opacity-50"
+                className="btn btn-secondary"
+                style={{ padding: "9px 20px", fontSize: 14, color: "var(--red)", borderColor: "var(--red)" }}
               >
                 Disconnect
               </button>
@@ -189,18 +186,18 @@ export default function IntegrationsPage() {
         </form>
 
         {integration && (
-          <div className="mt-6 pt-4 border-t text-xs text-gray-500">
-            <p className="font-medium text-gray-700 mb-1">Webhook URL</p>
-            <code className="block bg-gray-50 border rounded px-3 py-2 text-gray-800 select-all">
+          <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid var(--border)" }}>
+            <p className="form-label" style={{ marginBottom: 8 }}>Webhook URL</p>
+            <code style={{ display: "block", background: "var(--bg)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "10px 14px", fontSize: 12, fontFamily: "var(--mono)", color: "var(--text)", userSelect: "all" }}>
               {process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/webhooks/github
             </code>
-            <p className="mt-2">
-              In your GitHub App settings, set the webhook URL above and use the secret you configured. Subscribe to{" "}
-              <strong>Issues</strong> events (label agentflow to trigger issue creation).
+            <p style={{ marginTop: 10, fontSize: 13, color: "var(--muted)", lineHeight: 1.6 }}>
+              Set this URL in your GitHub App or repo webhook settings. Subscribe to <strong>Issues</strong> events.
+              When a GitHub issue is labeled <code style={{ fontFamily: "var(--mono)", fontSize: 12 }}>agentflow</code>, it will appear in your dashboard assigned to the configured agent.
             </p>
           </div>
         )}
-      </section>
+      </div>
     </div>
   );
 }
