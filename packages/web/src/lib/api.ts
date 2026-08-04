@@ -178,7 +178,7 @@ export const api = {
     getGithub(): Promise<GithubIntegration | null> {
       return request("/api/v1/integrations/github", { headers: authHeaders() });
     },
-    saveGithub(data: { githubToken?: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
+    upsertGithub(data: { githubToken?: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
       return request("/api/v1/integrations/github", {
         method: "PUT",
         headers: authHeaders(),
