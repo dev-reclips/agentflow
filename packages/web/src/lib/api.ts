@@ -88,6 +88,15 @@ export interface GithubIntegration {
   updatedAt: string;
 }
 
+export interface OnboardingStep {
+  step: number;
+  completed: boolean;
+}
+
+export interface OnboardingStatus {
+  steps: OnboardingStep[];
+}
+
 export interface Subscription {
   id: string;
   companyId: string;
@@ -190,6 +199,12 @@ export const api = {
         method: "DELETE",
         headers: authHeaders(),
       });
+    },
+  },
+
+  onboarding: {
+    status(): Promise<OnboardingStatus> {
+      return request("/api/v1/onboarding/status", { headers: authHeaders() });
     },
   },
 

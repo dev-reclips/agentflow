@@ -458,6 +458,16 @@ a:hover { text-decoration: underline; }
 .issue-card-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
 .issue-card-meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
+/* Onboarding checklist floating card */
+@media (max-width: 480px) {
+  .onboarding-float {
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+}
+
 /* Footer */
 .footer {
   border-top: 1px solid var(--border);

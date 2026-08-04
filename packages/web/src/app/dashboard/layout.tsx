@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getToken, clearToken } from "@/lib/auth";
 import { api, type MeResult, type Subscription } from "@/lib/api";
 import { identifyUser, resetAnalytics } from "@/lib/posthog";
+import OnboardingChecklist from "@/components/OnboardingChecklist";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -92,6 +93,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </nav>
       <main style={{ flex: 1 }}>{children}</main>
+      <OnboardingChecklist />
     </div>
   );
 }
