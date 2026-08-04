@@ -13,7 +13,7 @@ export default function IntegrationsPage() {
   const [success, setSuccess] = useState(false);
 
   const [form, setForm] = useState({
-    githubToken: "",
+    installationId: "",
     webhookSecret: "",
     repos: "",
     defaultAgentId: "",
@@ -26,7 +26,7 @@ export default function IntegrationsPage() {
         setAgents(agentList);
         if (gh) {
           setForm({
-            githubToken: "",
+            installationId: String(gh.installationId),
             webhookSecret: gh.webhookSecret,
             repos: gh.repos.join(", "),
             defaultAgentId: gh.defaultAgentId ?? "",
@@ -43,18 +43,23 @@ export default function IntegrationsPage() {
     setError(null);
     setSuccess(false);
     try {
+      const installationId = parseInt(form.installationId, 10);
+      if (!Number.isInteger(installationId) || installationId <= 0) {
+        setError("Installation ID must be a positive integer.");
+        return;
+      }
       const repos = form.repos
         .split(",")
         .map((r) => r.trim())
         .filter(Boolean);
       const updated = await api.integrations.upsertGithub({
-        ...(form.githubToken ? { githubToken: form.githubToken } : {}),
+        installationId,
         webhookSecret: form.webhookSecret,
         repos,
         defaultAgentId: form.defaultAgentId || null,
       });
       setIntegration(updated);
-      setForm((f) => ({ ...f, githubToken: "", webhookSecret: updated.webhookSecret }));
+      setForm((f) => ({ ...f, webhookSecret: updated.webhookSecret }));
       setSuccess(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
@@ -69,7 +74,7 @@ export default function IntegrationsPage() {
     try {
       await api.integrations.deleteGithub();
       setIntegration(null);
-      setForm({ githubToken: "", webhookSecret: "", repos: "", defaultAgentId: "" });
+      setForm({ installationId: "", webhookSecret: "", repos: "", defaultAgentId: "" });
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -112,18 +117,16 @@ export default function IntegrationsPage() {
         <form onSubmit={handleSave} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div className="form-group">
             <label className="form-label">
-              Installation Token / PAT
-              {integration?.hasToken && (
-                <span style={{ marginLeft: 8, fontWeight: 400 }}>(leave blank to keep existing)</span>
-              )}
+              GitHub App Installation ID
+              <span style={{ marginLeft: 6, fontWeight: 400 }}>(from your GitHub App installation URL)</span>
             </label>
             <input
-              type="password"
+              type="number"
               className="form-input"
-              placeholder={integration?.hasToken ? "••••••••" : "ghp_… or GitHub App installation token"}
-              value={form.githubToken}
-              onChange={(e) => setForm((f) => ({ ...f, githubToken: e.target.value }))}
-              required={!integration?.hasToken}
+              placeholder="12345678"
+              value={form.installationId}
+              onChange={(e) => setForm((f) => ({ ...f, installationId: e.target.value }))}
+              required
             />
           </div>
 
@@ -192,8 +195,11 @@ export default function IntegrationsPage() {
               {process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001"}/webhooks/github
             </code>
             <p style={{ marginTop: 10, fontSize: 13, color: "var(--muted)", lineHeight: 1.6 }}>
-              Set this URL in your GitHub App or repo webhook settings. Subscribe to <strong>Issues</strong> events.
+              Set this URL in your GitHub App webhook settings. Subscribe to <strong>Issues</strong> and <strong>Pull requests</strong> events.
               When a GitHub issue is labeled <code style={{ fontFamily: "var(--mono)", fontSize: 12 }}>agentflow</code>, it will appear in your dashboard assigned to the configured agent.
+            </p>
+            <p style={{ marginTop: 8, fontSize: 13, color: "var(--muted)", lineHeight: 1.6 }}>
+              The GitHub App private key and App ID must be set as <code style={{ fontFamily: "var(--mono)", fontSize: 12 }}>GITHUB_APP_PRIVATE_KEY</code> and <code style={{ fontFamily: "var(--mono)", fontSize: 12 }}>GITHUB_APP_ID</code> in the API environment.
             </p>
           </div>
         )}

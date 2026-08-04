@@ -80,7 +80,7 @@ export interface IssueComment {
 export interface GithubIntegration {
   id: string;
   companyId: string;
-  hasToken: boolean;
+  installationId: number;
   webhookSecret: string;
   repos: string[];
   defaultAgentId: string | null;
@@ -178,7 +178,7 @@ export const api = {
     getGithub(): Promise<GithubIntegration | null> {
       return request("/api/v1/integrations/github", { headers: authHeaders() });
     },
-    upsertGithub(data: { githubToken?: string; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
+    upsertGithub(data: { installationId: number; webhookSecret: string; repos: string[]; defaultAgentId?: string | null }): Promise<GithubIntegration> {
       return request("/api/v1/integrations/github", {
         method: "PUT",
         headers: authHeaders(),

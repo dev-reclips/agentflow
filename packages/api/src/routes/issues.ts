@@ -104,7 +104,7 @@ issuesRouter.patch("/:id", async (req, res, next) => {
       if (integration) {
         const summary = issue.description ? `\n\n> ${issue.description.slice(0, 500)}` : "";
         postIssueComment(
-          integration.githubToken,
+          integration.installationId,
           issue.githubRepo,
           issue.githubIssueNumber,
           `✅ **AgentFlow completed this issue.**${summary}`,
@@ -141,7 +141,7 @@ issuesRouter.post("/:id/pr", async (req, res, next) => {
     if (!integration) throw new AppError(400, "GitHub integration not configured");
 
     const prInput = openPrSchema.parse(req.body);
-    const pr = await createPullRequest(integration.githubToken, {
+    const pr = await createPullRequest(integration.installationId, {
       owner: prInput.owner,
       repo: prInput.repo,
       title: prInput.title,
@@ -188,7 +188,7 @@ issuesRouter.get("/:id/pr", async (req, res, next) => {
     if (!match) { res.json({ prUrl: issue.githubPrUrl, prState: issue.githubPrState }); return; }
     const [, owner, repo] = match;
 
-    const pr = await getPullRequest(integration.githubToken, owner!, repo!, issue.githubPrNumber);
+    const pr = await getPullRequest(integration.installationId, owner!, repo!, issue.githubPrNumber);
 
     if (pr.state !== issue.githubPrState) {
       await db.update(issues).set({ githubPrState: pr.state, updatedAt: new Date() }).where(eq(issues.id, issue.id));

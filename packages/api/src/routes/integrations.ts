@@ -8,7 +8,7 @@ import { AppError } from "../middleware/error.js";
 export const integrationsRouter: IRouter = Router();
 
 const upsertGithubSchema = z.object({
-  githubToken: z.string().min(1).optional(),
+  installationId: z.number().int().positive(),
   webhookSecret: z.string().min(1),
   repos: z.array(z.string()).default([]),
   defaultAgentId: z.string().uuid().nullable().optional(),
@@ -20,9 +20,7 @@ integrationsRouter.get("/github", async (req, res, next) => {
       where: eq(githubIntegrations.companyId, req.companyId),
     });
     if (!row) { res.json(null); return; }
-    // Never return the token — only confirm it's set
-    const { githubToken: _t, ...safe } = row;
-    res.json({ ...safe, hasToken: true });
+    res.json(row);
   } catch (err) {
     next(err);
   }
@@ -39,7 +37,7 @@ integrationsRouter.put("/github", async (req, res, next) => {
       const [row] = await db
         .update(githubIntegrations)
         .set({
-          ...(body.githubToken ? { githubToken: body.githubToken } : {}),
+          installationId: body.installationId,
           webhookSecret: body.webhookSecret,
           repos: body.repos,
           defaultAgentId: body.defaultAgentId ?? null,
@@ -47,25 +45,19 @@ integrationsRouter.put("/github", async (req, res, next) => {
         })
         .where(eq(githubIntegrations.companyId, req.companyId))
         .returning();
-      const { githubToken: _t, ...safe } = row!;
-      res.json({ ...safe, hasToken: true });
+      res.json(row);
     } else {
-      if (!body.githubToken) {
-        res.status(400).json({ error: "githubToken is required" });
-        return;
-      }
       const [row] = await db
         .insert(githubIntegrations)
         .values({
           companyId: req.companyId,
-          githubToken: body.githubToken,
+          installationId: body.installationId,
           webhookSecret: body.webhookSecret,
           repos: body.repos,
           defaultAgentId: body.defaultAgentId ?? null,
         })
         .returning();
-      const { githubToken: _t, ...safe } = row!;
-      res.status(201).json({ ...safe, hasToken: true });
+      res.status(201).json(row);
     }
   } catch (err) {
     next(err);

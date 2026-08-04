@@ -107,7 +107,7 @@ export const githubIntegrations = pgTable("github_integrations", {
     .notNull()
     .references(() => companies.id, { onDelete: "cascade" })
     .unique(),
-  githubToken: text("github_token").notNull(),
+  installationId: integer("installation_id").notNull(),
   webhookSecret: text("webhook_secret").notNull(),
   repos: text("repos").array().notNull().default([]),
   defaultAgentId: uuid("default_agent_id").references(() => agents.id),
