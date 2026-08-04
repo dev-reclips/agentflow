@@ -8,7 +8,7 @@ import { AppError } from "../middleware/error.js";
 export const integrationsRouter: IRouter = Router();
 
 const upsertGithubSchema = z.object({
-  githubToken: z.string().min(1),
+  githubToken: z.string().min(1).optional(),
   webhookSecret: z.string().min(1),
   repos: z.array(z.string()).default([]),
   defaultAgentId: z.string().uuid().nullable().optional(),
@@ -39,7 +39,7 @@ integrationsRouter.put("/github", async (req, res, next) => {
       const [row] = await db
         .update(githubIntegrations)
         .set({
-          githubToken: body.githubToken,
+          ...(body.githubToken ? { githubToken: body.githubToken } : {}),
           webhookSecret: body.webhookSecret,
           repos: body.repos,
           defaultAgentId: body.defaultAgentId ?? null,
@@ -50,6 +50,10 @@ integrationsRouter.put("/github", async (req, res, next) => {
       const { githubToken: _t, ...safe } = row!;
       res.json({ ...safe, hasToken: true });
     } else {
+      if (!body.githubToken) {
+        res.status(400).json({ error: "githubToken is required" });
+        return;
+      }
       const [row] = await db
         .insert(githubIntegrations)
         .values({

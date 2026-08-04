@@ -140,8 +140,15 @@ issuesRouter.post("/:id/pr", async (req, res, next) => {
     });
     if (!integration) throw new AppError(400, "GitHub integration not configured");
 
-    const body = openPrSchema.parse(req.body);
-    const pr = await createPullRequest(integration.githubToken, body);
+    const prInput = openPrSchema.parse(req.body);
+    const pr = await createPullRequest(integration.githubToken, {
+      owner: prInput.owner,
+      repo: prInput.repo,
+      title: prInput.title,
+      head: prInput.head,
+      base: prInput.base,
+      ...(prInput.body != null ? { body: prInput.body } : {}),
+    });
 
     const [updated] = await db
       .update(issues)
