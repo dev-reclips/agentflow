@@ -166,8 +166,41 @@ a:hover { text-decoration: underline; }
 .feature-title { font-size: 18px; font-weight: 600; margin-bottom: 8px; }
 .feature-desc { color: var(--muted); font-size: 14px; line-height: 1.7; }
 
+/* Steps (How it works) */
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+.step-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
 /* Pricing */
 .pricing { padding: 80px 0; border-top: 1px solid var(--border); }
+.pricing-trial-note {
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 40px;
+  margin-top: -32px;
+}
 .pricing-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -204,6 +237,26 @@ a:hover { text-decoration: underline; }
 .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
 .pricing-features li { font-size: 14px; display: flex; gap: 8px; }
 .pricing-features li::before { content: "✓"; color: var(--green); flex-shrink: 0; }
+
+/* CTA section */
+.cta-section { padding: 80px 0; border-top: 1px solid var(--border); }
+.cta-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 64px 40px;
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.cta-title { font-size: 36px; font-weight: 800; margin-bottom: 16px; }
+.cta-sub { color: var(--muted); font-size: 16px; max-width: 480px; margin: 0 auto 36px; }
+
+@media (max-width: 640px) {
+  .hero { padding: 64px 0 56px; }
+  .cta-box { padding: 48px 24px; }
+  .cta-title { font-size: 28px; }
+}
 
 /* Auth pages */
 .auth-page {

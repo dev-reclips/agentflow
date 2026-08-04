@@ -23,72 +23,45 @@ export default function LandingPage() {
           <div className="container">
             <div className="hero-badge">Now in early access</div>
             <h1 className="hero-title">
-              Ship software with<br />
-              <span>autonomous AI agents</span>
+              Run AI agent teams that<br />
+              <span>ship real work.</span>
             </h1>
             <p className="hero-sub">
-              AgentFlow turns your backlog into shipped features. AI agents plan, write, review, and deploy code — you stay in the loop, not in the weeds.
+              Billing included. Assign issues to AI agents — they plan, write, review, and deploy code end-to-end.
             </p>
             <div className="hero-cta">
               <Link href="/register" className="btn btn-primary btn-lg">
-                Start for free →
+                Start free trial →
               </Link>
-              <a
-                href="https://docs.agentflow.dev"
-                className="btn btn-secondary btn-lg"
-              >
-                View docs
-              </a>
             </div>
           </div>
         </section>
 
-        {/* Features */}
+        {/* How it works */}
         <section className="features">
           <div className="container">
             <p className="section-label">How it works</p>
-            <h2 className="section-title">Built for engineering teams who move fast</h2>
-            <div className="features-grid">
-              <div className="feature-card">
-                <div className="feature-icon">🤖</div>
-                <h3 className="feature-title">Autonomous agents</h3>
+            <h2 className="section-title">Three steps to shipping</h2>
+            <div className="steps-grid">
+              <div className="step-card">
+                <div className="step-num">1</div>
+                <h3 className="feature-title">Create agents</h3>
                 <p className="feature-desc">
-                  Assign issues to AI agents. They pick up context, write code, open PRs, and respond to review feedback — end-to-end.
+                  Spin up specialized AI agents for your team — CEO, engineer, designer. Each runs autonomously with its own context, memory, and tools.
                 </p>
               </div>
-              <div className="feature-card">
-                <div className="feature-icon">🔁</div>
-                <h3 className="feature-title">Closed-loop delivery</h3>
+              <div className="step-card">
+                <div className="step-num">2</div>
+                <h3 className="feature-title">Assign issues</h3>
                 <p className="feature-desc">
-                  Agents run CI, read test results, and iterate until green. No babysitting. No context-switching.
+                  Drop issues from your backlog onto agents. They pick up context, ask clarifying questions, and get to work — no hand-holding required.
                 </p>
               </div>
-              <div className="feature-card">
-                <div className="feature-icon">🔌</div>
-                <h3 className="feature-title">SDK + API</h3>
+              <div className="step-card">
+                <div className="step-num">3</div>
+                <h3 className="feature-title">Agents ship code</h3>
                 <p className="feature-desc">
-                  Build custom agents with our TypeScript SDK. Full REST API for integrations with GitHub, Linear, Slack, and more.
-                </p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">🛡️</div>
-                <h3 className="feature-title">You stay in control</h3>
-                <p className="feature-desc">
-                  Every agent action is logged and auditable. Approval gates, spending limits, and kill-switches are first-class.
-                </p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">📊</div>
-                <h3 className="feature-title">Real-time observability</h3>
-                <p className="feature-desc">
-                  Watch agents work in real time. Structured logs, run traces, and dashboards out of the box.
-                </p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">⚡</div>
-                <h3 className="feature-title">Zero infra overhead</h3>
-                <p className="feature-desc">
-                  Fully managed agent runtime. No GPU clusters, no prompt infra, no MLOps. Just ship.
+                  Agents write code, open PRs, run CI, and respond to review feedback. You review and merge. Done.
                 </p>
               </div>
             </div>
@@ -99,38 +72,52 @@ export default function LandingPage() {
         <section className="pricing">
           <div className="container">
             <p className="section-label">Pricing</p>
-            <h2 className="section-title">Simple, usage-based pricing</h2>
+            <h2 className="section-title">Straightforward plans</h2>
+            <p className="pricing-trial-note">14-day free trial on all plans. No credit card required.</p>
             <div className="pricing-grid">
               <div className="pricing-card">
                 <p className="pricing-name">Starter</p>
-                <p className="pricing-price">$0<span> / mo</span></p>
-                <p className="pricing-desc">Perfect for solo devs and small experiments.</p>
+                <p className="pricing-price">$499<span> / mo</span></p>
+                <p className="pricing-desc">For teams ready to start automating delivery.</p>
                 <ul className="pricing-features">
-                  <li>1 agent</li>
-                  <li>100 runs / month</li>
-                  <li>Community support</li>
-                  <li>API access</li>
+                  <li>3 agents</li>
+                  <li>Unlimited issues</li>
+                  <li>GitHub integration</li>
+                  <li>Standard support</li>
                 </ul>
-                <Link href="/register" className="btn btn-secondary" style={{ width: "100%" }}>
-                  Get started
+                <Link href="/register" className="btn btn-secondary" style={{ width: "100%", textAlign: "center" }}>
+                  Start free trial
                 </Link>
               </div>
               <div className="pricing-card featured">
                 <div className="pricing-badge">Most popular</div>
-                <p className="pricing-name">Pro</p>
-                <p className="pricing-price">$99<span> / mo</span></p>
-                <p className="pricing-desc">For teams serious about autonomous delivery.</p>
+                <p className="pricing-name">Growth</p>
+                <p className="pricing-price">$1,499<span> / mo</span></p>
+                <p className="pricing-desc">For teams shipping at scale with full agent power.</p>
                 <ul className="pricing-features">
-                  <li>Unlimited agents</li>
-                  <li>Unlimited runs</li>
+                  <li>10 agents</li>
+                  <li>Unlimited issues</li>
+                  <li>GitHub integration</li>
                   <li>Priority support</li>
                   <li>Custom integrations</li>
-                  <li>SSO + audit logs</li>
                 </ul>
-                <Link href="/register" className="btn btn-primary" style={{ width: "100%" }}>
+                <Link href="/register" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>
                   Start free trial
                 </Link>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Sign-up CTA */}
+        <section className="cta-section">
+          <div className="container">
+            <div className="cta-box">
+              <h2 className="cta-title">Ready to ship faster?</h2>
+              <p className="cta-sub">Join teams using AgentFlow to close their backlog with AI. 14-day free trial, cancel any time.</p>
+              <Link href="/register" className="btn btn-primary btn-lg">
+                Create your account →
+              </Link>
             </div>
           </div>
         </section>
