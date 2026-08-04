@@ -16,6 +16,7 @@ import { webhooksRouter } from "./routes/webhooks.js";
 import { billingRouter, webhookRouter as stripeWebhookRouter } from "./routes/billing.js";
 import { emailJobsRouter } from "./routes/email-jobs.js";
 import { onboardingRouter } from "./routes/onboarding.js";
+import { adminRouter } from "./routes/admin.js";
 
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
@@ -51,6 +52,7 @@ app.use("/api/v1/billing", requireSession, billingRouter);
 app.use("/webhooks", webhooksRouter);
 app.use("/internal/email-jobs", emailJobsRouter);
 app.use("/api/v1/onboarding", requireSession, onboardingRouter);
+app.use("/api/admin", adminRouter);
 
 app.use(errorHandler);
 
