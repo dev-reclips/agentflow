@@ -31,7 +31,7 @@ export interface CreatePROptions {
   title: string;
   head: string;
   base: string;
-  body?: string;
+  body?: string | undefined;
 }
 
 export interface PRResult {

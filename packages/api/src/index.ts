@@ -4,6 +4,7 @@ import express, { type Express, type Request, type Response, type NextFunction }
 import { logger } from "./middleware/logger.js";
 import { errorHandler } from "./middleware/error.js";
 import { requireApiKey } from "./middleware/auth.js";
+import { requireSession } from "./middleware/session.js";
 import { healthRouter } from "./routes/health.js";
 import { issuesRouter } from "./routes/issues.js";
 import { agentsRouter } from "./routes/agents.js";
@@ -26,6 +27,9 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   next();
 });
 
+// Stripe webhook needs raw body before express.json() parses everything else
+app.use("/webhooks/stripe", express.raw({ type: "application/json" }), stripeWebhookRouter);
+
 app.use(express.json({
   verify: (req: Request, _res: Response, buf: Buffer) => {
     req.rawBody = buf;
@@ -41,9 +45,8 @@ app.use("/api/v1/issues", requireApiKey, issuesRouter);
 app.use("/api/v1/issues/:issueId/comments", requireApiKey, commentsRouter);
 app.use("/api/v1/agents", requireApiKey, agentsRouter);
 app.use("/api/v1/integrations", requireApiKey, integrationsRouter);
-app.use("/api/v1/billing", requireApiKey, billingRouter);
+app.use("/api/v1/billing", requireSession, billingRouter);
 app.use("/webhooks", webhooksRouter);
-app.use("/webhooks/stripe", express.raw({ type: "application/json" }), stripeWebhookRouter);
 
 app.use(errorHandler);
 

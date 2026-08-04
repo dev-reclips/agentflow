@@ -49,6 +49,11 @@ export interface Issue {
   priority: IssuePriority;
   assigneeAgentId: string | null;
   parentId: string | null;
+  githubRepo: string | null;
+  githubIssueNumber: number | null;
+  githubPrUrl: string | null;
+  githubPrNumber: number | null;
+  githubPrState: string | null;
   createdAt: string;
   updatedAt: string;
   completedAt: string | null;

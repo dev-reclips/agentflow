@@ -163,6 +163,30 @@ export default function IssueDetailPage() {
           </div>
         )}
 
+        {issue.githubPrUrl && (
+          <div style={{ borderTop: "1px solid var(--border)", paddingTop: 14, marginTop: 16, display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 12, color: "var(--muted)" }}>Linked PR</span>
+            <a
+              href={issue.githubPrUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: 13, color: "var(--accent)", textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}
+            >
+              #{issue.githubPrNumber}
+            </a>
+            <span style={{
+              fontSize: 11,
+              fontWeight: 600,
+              padding: "2px 8px",
+              borderRadius: 12,
+              background: issue.githubPrState === "merged" ? "#7c3aed22" : issue.githubPrState === "closed" ? "#dc262622" : "#16a34a22",
+              color: issue.githubPrState === "merged" ? "#7c3aed" : issue.githubPrState === "closed" ? "#dc2626" : "#16a34a",
+            }}>
+              {issue.githubPrState ?? "open"}
+            </span>
+          </div>
+        )}
+
         <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 16 }}>
           Created {timeAgo(issue.createdAt)} · Updated {timeAgo(issue.updatedAt)}
         </p>

@@ -36,10 +36,11 @@ agentsRouter.post("/", async (req, res, next) => {
     const plan = sub?.status === "active" || sub?.status === "trialing" ? (sub.plan ?? "trial") : "trial";
     const limit = PLAN_AGENT_LIMITS[plan] ?? 1;
 
-    const [{ value: agentCount }] = await db
+    const [countRow] = await db
       .select({ value: count() })
       .from(agents)
       .where(eq(agents.companyId, req.companyId));
+    const agentCount = countRow?.value ?? 0;
 
     if (agentCount >= limit) {
       throw new AppError(403, `Plan limit reached: your ${plan} plan allows ${limit} agent(s). Upgrade to add more.`);
