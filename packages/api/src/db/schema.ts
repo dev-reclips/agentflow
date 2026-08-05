@@ -161,3 +161,14 @@ export const emailLogs = pgTable("email_logs", {
   emailType: emailTypeEnum("email_type").notNull(),
   sentAt: timestamp("sent_at").notNull().defaultNow(),
 });
+
+export const demoRequests = pgTable("demo_requests", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  workEmail: text("work_email").notNull(),
+  company: text("company").notNull(),
+  role: text("role").notNull(),
+  teamSize: text("team_size").notNull(),
+  painPoint: text("pain_point"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});

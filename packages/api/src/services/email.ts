@@ -119,6 +119,69 @@ export async function sendMidTrialEmail(
   await markSent(companyId, "mid_trial");
 }
 
+const NOTIFY_EMAIL = process.env.DEMO_NOTIFY_EMAIL ?? "dev@reclips.ai";
+
+export async function sendDemoConfirmationEmail(name: string, email: string): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.info("[email] RESEND_API_KEY not set — skipping demo confirmation to", email);
+    return;
+  }
+
+  await getResend().emails.send({
+    from: FROM,
+    to: email,
+    subject: "We got your demo request — talk soon",
+    html: `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;color:#1a1a1a">
+  <h2 style="margin-top:0">Thanks, ${name}!</h2>
+  <p>We received your demo request and will reach out within one business day to schedule a call.</p>
+  <p>In the meantime, feel free to explore AgentFlow yourself:</p>
+  <p style="margin-top:24px">
+    <a href="${WEB_URL}/register" style="background:#6366f1;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600">
+      Start your free trial →
+    </a>
+  </p>
+  <p style="margin-top:24px;font-size:14px;color:#666">
+    Questions before then? Just reply to this email.
+  </p>
+</div>
+    `.trim(),
+  });
+}
+
+export async function sendDemoNotificationEmail(data: {
+  name: string;
+  workEmail: string;
+  company: string;
+  role: string;
+  teamSize: string;
+  painPoint?: string | null;
+}): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.info("[email] RESEND_API_KEY not set — skipping demo notification");
+    return;
+  }
+
+  await getResend().emails.send({
+    from: FROM,
+    to: NOTIFY_EMAIL,
+    subject: `New demo request: ${data.name} @ ${data.company}`,
+    html: `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;color:#1a1a1a">
+  <h2 style="margin-top:0">New demo request</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:15px">
+    <tr><td style="padding:8px 0;color:#666;width:120px">Name</td><td style="padding:8px 0"><strong>${data.name}</strong></td></tr>
+    <tr><td style="padding:8px 0;color:#666">Email</td><td style="padding:8px 0"><a href="mailto:${data.workEmail}" style="color:#6366f1">${data.workEmail}</a></td></tr>
+    <tr><td style="padding:8px 0;color:#666">Company</td><td style="padding:8px 0">${data.company}</td></tr>
+    <tr><td style="padding:8px 0;color:#666">Role</td><td style="padding:8px 0">${data.role}</td></tr>
+    <tr><td style="padding:8px 0;color:#666">Team size</td><td style="padding:8px 0">${data.teamSize}</td></tr>
+    ${data.painPoint ? `<tr><td style="padding:8px 0;color:#666;vertical-align:top">Pain point</td><td style="padding:8px 0">${data.painPoint}</td></tr>` : ""}
+  </table>
+</div>
+    `.trim(),
+  });
+}
+
 export async function sendTrialEndingSoonEmail(
   companyId: string,
   email: string,
