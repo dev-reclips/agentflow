@@ -288,7 +288,8 @@ export default function VsSweepPage() {
             <a href="/pricing">Pricing</a> ·{" "}
             <a href="/security">Security & Privacy</a> ·{" "}
             <a href="/vs/github-copilot">AgentFlow vs Copilot</a> ·{" "}
-            <a href="/vs/sweep">AgentFlow vs Sweep</a>
+            <a href="/vs/sweep">AgentFlow vs Sweep</a> ·{" "}
+            <a href="/vs/devin">AgentFlow vs Devin</a>
           </p>
         </div>
       </footer>

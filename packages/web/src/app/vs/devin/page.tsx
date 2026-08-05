@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs GitHub Copilot: Autonomous Issue Resolution vs Code Autocomplete",
+  title: "AgentFlow vs Devin: Team Agent Orchestration vs Solo AI Engineer",
   description:
-    "AgentFlow closes GitHub issues end-to-end. GitHub Copilot suggests code as you type. Here's when to use each.",
+    "Devin is a single AI engineer in a cloud sandbox. AgentFlow orchestrates a team of agents natively in your GitHub workflow. Here's the difference.",
   openGraph: {
-    title: "AgentFlow vs GitHub Copilot: Autonomous Issue Resolution vs Code Autocomplete",
+    title: "AgentFlow vs Devin: Team Agent Orchestration vs Solo AI Engineer",
     description:
-      "AgentFlow closes GitHub issues end-to-end. GitHub Copilot suggests code as you type. Here's when to use each.",
-    url: "https://agentflow.ai/vs/github-copilot",
+      "Devin is a single AI engineer in a cloud sandbox. AgentFlow orchestrates a team of agents natively in your GitHub workflow. Here's the difference.",
+    url: "https://agentflow.ai/vs/devin",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs GitHub Copilot" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Devin" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/github-copilot",
+    canonical: "https://agentflow.ai/vs/devin",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs GitHub Copilot",
+  name: "AgentFlow vs Devin",
   description:
-    "AgentFlow closes GitHub issues end-to-end. GitHub Copilot suggests code as you type. Here's when to use each.",
-  url: "https://agentflow.ai/vs/github-copilot",
+    "Devin is a single AI engineer in a cloud sandbox. AgentFlow orchestrates a team of agents natively in your GitHub workflow. Here's the difference.",
+  url: "https://agentflow.ai/vs/devin",
 };
 
-export default function VsGitHubCopilotPage() {
+export default function VsDevinPage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsGitHubCopilotPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs GitHub Copilot
+              AgentFlow vs Devin
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              GitHub Copilot helps engineers write code faster. AgentFlow closes GitHub issues while your engineers focus on architecture.
+              Devin sends a single AI engineer into an isolated sandbox. AgentFlow deploys a coordinated team of agents directly inside your GitHub workflow — no sandbox, no friction.
             </p>
           </div>
         </section>
@@ -106,52 +106,52 @@ export default function VsGitHubCopilotPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      GitHub Copilot
+                      Devin
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Works autonomously on GitHub issues",
+                      feature: "Multi-agent orchestration",
                       agentflow: "Yes",
-                      copilot: "No",
+                      competitor: "No (single agent)",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Writes and opens PRs without human prompt",
+                      feature: "GitHub-native integration",
                       agentflow: "Yes",
-                      copilot: "No",
+                      competitor: "Partial",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Code autocomplete in your IDE",
-                      agentflow: "No",
-                      copilot: "Yes",
-                      agentflowHighlight: false,
-                    },
-                    {
-                      feature: "Reviews and understands codebase context",
+                      feature: "Real-time dashboard",
                       agentflow: "Yes",
-                      copilot: "Partial",
+                      competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Human review before merge",
-                      agentflow: "Required",
-                      copilot: "Optional",
-                      agentflowHighlight: false,
+                      feature: "Sprint-level workflow automation",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Works in your existing codebase",
+                      agentflow: "Yes",
+                      competitor: "Sandbox only",
+                      agentflowHighlight: true,
                     },
                     {
                       feature: "Pricing",
                       agentflow: "From $499/mo",
-                      copilot: "$19/user/mo",
-                      agentflowHighlight: false,
+                      competitor: "Usage-based (expensive)",
+                      agentflowHighlight: true,
                     },
                     {
-                      feature: "Best for",
-                      agentflow: "Teams with ticket backlogs",
-                      copilot: "Individual developers",
+                      feature: "SOC 2 compliance",
+                      agentflow: "Yes",
+                      competitor: "Yes",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -168,7 +168,7 @@ export default function VsGitHubCopilotPage() {
                         {row.agentflow}
                       </td>
                       <td style={{ padding: "14px 16px", textAlign: "center", color: "var(--muted)" }}>
-                        {row.copilot}
+                        {row.competitor}
                       </td>
                     </tr>
                   ))}
@@ -178,35 +178,29 @@ export default function VsGitHubCopilotPage() {
           </div>
         </section>
 
-        {/* When to use */}
+        {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Decision guide</p>
-            <h2 className="section-title">When to use each tool</h2>
+            <p className="section-label">Why teams choose AgentFlow</p>
+            <h2 className="section-title">The fundamental difference</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use Copilot when</h3>
-                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
-                  <li>You want AI assistance while actively writing code</li>
-                  <li>You're doing greenfield or exploratory work</li>
-                  <li>You want real-time code suggestions in your editor</li>
-                </ul>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Team vs solo</h3>
+                <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
+                  Devin is one AI engineer working alone. AgentFlow deploys a coordinated team — a triage agent, a coder, a reviewer — working in parallel across your entire sprint backlog.
+                </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use AgentFlow when</h3>
-                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
-                  <li>You have a backlog of maintenance tickets and bug fixes</li>
-                  <li>Repetitive tasks don't need an engineer's full attention</li>
-                  <li>You want issues resolved end-to-end, not just code suggested</li>
-                </ul>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>No sandbox needed</h3>
+                <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
+                  Devin spins up an isolated cloud sandbox for every task. AgentFlow works directly in your existing codebase and CI/CD pipeline — zero environment drift, zero extra overhead.
+                </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use both</h3>
-                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
-                  <li>Copilot for active development and new features</li>
-                  <li>AgentFlow for the ticket queue running in parallel</li>
-                  <li>Engineers ship faster, backlog drains automatically</li>
-                </ul>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Full transparency</h3>
+                <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
+                  Devin operates inside a black-box sandbox. AgentFlow surfaces every agent action in a real-time dashboard — your team always knows exactly what's happening and why.
+                </p>
               </div>
             </div>
           </div>
@@ -217,29 +211,29 @@ export default function VsGitHubCopilotPage() {
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label" style={{ textAlign: "left" }}>How it works</p>
             <h2 className="section-title" style={{ textAlign: "left", fontSize: "clamp(20px, 2.5vw, 28px)" }}>
-              How AgentFlow resolves a GitHub issue
+              How AgentFlow handles your sprint backlog
             </h2>
             <div style={{ marginTop: "32px", display: "flex", flexDirection: "column", gap: "24px" }}>
               {[
                 {
                   step: "1",
-                  title: "Assign",
-                  desc: "Add an issue to AgentFlow the same way you'd assign it to a teammate — directly in GitHub. The agent picks it up immediately.",
+                  title: "Triage",
+                  desc: "AgentFlow's triage agent reads new issues as they land, labels them, estimates complexity, and routes them to the right agent — automatically.",
                 },
                 {
                   step: "2",
-                  title: "Analyze",
-                  desc: "The agent reads the issue, pulls relevant code from the repository, and reasons about the root cause and the correct fix.",
+                  title: "Implement",
+                  desc: "A coding agent pulls context from your repo, writes the fix, and runs your existing tests — all inside your real codebase, not a sandbox.",
                 },
                 {
                   step: "3",
-                  title: "Pull request",
-                  desc: "AgentFlow opens a PR referencing the original issue — with a clear description, the code change, and tests. Your team reviews it exactly like any other PR.",
+                  title: "Review",
+                  desc: "A review agent checks the diff for correctness and style before a PR is opened. Your engineers review AI work the same way they review a teammate's PR.",
                 },
                 {
                   step: "4",
-                  title: "Close",
-                  desc: "Merge when satisfied. The issue closes automatically. No human time spent on triage, implementation, or back-and-forth.",
+                  title: "Merge and close",
+                  desc: "Merge when satisfied. The issue closes, the backlog shrinks, and your team stays focused on the work only humans can do.",
                 },
               ].map((item) => (
                 <div key={item.step} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
