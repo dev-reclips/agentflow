@@ -4,7 +4,15 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Security & Privacy — AgentFlow",
   description:
-    "How AgentFlow handles your code, GitHub permissions, and data. Straight answers for technical teams evaluating AgentFlow.",
+    "How AgentFlow AI agents handle your GitHub permissions, source code, and data. Straight answers for technical teams evaluating AI developer tools.",
+  openGraph: {
+    title: "Security & Privacy — AgentFlow",
+    description:
+      "How AgentFlow AI agents handle your GitHub permissions, source code, and data. Straight answers for technical teams evaluating AI developer tools.",
+    url: "https://agentflow.ai/security",
+    siteName: "AgentFlow",
+    type: "website",
+  },
 };
 
 const faqs: { q: string; a: string }[] = [

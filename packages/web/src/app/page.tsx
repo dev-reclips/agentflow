@@ -1,5 +1,28 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "AgentFlow — AI Agents for GitHub Backlog Automation",
+  description:
+    "Deploy autonomous AI agents to clear your GitHub backlog. Agents read issues, write code, open PRs, and close tickets — end to end. Start your free trial.",
+  openGraph: {
+    title: "AgentFlow — AI Agents for GitHub Backlog Automation",
+    description:
+      "Deploy autonomous AI agents to clear your GitHub backlog. Agents read issues, write code, open PRs, and close tickets — end to end.",
+    url: "https://agentflow.ai",
+    siteName: "AgentFlow",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow — AI Agents for GitHub Backlog Automation" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AgentFlow — AI Agents for GitHub Backlog Automation",
+    description:
+      "Deploy autonomous AI agents to clear your GitHub backlog. Agents read issues, write code, open PRs, and close tickets — end to end.",
+    images: ["/og-image.png"],
+  },
+};
 
 const DemoPlayer = dynamic(() => import("./demo/DemoPlayer"), {
   ssr: false,
@@ -17,9 +40,28 @@ const DemoPlayer = dynamic(() => import("./demo/DemoPlayer"), {
   ),
 });
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "AgentFlow",
+  applicationCategory: "DeveloperApplication",
+  description:
+    "Deploy autonomous AI agents to clear your GitHub backlog. Agents read issues, write code, open PRs, and close tickets end to end.",
+  offers: {
+    "@type": "Offer",
+    price: "499",
+    priceCurrency: "USD",
+  },
+  url: "https://agentflow.ai",
+};
+
 export default function LandingPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <nav className="nav">
         <div className="container nav-inner">
           <span className="nav-logo">AgentFlow</span>
@@ -151,7 +193,7 @@ export default function LandingPage() {
 
       <footer className="footer">
         <div className="container">
-          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/security">Security & Privacy</a></p>
+          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/security">Security & Privacy</a></p>
         </div>
       </footer>
     </>
