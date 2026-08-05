@@ -66,6 +66,9 @@ export default function LandingPage() {
         <div className="container nav-inner">
           <span className="nav-logo">AgentFlow</span>
           <div className="nav-links">
+            <Link href="/docs" style={{ fontSize: "14px", color: "var(--muted)", textDecoration: "none" }}>
+              Docs
+            </Link>
             <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
               Log in
             </Link>
@@ -196,7 +199,7 @@ export default function LandingPage() {
 
       <footer className="footer">
         <div className="container">
-          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/changelog">Changelog</a> · <a href="/blog">Blog</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a> · <a href="/vs/cursor">AgentFlow vs Cursor</a></p>
+          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/docs">Docs</a> · <a href="/changelog">Changelog</a> · <a href="/blog">Blog</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a> · <a href="/vs/cursor">AgentFlow vs Cursor</a></p>
         </div>
       </footer>
     </>
