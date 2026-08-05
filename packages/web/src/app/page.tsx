@@ -1,4 +1,21 @@
 import Link from "next/link";
+import dynamic from "next/dynamic";
+
+const DemoPlayer = dynamic(() => import("./demo/DemoPlayer"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: 260,
+        background: "#111118",
+        border: "1px solid #222230",
+        borderRadius: 12,
+        maxWidth: 640,
+        margin: "0 auto",
+      }}
+    />
+  ),
+});
 
 export default function LandingPage() {
   return (
@@ -29,6 +46,15 @@ export default function LandingPage() {
             <p className="hero-sub">
               Billing included. Assign issues to AI agents — they plan, write, review, and deploy code end-to-end.
             </p>
+
+            {/* Product demo */}
+            <div className="hero-demo">
+              <DemoPlayer />
+              <p className="hero-demo-caption">
+                Watch an agent close a real bug in under 2 minutes
+              </p>
+            </div>
+
             <div className="hero-cta">
               <Link href="/register" className="btn btn-primary btn-lg">
                 Start free trial →

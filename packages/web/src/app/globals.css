@@ -132,6 +132,18 @@ a:hover { text-decoration: underline; }
   max-width: 560px;
   margin: 0 auto 36px;
 }
+.hero-demo {
+  margin: 0 auto 36px;
+  width: 100%;
+  max-width: 680px;
+}
+.hero-demo-caption {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+  margin-top: 10px;
+}
 .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
 /* Features */
