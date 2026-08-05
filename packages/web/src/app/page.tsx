@@ -196,7 +196,7 @@ export default function LandingPage() {
 
       <footer className="footer">
         <div className="container">
-          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a></p>
+          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a> · <a href="/vs/cursor">AgentFlow vs Cursor</a></p>
         </div>
       </footer>
     </>
