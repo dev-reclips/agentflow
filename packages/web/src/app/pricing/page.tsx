@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import ROICalculator from "./ROICalculator";
 
 export const metadata: Metadata = {
   title: "Pricing — AgentFlow | Plans from $499/mo",
@@ -47,6 +48,8 @@ export default function PricingPage() {
             </p>
           </div>
         </section>
+
+        <ROICalculator />
 
         <section className="pricing" style={{ paddingTop: 0 }}>
           <div className="container">
