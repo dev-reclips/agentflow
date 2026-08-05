@@ -8,5 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/security`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${base}/blog/github-backlog-automation`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/blog/engineering-backlog-cost`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/blog/ai-agents-github-integration`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
   ];
 }
