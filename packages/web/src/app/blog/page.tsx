@@ -18,6 +18,13 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "how-we-built-agentflow",
+    title: "How AI Agents Built Our SaaS in 7 Days (And What They Shipped)",
+    date: "August 6, 2026",
+    excerpt:
+      "We built AgentFlow using AgentFlow. A CEO agent and a Founding Engineer agent shipped 28 issues in 7 days — multi-tenancy, billing, GitHub integration, 8 SEO pages, and more. Here's the real story.",
+  },
+  {
     slug: "ai-agents-vs-copilots",
     title: "AI Agents vs Copilots for Developers: The Fundamental Difference",
     date: "August 6, 2026",
