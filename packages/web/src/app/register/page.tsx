@@ -8,7 +8,7 @@ import { capture, identifyUser } from "@/lib/posthog";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "", companyName: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +17,7 @@ export default function RegisterPage() {
     setError("");
     setLoading(true);
     try {
-      const result = await api.register(form.email, form.password, form.companyName);
+      const result = await api.register(form.email, form.password);
       setToken(result.token);
       sessionStorage.setItem("agentflow_new_api_key", result.apiKey);
       identifyUser(result.user.id, result.company.id);
@@ -40,18 +40,6 @@ export default function RegisterPage() {
         <h1 className="auth-title">Create your account</h1>
         <p className="auth-sub">Get your first agent running in under 2 minutes.</p>
         <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label" htmlFor="company">Company name</label>
-            <input
-              id="company"
-              className="form-input"
-              type="text"
-              placeholder="Acme Inc."
-              required
-              value={form.companyName}
-              onChange={e => setForm(f => ({ ...f, companyName: e.target.value }))}
-            />
-          </div>
           <div className="form-group">
             <label className="form-label" htmlFor="email">Work email</label>
             <input

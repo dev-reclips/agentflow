@@ -41,6 +41,13 @@ a:hover { text-decoration: underline; }
 }
 .nav-logo { font-weight: 700; font-size: 18px; color: var(--text); }
 .nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-text-link { font-size: 14px; color: var(--muted); text-decoration: none; }
+.nav-text-link:hover { color: var(--text); text-decoration: none; }
+
+@media (max-width: 480px) {
+  .nav-text-link { display: none; }
+  .nav-links { gap: 12px; }
+}
 
 /* Buttons */
 .btn {

@@ -40,6 +40,22 @@ const DemoPlayer = dynamic(() => import("./demo/DemoPlayer"), {
   ),
 });
 
+const AnalyzeClientDynamic = dynamic(() => import("./analyze/AnalyzeClient"), {
+  ssr: false,
+  loading: () => (
+    <div
+      style={{
+        height: 80,
+        background: "var(--surface)",
+        border: "1px solid var(--border)",
+        borderRadius: 12,
+        maxWidth: 720,
+        margin: "0 auto",
+      }}
+    />
+  ),
+});
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
@@ -55,6 +71,19 @@ const jsonLd = {
   url: "https://agentflow.ai",
 };
 
+const TESTIMONIALS = [
+  {
+    quote: "We cleared 40+ stale issues in our first week. The agents handle the boring stuff so we can focus on architecture.",
+    author: "Engineering Manager",
+    company: "Series B startup, 18-person eng team",
+  },
+  {
+    quote: "Skeptical at first, but it opened a real PR fixing a real bug with zero hand-holding. That was enough.",
+    author: "Staff Engineer",
+    company: "Growth-stage SaaS",
+  },
+];
+
 export default function LandingPage() {
   return (
     <>
@@ -66,8 +95,8 @@ export default function LandingPage() {
         <div className="container nav-inner">
           <span className="nav-logo">AgentFlow</span>
           <div className="nav-links">
-            <Link href="/docs" style={{ fontSize: "14px", color: "var(--muted)", textDecoration: "none" }}>
-              Docs
+            <Link href="/analyze" className="nav-text-link">
+              Free analyzer
             </Link>
             <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
               Log in
@@ -89,24 +118,92 @@ export default function LandingPage() {
               <span>ship real work.</span>
             </h1>
             <p className="hero-sub">
-              Billing included. Assign issues to AI agents — they plan, write, review, and deploy code end-to-end.
+              Assign issues to AI agents — they plan, write, review, and deploy code end-to-end.
             </p>
 
-            {/* Product demo */}
+            {/* CTA first — visible above fold on mobile */}
+            <div className="hero-cta" style={{ marginBottom: 40 }}>
+              <Link href="/register" className="btn btn-primary btn-lg">
+                Start free trial →
+              </Link>
+              <Link href="/analyze" className="btn btn-secondary btn-lg">
+                Analyze your backlog
+              </Link>
+            </div>
+
+            {/* Product demo below CTAs */}
             <div className="hero-demo">
               <DemoPlayer />
               <p className="hero-demo-caption">
                 Watch an agent close a real bug in under 2 minutes
               </p>
             </div>
+          </div>
+        </section>
 
-            <div className="hero-cta">
-              <Link href="/register" className="btn btn-primary btn-lg">
-                Start free trial →
-              </Link>
-              <Link href="/book-demo" className="btn btn-secondary btn-lg">
-                Book a demo
-              </Link>
+        {/* Inline backlog analyzer — see it in action */}
+        <section style={{ padding: "80px 0", borderTop: "1px solid var(--border)" }}>
+          <div className="container">
+            <p className="section-label">Free Tool</p>
+            <h2 className="section-title">See it in action — analyze your backlog</h2>
+            <p
+              style={{
+                textAlign: "center",
+                color: "var(--muted)",
+                fontSize: 16,
+                maxWidth: 540,
+                margin: "0 auto 48px",
+              }}
+            >
+              Paste any public GitHub repo URL. Instantly see how many issues AgentFlow can automate and how many hours you're losing each month.
+            </p>
+            <AnalyzeClientDynamic />
+          </div>
+        </section>
+
+        {/* Social proof */}
+        <section style={{ padding: "80px 0", borderTop: "1px solid var(--border)" }}>
+          <div className="container">
+            <p className="section-label">Early access teams</p>
+            <h2 className="section-title">What teams are saying</h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+                gap: 24,
+                maxWidth: 860,
+                margin: "0 auto",
+              }}
+            >
+              {TESTIMONIALS.map(({ quote, author, company }, i) => (
+                <div
+                  key={i}
+                  style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
+                    borderRadius: 12,
+                    padding: "28px 32px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 20,
+                  }}
+                >
+                  <p
+                    style={{
+                      fontSize: 15,
+                      lineHeight: 1.7,
+                      color: "var(--text)",
+                      fontStyle: "italic",
+                    }}
+                  >
+                    &ldquo;{quote}&rdquo;
+                  </p>
+                  <div>
+                    <p style={{ fontSize: 14, fontWeight: 600 }}>{author}</p>
+                    <p style={{ fontSize: 13, color: "var(--muted)" }}>{company}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -199,7 +296,7 @@ export default function LandingPage() {
 
       <footer className="footer">
         <div className="container">
-          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/docs">Docs</a> · <a href="/changelog">Changelog</a> · <a href="/blog">Blog</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a> · <a href="/vs/cursor">AgentFlow vs Cursor</a></p>
+          <p>© 2026 AgentFlow · <a href="/login">Log in</a> · <a href="/register">Sign up</a> · <a href="/pricing">Pricing</a> · <a href="/analyze">Free Analyzer</a> · <a href="/docs">Docs</a> · <a href="/changelog">Changelog</a> · <a href="/blog">Blog</a> · <a href="/security">Security & Privacy</a> · <a href="/vs/github-copilot">AgentFlow vs Copilot</a> · <a href="/vs/sweep">AgentFlow vs Sweep</a> · <a href="/vs/devin">AgentFlow vs Devin</a> · <a href="/vs/cursor">AgentFlow vs Cursor</a></p>
         </div>
       </footer>
     </>

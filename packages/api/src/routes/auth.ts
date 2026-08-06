@@ -35,12 +35,16 @@ function verifyPassword(raw: string, stored: string): boolean {
 const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(8),
-  companyName: z.string().min(1).max(200),
+  companyName: z.string().min(1).max(200).optional(),
 });
 
 authRouter.post("/register", async (req, res, next) => {
   try {
-    const { email, password, companyName } = registerSchema.parse(req.body);
+    const { email, password, companyName: rawCompanyName } = registerSchema.parse(req.body);
+
+    // Auto-derive company name from email domain if not provided (e.g. "acme.com" → "Acme")
+    const emailDomain = email.split("@")[1]?.split(".")[0] ?? "myteam";
+    const companyName = rawCompanyName ?? (emailDomain.charAt(0).toUpperCase() + emailDomain.slice(1));
 
     const existing = await db.query.users.findFirst({ where: eq(users.email, email) });
     if (existing) throw new AppError(409, "Email already in use");

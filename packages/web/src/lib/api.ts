@@ -111,10 +111,10 @@ export interface Subscription {
 }
 
 export const api = {
-  register(email: string, password: string, companyName: string): Promise<RegisterResult> {
+  register(email: string, password: string, companyName?: string): Promise<RegisterResult> {
     return request("/auth/register", {
       method: "POST",
-      body: JSON.stringify({ email, password, companyName }),
+      body: JSON.stringify({ email, password, ...(companyName ? { companyName } : {}) }),
     });
   },
 
