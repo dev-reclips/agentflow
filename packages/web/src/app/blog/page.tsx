@@ -18,6 +18,13 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "ai-agents-vs-copilots",
+    title: "AI Agents vs Copilots for Developers: The Fundamental Difference",
+    date: "August 6, 2026",
+    excerpt:
+      "GitHub Copilot and AI agents are not the same tool. One suggests code while you type; the other executes full issue-to-PR pipelines autonomously. Here's why the distinction matters for backlog reduction.",
+  },
+  {
     slug: "reduce-engineering-backlog",
     title: "How to Reduce Engineering Backlog (Without Adding Headcount)",
     date: "August 6, 2026",
