@@ -24,7 +24,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AnalyzePage() {
+export default function AnalyzePage({ searchParams }: { searchParams: { repo?: string } }) {
+  const rawRepo = searchParams?.repo ?? "";
+  const initialRepo = /^[^/\s]+\/[^/\s]+$/.test(rawRepo.trim()) ? rawRepo.trim() : undefined;
+
   return (
     <>
       <nav className="nav">
@@ -58,7 +61,7 @@ export default function AnalyzePage() {
 
         <section style={{ paddingBottom: "96px" }}>
           <div className="container">
-            <AnalyzeClient />
+            <AnalyzeClient {...(initialRepo ? { initialRepo } : {})} />
           </div>
         </section>
 

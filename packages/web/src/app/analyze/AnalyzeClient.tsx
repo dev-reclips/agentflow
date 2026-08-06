@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 const LABEL_CATEGORIES: Record<string, { label: string; hoursEach: number; color: string }> = {
@@ -178,10 +178,12 @@ function StatCard({
   );
 }
 
-function ResultsDisplay({ result, resultId }: { result: AnalysisResult; resultId: string | null }) {
+function ResultsDisplay({ result, resultId, fromQueryParam }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean }) {
   const [copied, setCopied] = useState(false);
+  const [copiedQueryLink, setCopiedQueryLink] = useState(false);
   const ctaUrl = `/register?repo=${encodeURIComponent(result.repo)}`;
   const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
+  const queryParamUrl = `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze?repo=${encodeURIComponent(result.repo)}`;
 
   function handleCopyLink() {
     if (!shareUrl) return;
@@ -191,8 +193,43 @@ function ResultsDisplay({ result, resultId }: { result: AnalysisResult; resultId
     });
   }
 
+  function handleCopyQueryLink() {
+    navigator.clipboard.writeText(queryParamUrl).then(() => {
+      setCopiedQueryLink(true);
+      setTimeout(() => setCopiedQueryLink(false), 2000);
+    });
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      {fromQueryParam && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 12,
+            background: "rgba(99,102,241,0.08)",
+            border: "1px solid rgba(99,102,241,0.3)",
+            borderRadius: 10,
+            padding: "12px 20px",
+          }}
+        >
+          <p style={{ fontSize: 14, color: "var(--accent)", fontWeight: 500 }}>
+            Analysis pre-loaded for{" "}
+            <span style={{ fontFamily: "var(--mono)", fontWeight: 700 }}>{result.repo}</span>
+          </p>
+          <button
+            className="btn btn-secondary"
+            style={{ fontSize: 13, padding: "6px 14px", whiteSpace: "nowrap" }}
+            onClick={handleCopyQueryLink}
+          >
+            {copiedQueryLink ? "Copied!" : "Copy shareable link"}
+          </button>
+        </div>
+      )}
+
       <div>
         <p style={{ fontSize: 13, color: "var(--muted)", marginBottom: 4 }}>Results for</p>
         <p style={{ fontWeight: 700, fontSize: 20, fontFamily: "var(--mono)" }}>{result.repo}</p>
@@ -281,8 +318,8 @@ function ResultsDisplay({ result, resultId }: { result: AnalysisResult; resultId
   );
 }
 
-export default function AnalyzeClient({ initialResult, initialResultId }: { initialResult?: AnalysisResult; initialResultId?: string }) {
-  const [url, setUrl] = useState("");
+export default function AnalyzeClient({ initialResult, initialResultId, initialRepo }: { initialResult?: AnalysisResult; initialResultId?: string; initialRepo?: string }) {
+  const [url, setUrl] = useState(initialRepo ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -296,15 +333,16 @@ export default function AnalyzeClient({ initialResult, initialResultId }: { init
   // final shown result
   const [result, setResult] = useState<AnalysisResult | null>(initialResult ?? null);
   const [resultId, setResultId] = useState<string | null>(initialResultId ?? null);
+  const [fromQueryParam, setFromQueryParam] = useState(false);
 
   const resultsRef = useRef<HTMLDivElement>(null);
+  const didAutoSubmit = useRef(false);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const runAnalysis = useCallback(async (repoInput: string) => {
     setError(null);
     setPendingResult(null);
 
-    const parsed = parseRepoUrl(url);
+    const parsed = parseRepoUrl(repoInput);
     if (!parsed) {
       setError("Enter a valid GitHub repo URL (e.g. github.com/owner/repo).");
       return;
@@ -329,6 +367,19 @@ export default function AnalyzeClient({ initialResult, initialResultId }: { init
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!initialRepo || didAutoSubmit.current) return;
+    didAutoSubmit.current = true;
+    setFromQueryParam(true);
+    const timer = setTimeout(() => runAnalysis(initialRepo), 500);
+    return () => clearTimeout(timer);
+  }, [initialRepo, runAnalysis]);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    await runAnalysis(url);
   }
 
   async function handleEmailSubmit(e: React.FormEvent) {
@@ -467,7 +518,7 @@ export default function AnalyzeClient({ initialResult, initialResultId }: { init
 
       {result && !loading && (
         <div ref={resultsRef} style={{ marginTop: 48 }}>
-          <ResultsDisplay result={result} resultId={resultId} />
+          <ResultsDisplay result={result} resultId={resultId} fromQueryParam={fromQueryParam} />
         </div>
       )}
     </div>
