@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy-api:
-    name: Deploy API
+    name: Deploy API (Railway)
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -21,20 +21,63 @@ jobs:
           node-version: "20"
           cache: "pnpm"
 
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm build
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-      # TODO: add actual deploy step once hosting is decided
-      # e.g. Railway, Fly.io, or AWS ECS
-      - run: echo "Deploy target not configured yet"
+      - name: Build API
+        run: pnpm --filter @agentflow/api build
+
+      - name: Run database migrations
+        working-directory: packages/api
+        run: pnpm db:migrate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli@latest
+
+      - name: Deploy to Railway
+        run: railway up --service api --detach
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
   deploy-web:
-    name: Deploy Web
+    name: Deploy Web (Vercel)
     runs-on: ubuntu-latest
     environment: production
     needs: [deploy-api]
     steps:
       - uses: actions/checkout@v4
 
-      # TODO: add Vercel / Netlify deploy action once configured
-      - run: echo "Deploy target not configured yet"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Pull Vercel environment
+        working-directory: packages/web
+        run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build for Vercel
+        working-directory: packages/web
+        run: npx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel
+        working-directory: packages/web
+        run: npx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
