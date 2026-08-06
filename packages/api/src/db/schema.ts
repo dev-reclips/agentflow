@@ -172,3 +172,12 @@ export const demoRequests = pgTable("demo_requests", {
   painPoint: text("pain_point"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+export const analyzeResults = pgTable("analyze_results", {
+  id: text("id").primaryKey(),
+  repo: text("repo").notNull(),
+  resultJson: text("result_json").notNull(),
+  email: text("email"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  expiresAt: timestamp("expires_at").notNull(),
+});

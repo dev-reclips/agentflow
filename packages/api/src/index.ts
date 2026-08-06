@@ -18,6 +18,7 @@ import { emailJobsRouter } from "./routes/email-jobs.js";
 import { onboardingRouter } from "./routes/onboarding.js";
 import { adminRouter } from "./routes/admin.js";
 import { demoRouter } from "./routes/demo.js";
+import { analyzeRouter } from "./routes/analyze.js";
 
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
@@ -55,6 +56,7 @@ app.use("/internal/email-jobs", emailJobsRouter);
 app.use("/api/v1/onboarding", requireSession, onboardingRouter);
 app.use("/api/admin", adminRouter);
 app.use("/demo", demoRouter);
+app.use("/analyze", analyzeRouter);
 
 app.use(errorHandler);
 

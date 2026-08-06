@@ -15,6 +15,7 @@ const LABEL_CATEGORIES: Record<string, { label: string; hoursEach: number; color
 };
 
 const DEV_HOURLY_RATE = 100;
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
 interface GitHubIssue {
   number: number;
@@ -22,7 +23,7 @@ interface GitHubIssue {
   labels: { name: string }[];
 }
 
-interface AnalysisResult {
+export interface AnalysisResult {
   repo: string;
   totalOpen: number;
   byCategory: { key: string; count: number; hours: number }[];
@@ -33,10 +34,8 @@ interface AnalysisResult {
 
 function parseRepoUrl(input: string): { owner: string; repo: string } | null {
   const trimmed = input.trim().replace(/\/$/, "");
-  // Handle https://github.com/owner/repo
   const match = trimmed.match(/github\.com\/([^/]+)\/([^/\s]+)/);
   if (match && match[1] && match[2]) return { owner: match[1], repo: match[2].replace(/\.git$/, "") };
-  // Handle owner/repo
   const shortMatch = trimmed.match(/^([^/\s]+)\/([^/\s]+)$/);
   if (shortMatch && shortMatch[1] && shortMatch[2]) return { owner: shortMatch[1], repo: shortMatch[2] };
   return null;
@@ -53,7 +52,6 @@ async function fetchIssues(owner: string, repo: string): Promise<GitHubIssue[]> 
     if (res.status === 403 || res.status === 401) throw new Error("private");
     if (!res.ok) throw new Error("api_error");
     const data: GitHubIssue[] = await res.json();
-    // Filter out pull requests (GitHub API includes PRs in /issues)
     const issues = data.filter((i) => !("pull_request" in i));
     allIssues.push(...issues);
     if (data.length < 100) break;
@@ -92,6 +90,39 @@ function analyzeIssues(issues: GitHubIssue[], owner: string, repo: string): Anal
     totalHours,
     totalCost,
   };
+}
+
+async function persistResult(result: AnalysisResult): Promise<string | null> {
+  try {
+    const res = await fetch(`${API_URL}/analyze/results`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ repo: result.repo, result }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json() as { id: string };
+    return data.id;
+  } catch {
+    return null;
+  }
+}
+
+async function captureLead(email: string, resultId: string, result: AnalysisResult, skipped: boolean) {
+  try {
+    await fetch(`${API_URL}/analyze/leads`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        resultId,
+        repo: result.repo,
+        totalCost: result.totalCost,
+        skipped,
+      }),
+    });
+  } catch {
+    // fire-and-forget
+  }
 }
 
 function fmt(n: number) {
@@ -147,17 +178,131 @@ function StatCard({
   );
 }
 
-export default function AnalyzeClient() {
+function ResultsDisplay({ result, resultId }: { result: AnalysisResult; resultId: string | null }) {
+  const [copied, setCopied] = useState(false);
+  const ctaUrl = `/register?repo=${encodeURIComponent(result.repo)}`;
+  const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
+
+  function handleCopyLink() {
+    if (!shareUrl) return;
+    navigator.clipboard.writeText(shareUrl).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <div>
+        <p style={{ fontSize: 13, color: "var(--muted)", marginBottom: 4 }}>Results for</p>
+        <p style={{ fontWeight: 700, fontSize: 20, fontFamily: "var(--mono)" }}>{result.repo}</p>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+        <StatCard label="Open issues" value={result.totalOpen.toString()} sub="fetched from GitHub API" />
+        <StatCard label="AgentFlow can handle" value={result.totalMatchingIssues.toString()} sub="matching issues" accent="var(--accent)" />
+        <StatCard label="Estimated hours saved" value={`${Math.round(result.totalHours)}h`} sub="per month" accent="var(--green)" />
+        <StatCard label="Estimated cost saved" value={fmt(result.totalCost)} sub={`at $${DEV_HOURLY_RATE}/hr`} accent="var(--green)" />
+      </div>
+
+      {result.byCategory.length > 0 ? (
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "24px 28px" }}>
+          <p style={{ fontSize: 13, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--muted)", marginBottom: 20 }}>
+            Issue breakdown
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {result.byCategory.map(({ key, count, hours }) => {
+              const cat = LABEL_CATEGORIES[key];
+              if (!cat) return null;
+              const pct = result.totalMatchingIssues > 0 ? (count / result.totalMatchingIssues) * 100 : 0;
+              return (
+                <div key={key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: cat.color, display: "inline-block", flexShrink: 0 }} />
+                      <span style={{ fontSize: 14, fontWeight: 500 }}>{cat.label}</span>
+                    </div>
+                    <span style={{ fontSize: 14, color: "var(--muted)" }}>
+                      {count} issue{count !== 1 ? "s" : ""} · {hours}h
+                    </span>
+                  </div>
+                  <div style={{ background: "var(--border)", borderRadius: 4, height: 6, overflow: "hidden" }}>
+                    <div style={{ background: cat.color, height: "100%", width: `${pct}%`, borderRadius: 4, transition: "width 0.6s ease" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "24px 28px", color: "var(--muted)", fontSize: 15 }}>
+          No issues with AgentFlow-compatible labels found (bug, documentation, enhancement, etc.). AgentFlow can still work on unlabeled issues — connect your repo to try.
+        </div>
+      )}
+
+      <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 12, padding: "28px 32px", textAlign: "center" }}>
+        <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
+          AgentFlow can close {result.totalMatchingIssues} of these issues
+        </p>
+        <p style={{ color: "var(--muted)", marginBottom: 24, fontSize: 15 }}>
+          Agents read the issue, write the code, open a PR, and close the ticket — automatically.
+          Start your free trial and connect{" "}
+          <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span> in minutes.
+        </p>
+        <Link href={ctaUrl} className="btn btn-primary btn-lg" style={{ display: "inline-flex" }}>
+          Start free trial — connect this repo
+        </Link>
+        <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12 }}>14-day free trial · No credit card required</p>
+      </div>
+
+      <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+        {shareUrl && (
+          <button
+            className="btn btn-primary"
+            style={{ fontSize: 14, padding: "8px 18px" }}
+            onClick={handleCopyLink}
+          >
+            {copied ? "Link copied!" : "Share this analysis"}
+          </button>
+        )}
+        <button
+          className="btn btn-secondary"
+          style={{ fontSize: 14, padding: "8px 18px" }}
+          onClick={() => {
+            const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can handle ${result.totalMatchingIssues} of them and save ~${Math.round(result.totalHours)}h/mo. Free analyzer:`;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? "https://agentflow.ai/analyze")}`;
+            window.open(twitterUrl, "_blank", "noopener,noreferrer");
+          }}
+        >
+          Share on X (Twitter)
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default function AnalyzeClient({ initialResult, initialResultId }: { initialResult?: AnalysisResult; initialResultId?: string }) {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+
+  // gate states
+  const [pendingResult, setPendingResult] = useState<AnalysisResult | null>(null);
+  const [pendingResultId, setPendingResultId] = useState<string | null>(null);
+  const [emailInput, setEmailInput] = useState("");
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [submittingEmail, setSubmittingEmail] = useState(false);
+
+  // final shown result
+  const [result, setResult] = useState<AnalysisResult | null>(initialResult ?? null);
+  const [resultId, setResultId] = useState<string | null>(initialResultId ?? null);
+
   const resultsRef = useRef<HTMLDivElement>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
-    setResult(null);
+    setPendingResult(null);
 
     const parsed = parseRepoUrl(url);
     if (!parsed) {
@@ -169,8 +314,9 @@ export default function AnalyzeClient() {
     try {
       const issues = await fetchIssues(parsed.owner, parsed.repo);
       const analysis = analyzeIssues(issues, parsed.owner, parsed.repo);
-      setResult(analysis);
-      setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      const id = await persistResult(analysis);
+      setPendingResult(analysis);
+      setPendingResultId(id);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "api_error";
       if (msg === "not_found") {
@@ -185,38 +331,64 @@ export default function AnalyzeClient() {
     }
   }
 
-  const ctaUrl = result
-    ? `/register?repo=${encodeURIComponent(result.repo)}`
-    : "/register";
+  async function handleEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!pendingResult) return;
+    const trimmed = emailInput.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setEmailError("Enter a valid work email.");
+      return;
+    }
+    setSubmittingEmail(true);
+    if (pendingResultId) {
+      await captureLead(trimmed, pendingResultId, pendingResult, false);
+    }
+    setResult(pendingResult);
+    setResultId(pendingResultId);
+    setPendingResult(null);
+    setSubmittingEmail(false);
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  }
+
+  async function handleSkip() {
+    if (!pendingResult) return;
+    if (pendingResultId) {
+      await captureLead("anonymous@skip", pendingResultId, pendingResult, true);
+    }
+    setResult(pendingResult);
+    setResultId(pendingResultId);
+    setPendingResult(null);
+    setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+  }
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
-      {/* Input form */}
-      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <input
-            className="form-input"
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="github.com/owner/repo"
-            disabled={loading}
-            style={{ flex: 1, minWidth: 240, fontSize: 16, padding: "12px 16px" }}
-            autoFocus
-          />
-          <button
-            type="submit"
-            className="btn btn-primary"
-            disabled={loading || !url.trim()}
-            style={{ padding: "12px 28px", fontSize: 16, whiteSpace: "nowrap" }}
-          >
-            {loading ? "Analyzing…" : "Analyze backlog"}
-          </button>
-        </div>
-        {error && <p className="form-error">{error}</p>}
-      </form>
+      {!result && !pendingResult && (
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <input
+              className="form-input"
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="github.com/owner/repo"
+              disabled={loading}
+              style={{ flex: 1, minWidth: 240, fontSize: 16, padding: "12px 16px" }}
+              autoFocus
+            />
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading || !url.trim()}
+              style={{ padding: "12px 28px", fontSize: 16, whiteSpace: "nowrap" }}
+            >
+              {loading ? "Analyzing…" : "Analyze backlog"}
+            </button>
+          </div>
+          {error && <p className="form-error">{error}</p>}
+        </form>
+      )}
 
-      {/* Loading skeleton */}
       {loading && (
         <div style={{ marginTop: 48, textAlign: "center", color: "var(--muted)" }}>
           <div
@@ -231,163 +403,71 @@ export default function AnalyzeClient() {
             }}
           />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-          <p>Fetching open issues from GitHub…</p>
+          <p>Analyzing your backlog…</p>
         </div>
       )}
 
-      {/* Results */}
-      {result && !loading && (
-        <div ref={resultsRef} style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 24 }}>
-          <div>
-            <p style={{ fontSize: 13, color: "var(--muted)", marginBottom: 4 }}>Results for</p>
-            <p style={{ fontWeight: 700, fontSize: 20, fontFamily: "var(--mono)" }}>{result.repo}</p>
-          </div>
-
-          {/* Top stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
-            <StatCard
-              label="Open issues"
-              value={result.totalOpen.toString()}
-              sub="fetched from GitHub API"
-            />
-            <StatCard
-              label="AgentFlow can handle"
-              value={result.totalMatchingIssues.toString()}
-              sub="matching issues"
-              accent="var(--accent)"
-            />
-            <StatCard
-              label="Estimated hours saved"
-              value={`${Math.round(result.totalHours)}h`}
-              sub="per month"
-              accent="var(--green)"
-            />
-            <StatCard
-              label="Estimated cost saved"
-              value={fmt(result.totalCost)}
-              sub={`at $${DEV_HOURLY_RATE}/hr`}
-              accent="var(--green)"
-            />
-          </div>
-
-          {/* By category */}
-          {result.byCategory.length > 0 ? (
-            <div
-              style={{
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-                borderRadius: 12,
-                padding: "24px 28px",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: 13,
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.07em",
-                  color: "var(--muted)",
-                  marginBottom: 20,
-                }}
-              >
-                Issue breakdown
-              </p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-                {result.byCategory.map(({ key, count, hours }) => {
-                  const cat = LABEL_CATEGORIES[key];
-                  if (!cat) return null;
-                  const pct = result.totalMatchingIssues > 0 ? (count / result.totalMatchingIssues) * 100 : 0;
-                  return (
-                    <div key={key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                          <span
-                            style={{
-                              width: 8,
-                              height: 8,
-                              borderRadius: "50%",
-                              background: cat.color,
-                              display: "inline-block",
-                              flexShrink: 0,
-                            }}
-                          />
-                          <span style={{ fontSize: 14, fontWeight: 500 }}>{cat.label}</span>
-                        </div>
-                        <span style={{ fontSize: 14, color: "var(--muted)" }}>
-                          {count} issue{count !== 1 ? "s" : ""} · {hours}h
-                        </span>
-                      </div>
-                      <div style={{ background: "var(--border)", borderRadius: 4, height: 6, overflow: "hidden" }}>
-                        <div
-                          style={{
-                            background: cat.color,
-                            height: "100%",
-                            width: `${pct}%`,
-                            borderRadius: 4,
-                            transition: "width 0.6s ease",
-                          }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <div
-              style={{
-                background: "var(--surface)",
-                border: "1px solid var(--border)",
-                borderRadius: 12,
-                padding: "24px 28px",
-                color: "var(--muted)",
-                fontSize: 15,
-              }}
-            >
-              No issues with AgentFlow-compatible labels found (bug, documentation, enhancement, etc.). AgentFlow can still work on unlabeled issues — connect your repo to try.
-            </div>
-          )}
-
-          {/* CTA */}
+      {pendingResult && !loading && (
+        <div style={{ marginTop: 48 }}>
           <div
             style={{
-              background: "rgba(99,102,241,0.08)",
-              border: "1px solid rgba(99,102,241,0.3)",
-              borderRadius: 12,
-              padding: "28px 32px",
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              borderRadius: 16,
+              padding: "40px 32px",
+              maxWidth: 480,
+              margin: "0 auto",
               textAlign: "center",
             }}
           >
-            <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
-              AgentFlow can close {result.totalMatchingIssues} of these issues
+            <div style={{ fontSize: 40, marginBottom: 16 }}>✓</div>
+            <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Your analysis is ready</h2>
+            <p style={{ color: "var(--muted)", fontSize: 15, marginBottom: 28 }}>
+              Enter your work email to see the full breakdown for{" "}
+              <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{pendingResult.repo}</span>.
             </p>
-            <p style={{ color: "var(--muted)", marginBottom: 24, fontSize: 15 }}>
-              Agents read the issue, write the code, open a PR, and close the ticket — automatically.
-              Start your free trial and connect{" "}
-              <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span> in minutes.
-            </p>
-            <Link href={ctaUrl} className="btn btn-primary btn-lg" style={{ display: "inline-flex" }}>
-              Start free trial — connect this repo
-            </Link>
-            <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12 }}>
-              14-day free trial · No credit card required
-            </p>
-          </div>
-
-          {/* Share */}
-          <div style={{ textAlign: "center" }}>
+            <form onSubmit={handleEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input
+                className="form-input"
+                type="email"
+                value={emailInput}
+                onChange={(e) => { setEmailInput(e.target.value); setEmailError(null); }}
+                placeholder="you@company.com"
+                disabled={submittingEmail}
+                style={{ fontSize: 15, padding: "12px 16px", textAlign: "center" }}
+                autoFocus
+              />
+              {emailError && <p className="form-error">{emailError}</p>}
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={submittingEmail || !emailInput.trim()}
+                style={{ padding: "12px 28px", fontSize: 16 }}
+              >
+                {submittingEmail ? "Loading…" : "Show results"}
+              </button>
+            </form>
             <button
-              className="btn btn-secondary"
-              style={{ fontSize: 14, padding: "8px 18px" }}
-              onClick={() => {
-                const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can handle ${result.totalMatchingIssues} of them and save ~${Math.round(result.totalHours)}h/mo. Free analyzer:`;
-                const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent("https://agentflow.ai/analyze")}`;
-                window.open(twitterUrl, "_blank", "noopener,noreferrer");
+              onClick={handleSkip}
+              style={{
+                marginTop: 12,
+                background: "none",
+                border: "none",
+                color: "var(--muted)",
+                fontSize: 13,
+                cursor: "pointer",
+                textDecoration: "underline",
               }}
             >
-              Share on X (Twitter)
+              Skip — just show me the results
             </button>
           </div>
+        </div>
+      )}
+
+      {result && !loading && (
+        <div ref={resultsRef} style={{ marginTop: 48 }}>
+          <ResultsDisplay result={result} resultId={resultId} />
         </div>
       )}
     </div>
