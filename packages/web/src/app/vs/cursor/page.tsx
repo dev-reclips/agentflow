@@ -290,7 +290,8 @@ export default function VsCursorPage() {
             <a href="/vs/github-copilot">AgentFlow vs Copilot</a> ·{" "}
             <a href="/vs/sweep">AgentFlow vs Sweep</a> ·{" "}
             <a href="/vs/devin">AgentFlow vs Devin</a> ·{" "}
-            <a href="/vs/cursor">AgentFlow vs Cursor</a>
+            <a href="/vs/cursor">AgentFlow vs Cursor</a> ·{" "}
+            <a href="/vs/coderabbit">AgentFlow vs CodeRabbit</a>
           </p>
         </div>
       </footer>
