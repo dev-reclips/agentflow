@@ -4,6 +4,7 @@ import { randomBytes } from "crypto";
 import { db } from "../db/client.js";
 import { analyzeResults } from "../db/schema.js";
 import { captureServer } from "../services/posthog.js";
+import { sendAnalyzeLeadEmail } from "../services/email.js";
 import { eq, gt } from "drizzle-orm";
 
 export const analyzeRouter: IRouter = Router();
@@ -89,6 +90,12 @@ analyzeRouter.post("/leads", async (req, res, next) => {
       skipped: data.skipped ?? false,
       source: "analyze_tool",
     });
+
+    if (!data.skipped && data.email) {
+      sendAnalyzeLeadEmail(data.email, data.repo, data.totalCost ?? 0, data.resultId).catch((err) =>
+        console.error("[email] analyze lead email failed:", err),
+      );
+    }
 
     res.status(200).json({ ok: true });
   } catch (err) {

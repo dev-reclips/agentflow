@@ -182,6 +182,41 @@ export async function sendDemoNotificationEmail(data: {
   });
 }
 
+export async function sendAnalyzeLeadEmail(
+  email: string,
+  repo: string,
+  totalCost: number,
+  resultId: string,
+): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.info("[email] RESEND_API_KEY not set — skipping analyze lead email to", email);
+    return;
+  }
+
+  const costFormatted = totalCost.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+  const resultUrl = `${WEB_URL}/analyze?result=${resultId}`;
+
+  await getResend().emails.send({
+    from: FROM,
+    to: email,
+    subject: `Your GitHub backlog costs ${costFormatted}/year — here's how to fix it`,
+    html: `
+<div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:32px;color:#1a1a1a">
+  <h2 style="margin-top:0">Your ${repo} backlog is costing you ${costFormatted}/year</h2>
+  <p>AgentFlow deploys AI agents that close your GitHub issues automatically — triaging, writing PRs, and shipping fixes without engineer intervention. Most teams recover 20+ hours/week within the first month.</p>
+  <p style="margin-top:24px">
+    <a href="${WEB_URL}/signup" style="background:#6366f1;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:600">
+      Start your 14-day free trial →
+    </a>
+  </p>
+  <p style="margin-top:24px;font-size:14px;color:#666">
+    PS — your full analysis is saved here: <a href="${resultUrl}" style="color:#6366f1">${resultUrl}</a>
+  </p>
+</div>
+    `.trim(),
+  });
+}
+
 export async function sendTrialEndingSoonEmail(
   companyId: string,
   email: string,
