@@ -291,7 +291,10 @@ export default function VsGitHubCopilotPage() {
             <a href="/vs/sweep">AgentFlow vs Sweep</a> ·{" "}
             <a href="/vs/devin">AgentFlow vs Devin</a> ·{" "}
             <a href="/vs/cursor">AgentFlow vs Cursor</a> ·{" "}
-            <a href="/vs/coderabbit">AgentFlow vs CodeRabbit</a>
+            <a href="/vs/coderabbit">AgentFlow vs CodeRabbit</a> ·{" "}
+            <a href="/vs/tabnine">AgentFlow vs Tabnine</a> ·{" "}
+            <a href="/vs/amazon-q">AgentFlow vs Amazon Q</a> ·{" "}
+            <a href="/vs/aider">AgentFlow vs Aider</a>
           </p>
         </div>
       </footer>

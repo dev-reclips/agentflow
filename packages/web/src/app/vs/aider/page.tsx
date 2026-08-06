@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs Aider — Cloud-Native Autonomous Agent vs Local CLI Tool",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Aider is a local CLI tool that requires a developer at the terminal. AgentFlow runs in the cloud, resolves GitHub issues autonomously, and works while your team sleeps.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs Aider — Cloud-Native Autonomous Agent vs Local CLI Tool",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Aider is a local CLI tool that requires a developer at the terminal. AgentFlow runs in the cloud, resolves GitHub issues autonomously, and works while your team sleeps.",
+    url: "https://agentflow.ai/vs/aider",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Aider" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/aider",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs Aider",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Aider is a local CLI tool that requires a developer at the terminal. AgentFlow runs in the cloud, resolves GitHub issues autonomously, and works while your team sleeps.",
+  url: "https://agentflow.ai/vs/aider",
 };
 
-export default function VsCursorPage() {
+export default function VsAiderPage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs Aider
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Aider is a powerful CLI tool for developers who want to drive AI coding from their terminal. AgentFlow is a cloud-native agent that resolves GitHub issues without anyone at the keyboard — no local setup, no prompting, no babysitting.
             </p>
           </div>
         </section>
@@ -106,58 +106,64 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Aider
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Runs autonomously in the cloud",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Works without a developer at the keyboard",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Native GitHub integration",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Proactive — picks up issues automatically",
-                      agentflow: "Yes",
-                      competitor: "No (reactive only)",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "End-to-end: triage → PR → review",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "IDE required",
+                      feature: "Requires local CLI setup",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Inline code suggestions",
+                      feature: "Requires developer present to prompt",
+                      agentflow: "No",
+                      competitor: "Yes",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Resolves GitHub issues from the board",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Opens PRs without developer input",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Works while developer is offline",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Team-oriented (multi-user, shared board)",
+                      agentflow: "Yes",
+                      competitor: "No — solo dev tool",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Open source / free to self-host",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: false,
                     },
                     {
                       feature: "Pricing",
-                      agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      agentflow: "$499–$1,499/mo flat",
+                      competitor: "Free + LLM API costs",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -187,26 +193,60 @@ export default function VsCursorPage() {
         {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <p className="section-label">Why teams choose AgentFlow</p>
+            <h2 className="section-title">CLI tool vs cloud agent — a fundamental shift</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Aider needs you at the terminal</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  Aider is an excellent open-source tool for developers who want hands-on AI pair programming. You run it locally, add files to context, chat with it, and guide its edits. The developer drives every session. That&apos;s powerful for complex work — but it still requires a developer&apos;s time and attention for every issue.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow runs without you</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  AgentFlow picks up GitHub issues from your board, figures out what needs to change, writes the code, and opens a PR — autonomously. No local environment, no prompting, no context management. You wake up to a PR ready to review, not a session to babysit.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Solo tool vs team infrastructure</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  Aider is a solo developer&apos;s tool — each session belongs to one person&apos;s terminal. AgentFlow is team infrastructure: the whole engineering team assigns issues to it, and it works through the backlog in parallel. The throughput multiplier scales with the team, not with one developer&apos;s session time.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* When to use */}
+        <section className="features" style={{ paddingTop: "0" }}>
+          <div className="container" style={{ maxWidth: "800px" }}>
+            <p className="section-label">Decision guide</p>
+            <h2 className="section-title">When to use each tool</h2>
+            <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use Aider when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>You want a free, open-source, self-hosted option</li>
+                  <li>You prefer hands-on control over every AI edit</li>
+                  <li>You&apos;re a solo developer exploring AI-assisted coding</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use AgentFlow when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>You want GitHub issues resolved without developer involvement</li>
+                  <li>Your team has a backlog that grows faster than you can ship</li>
+                  <li>You need a team-wide tool, not a personal CLI session</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Why teams switch</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>Local CLI sessions don&apos;t scale to team backlogs</li>
+                  <li>AgentFlow works asynchronously — no developer present required</li>
+                  <li>Cloud-native means no setup, no maintenance, no local environment drift</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -229,7 +269,7 @@ export default function VsCursorPage() {
                 {
                   step: "2",
                   title: "Autonomous implementation",
-                  desc: "A coding agent reads the relevant parts of your codebase, writes the change, and runs your tests — no developer prompt, no IDE, no context-switch required.",
+                  desc: "A coding agent reads the relevant parts of your codebase, writes the change, and runs your tests — no developer prompt, no CLI session, no local environment required.",
                 },
                 {
                   step: "3",

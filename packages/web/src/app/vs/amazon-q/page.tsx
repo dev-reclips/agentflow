@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs Amazon Q Developer — GitHub-Native vs AWS-Centric AI Coding",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Amazon Q Developer is built for AWS. AgentFlow works with any GitHub repo, resolves issues autonomously, and doesn't require AWS infrastructure. Compare and decide.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs Amazon Q Developer — GitHub-Native vs AWS-Centric AI Coding",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Amazon Q Developer is built for AWS. AgentFlow works with any GitHub repo, resolves issues autonomously, and doesn't require AWS infrastructure. Compare and decide.",
+    url: "https://agentflow.ai/vs/amazon-q",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Amazon Q" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/amazon-q",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs Amazon Q Developer",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Amazon Q Developer is built for AWS. AgentFlow works with any GitHub repo, resolves issues autonomously, and doesn't require AWS infrastructure. Compare and decide.",
+  url: "https://agentflow.ai/vs/amazon-q",
 };
 
-export default function VsCursorPage() {
+export default function VsAmazonQPage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs Amazon Q Developer
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Amazon Q Developer is Amazon&apos;s AI assistant — optimized for teams already deep in the AWS ecosystem. AgentFlow is GitHub-native, cloud-agnostic, and resolves your entire backlog autonomously. No AWS account required.
             </p>
           </div>
         </section>
@@ -106,58 +106,64 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Amazon Q Developer
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Autonomously resolves GitHub issues",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Works without a developer at the keyboard",
+                      feature: "GitHub-native (no AWS account needed)",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Native GitHub integration",
+                      feature: "Works on any GitHub repo",
+                      agentflow: "Yes",
+                      competitor: "Partial",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Opens PRs without developer input",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Proactive — picks up issues automatically",
-                      agentflow: "Yes",
-                      competitor: "No (reactive only)",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "End-to-end: triage → PR → review",
+                      feature: "Works on your backlog (not just in-IDE)",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "IDE required",
-                      agentflow: "No",
-                      competitor: "Yes",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Inline code suggestions",
+                      feature: "AWS ecosystem integration",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: false,
                     },
                     {
+                      feature: "Requires AWS infrastructure",
+                      agentflow: "No",
+                      competitor: "Yes",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Transparent flat pricing",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
                       feature: "Pricing",
-                      agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      agentflow: "$499–$1,499/mo flat",
+                      competitor: "$19–$29/seat/mo + AWS",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -187,26 +193,60 @@ export default function VsCursorPage() {
         {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <p className="section-label">Why teams choose AgentFlow</p>
+            <h2 className="section-title">GitHub-native vs AWS-locked — a key distinction</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Amazon Q is built for AWS teams</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  Amazon Q Developer is deeply integrated with AWS services — CodeWhisperer-style suggestions in the IDE, Q in the console, Q for AWS security hub. It&apos;s a powerful tool if your team lives in AWS. But it&apos;s not designed to autonomously close issues from your GitHub backlog.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow works with any repo</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  AgentFlow connects to GitHub in minutes — no AWS account, no IAM roles, no VPCs. It reads your issue board, picks up assigned issues, implements the fix, and opens a PR. Works whether you&apos;re on AWS, GCP, Vercel, or bare metal.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Backlog focus vs in-IDE focus</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  Amazon Q helps developers move faster in the moment. AgentFlow works while developers are doing other things — resolving GitHub issues from the backlog without anyone at the keyboard. The two tools target different bottlenecks.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* When to use */}
+        <section className="features" style={{ paddingTop: "0" }}>
+          <div className="container" style={{ maxWidth: "800px" }}>
+            <p className="section-label">Decision guide</p>
+            <h2 className="section-title">When to use each tool</h2>
+            <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use Amazon Q when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>Your team is deeply embedded in the AWS ecosystem</li>
+                  <li>You want AI assistance with AWS Console or CloudFormation</li>
+                  <li>Your primary need is IDE autocomplete and AWS-aware suggestions</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use AgentFlow when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>You want GitHub issues resolved without developer time</li>
+                  <li>You&apos;re not AWS-first and don&apos;t want vendor lock-in</li>
+                  <li>You need predictable flat pricing without per-seat or AWS metering</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Why teams switch</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>AWS lock-in adds operational complexity for non-AWS teams</li>
+                  <li>AgentFlow ships backlog items without a developer writing code</li>
+                  <li>Flat pricing is easier to forecast than seat + metered AWS costs</li>
+                </ul>
               </div>
             </div>
           </div>

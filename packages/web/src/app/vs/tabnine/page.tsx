@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs Tabnine — AI Issue Resolution vs AI Code Autocomplete",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Tabnine autocompletes lines of code as you type. AgentFlow closes entire GitHub issues — autonomously, no IDE required. Different category, different ROI.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs Tabnine — AI Issue Resolution vs AI Code Autocomplete",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Tabnine autocompletes lines of code as you type. AgentFlow closes entire GitHub issues — autonomously, no IDE required. Different category, different ROI.",
+    url: "https://agentflow.ai/vs/tabnine",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Tabnine" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/tabnine",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs Tabnine",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Tabnine autocompletes lines of code as you type. AgentFlow closes entire GitHub issues — autonomously, no IDE required. Different category, different ROI.",
+  url: "https://agentflow.ai/vs/tabnine",
 };
 
-export default function VsCursorPage() {
+export default function VsTabninePage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs Tabnine
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Tabnine predicts your next line of code. AgentFlow doesn't need you in the loop at all — it reads your GitHub issue, writes the entire fix, and opens the PR. Copilot vs agent: a fundamentally different category.
             </p>
           </div>
         </section>
@@ -106,58 +106,64 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Tabnine
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Autonomously resolves GitHub issues",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Works without a developer at the keyboard",
+                      feature: "Closes entire issues end-to-end",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Native GitHub integration",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Proactive — picks up issues automatically",
-                      agentflow: "Yes",
-                      competitor: "No (reactive only)",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "End-to-end: triage → PR → review",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "IDE required",
+                      feature: "Requires developer at the keyboard",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Inline code suggestions",
+                      feature: "Opens PRs without developer input",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "IDE plugin required",
+                      agentflow: "No",
+                      competitor: "Yes",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "GitHub-native (no IDE needed)",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Line-level autocomplete",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: false,
                     },
                     {
+                      feature: "Clears your backlog autonomously",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
                       feature: "Pricing",
-                      agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      agentflow: "$499–$1,499/mo flat",
+                      competitor: "$9–$39/seat/mo",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -188,25 +194,59 @@ export default function VsCursorPage() {
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
             <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <h2 className="section-title">Copilot vs agent — a fundamental difference</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Tabnine completes lines, you do the rest</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  Tabnine is a force-multiplier for developers actively writing code. It predicts what you&apos;re about to type and saves keystrokes. But a developer still has to read the issue, open the file, understand the context, and guide every step. The cognitive load stays with your team.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow resolves issues without you</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  AgentFlow starts from the GitHub issue — not the cursor position. It plans the fix, navigates your codebase, writes every file, runs tests, and opens a PR. No IDE, no developer prompt, no context-switch. Your team reviews the finished PR.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Different ROI, different category</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  Tabnine makes developers faster at writing code. AgentFlow removes the developer from routine issue resolution entirely. Teams use both — Tabnine for complex, judgment-heavy work; AgentFlow for the 60% of backlog items that are well-defined enough to delegate.
                 </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* When to use */}
+        <section className="features" style={{ paddingTop: "0" }}>
+          <div className="container" style={{ maxWidth: "800px" }}>
+            <p className="section-label">Decision guide</p>
+            <h2 className="section-title">When to use each tool</h2>
+            <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use Tabnine when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>You want to speed up developers writing complex or novel code</li>
+                  <li>Your team works heavily inside an IDE</li>
+                  <li>You need privacy-first, on-prem AI autocomplete</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Use AgentFlow when</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>Your backlog has well-defined issues no one has time to tackle</li>
+                  <li>You want PRs opened without a developer writing a single line</li>
+                  <li>You need to scale throughput without adding headcount</li>
+                </ul>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Why teams switch</h3>
+                <ul style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, paddingLeft: "20px", marginTop: "12px" }}>
+                  <li>Autocomplete accelerates writing; AgentFlow eliminates writing entirely</li>
+                  <li>Per-seat pricing adds up; flat pricing scales with output</li>
+                  <li>Backlog items don&apos;t need a developer in the chair to get resolved</li>
+                </ul>
               </div>
             </div>
           </div>
