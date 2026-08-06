@@ -18,6 +18,13 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "reduce-engineering-backlog",
+    title: "How to Reduce Engineering Backlog (Without Adding Headcount)",
+    date: "August 6, 2026",
+    excerpt:
+      "Learn proven strategies to reduce your engineering backlog — from triage frameworks to AI-powered automation that closes 30% of open issues without adding headcount.",
+  },
+  {
     slug: "ai-code-review-automation",
     title: "AI Code Review Automation: How to Cut Review Time by 80%",
     date: "August 5, 2026",
