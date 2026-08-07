@@ -87,11 +87,27 @@ These 15 companies match the ICP exactly: 5–50 engineers, GitHub-native, Serie
 
 ## Quick-personalize URLs
 
-For each prospect, generate a pre-filled /analyze URL:
-- Trigger.dev: `/analyze?repo=triggerdotdev/trigger.dev`
-- Cal.com: `/analyze?repo=calcom/cal.com`
-- Infisical: `/analyze?repo=infisical/infisical`
-- Plane: `/analyze?repo=makeplane/plane`
-- Documenso: `/analyze?repo=documenso/documenso`
+Copy the full agentflow.ai URL into your email. All are public repos.
 
-Include the link in the email to make value immediately tangible.
+**Tier 1 (do these first):**
+- Trigger.dev → `https://agentflow.ai/analyze?repo=triggerdotdev/trigger.dev`
+- Mintlify → `https://agentflow.ai/analyze?repo=mintlify/mintlify`
+- Loops.so → `https://agentflow.ai/analyze?repo=loops-so/loops` *(may be private — skip if 404)*
+- Resend → `https://agentflow.ai/analyze?repo=resend/resend`
+- Cal.com → `https://agentflow.ai/analyze?repo=calcom/cal.com`
+
+**Tier 2:**
+- Liveblocks → `https://agentflow.ai/analyze?repo=liveblocks/liveblocks`
+- Tinybird → `https://agentflow.ai/analyze?repo=tinybirdco/tinybird-cli`
+- Infisical → `https://agentflow.ai/analyze?repo=infisical/infisical`
+- Supaglue → `https://agentflow.ai/analyze?repo=supaglue-labs/supaglue`
+- Fern API → `https://agentflow.ai/analyze?repo=fern-api/fern`
+
+**Tier 3:**
+- Nango → `https://agentflow.ai/analyze?repo=NangoHQ/nango`
+- Dub.co → `https://agentflow.ai/analyze?repo=dubinc/dub`
+- Uploadthing → `https://agentflow.ai/analyze?repo=pingdotgg/uploadthing`
+- Plane.so → `https://agentflow.ai/analyze?repo=makeplane/plane`
+- Documenso → `https://agentflow.ai/analyze?repo=documenso/documenso`
+
+Include the link in the email body — seeing their own repo's numbers makes the value immediate.
