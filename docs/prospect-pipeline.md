@@ -8,7 +8,7 @@
 
 | Stage | Count | ARR Potential |
 |-------|-------|---------------|
-| Target | — | — |
+| Target | 15 | $22,485/mo potential (15× Growth) |
 | Contacted | 0 | — |
 | Replied | 0 | — |
 | Demo Scheduled | 0 | — |
@@ -37,11 +37,25 @@
 
 ## Active Prospects
 
-*Add rows as you identify targets. One row per company.*
+*Updated 2026-08-07. 15 targets identified, 0 contacted.*
 
 | # | Company | Contact | Role | Source | Status | Last Touch | Next Action | Plan Target | Notes |
 |---|---------|---------|------|--------|--------|-----------|------------|-------------|-------|
-| — | — | — | — | — | — | — | — | — | — |
+| 1 | Trigger.dev | James Ritchie | CTO | Cold | Target | — | LinkedIn DM (ready in day-8-brief.md) | Growth | OSS job queue, GitHub-native, pre-written DM |
+| 2 | Mintlify | Han Wang | CTO/co-founder | Cold | Target | — | LinkedIn DM | Growth | Docs platform, 100+ open issues, Series A |
+| 3 | Loops.so | Chris Frantz | co-founder | Cold | Target | — | LinkedIn DM | Growth | Email SaaS, dev-led, GitHub-first |
+| 4 | Resend | Zeno Rocha | CEO/CTO | Cold | Target | — | LinkedIn DM | Growth | Email API, ~15 eng, very active GitHub |
+| 5 | Cal.com | Peer Richelsen | co-founder | Cold | Target | — | LinkedIn DM | Growth | OSS scheduling, ~20 eng, hundreds of open issues |
+| 6 | Liveblocks | Steven Fabre | CTO | Cold | Target | — | LinkedIn DM (wave 2) | Starter | Real-time collab, ~10 eng, Series A |
+| 7 | Tinybird | Alejandro | CTO | Cold | Target | — | LinkedIn DM (wave 2) | Starter | Analytics platform, ~25 eng, technical team |
+| 8 | Infisical | Maidul Islam / Tony Dang | founder | Cold | Target | — | LinkedIn DM (wave 2) | Starter | OSS secrets mgmt, ~10 eng, YC |
+| 9 | Supaglue | Robert Wu | CTO | Cold | Target | — | LinkedIn DM (wave 2) | Starter | CRM integration, ~10–15 eng, Series A |
+| 10 | Fern API | Deep Singhvi | CTO | Cold | Target | — | LinkedIn DM (wave 2) | Starter | API dev tools, ~10 eng, YC |
+| 11 | Nango | Bastian Hafner | CTO | Cold | Target | — | LinkedIn DM (wave 3) | Starter | Unified API, ~15 eng, European Series A |
+| 12 | Dub.co | Steven Tey | CTO/founder | Cold | Target | — | LinkedIn DM (wave 3) | Starter | Link mgmt SaaS, ~5 eng, dev-focused |
+| 13 | Uploadthing | Julius Marminge | founder | Cold | Target | — | LinkedIn DM (wave 3) | Starter | File upload, ~5–8 eng, very active |
+| 14 | Plane.so | Vihar Kurama | CTO | Cold | Target | — | LinkedIn DM (wave 3) | Starter | OSS Jira alt, ~20 eng, very active issues |
+| 15 | Documenso | Timur Ercan | CTO | Cold | Target | — | LinkedIn DM (wave 3) | Starter | OSS DocuSign, ~10 eng, YC |
 
 **Status values:** Target → Email1 Sent → Email2 Sent → Email3 Sent → Replied → Demo Sched → Demo Done → Trial → Won / Lost
 
