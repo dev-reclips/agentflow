@@ -1,61 +1,16 @@
-"use client";
-
-import { useState, type FormEvent } from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+export const metadata: Metadata = {
+  title: "Book a Demo — AgentFlow",
+  description:
+    "See AgentFlow close a real GitHub issue in 20 minutes. We connect to your repo, run an agent on a real issue, and show you the PR it opens. No commitment.",
+};
 
-const TEAM_SIZES = ["1–5", "6–15", "16–50", "51–200", "200+"];
-const ROLES = [
-  "Engineering Manager / VP",
-  "CTO / VP Engineering",
-  "Founder / CEO",
-  "Software Engineer",
-  "Product Manager",
-  "Other",
-];
+const MAILTO =
+  "mailto:dev@reclips.ai?subject=AgentFlow+Demo+Request&body=Hi%2C%20I%27d+like+to+see+a+demo+of+AgentFlow+for+[Company+Name].+Best+time+for+me%3A+[time+slot].";
 
 export default function BookDemoPage() {
-  const [form, setForm] = useState({
-    name: "",
-    workEmail: "",
-    company: "",
-    role: "",
-    teamSize: "",
-    painPoint: "",
-  });
-  const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  function set(field: string, value: string) {
-    setForm((f) => ({ ...f, [field]: value }));
-  }
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const res = await fetch(`${API_URL}/demo/request`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const body = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error((body as { error?: string }).error ?? "Submission failed. Please try again.");
-      }
-      setDone(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   return (
     <>
       <nav className="nav">
@@ -64,8 +19,11 @@ export default function BookDemoPage() {
             AgentFlow
           </Link>
           <div className="nav-links">
-            <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
-              Log in
+            <Link href="/#how-it-works" className="nav-text-link">
+              How it works
+            </Link>
+            <Link href="/pricing" className="nav-text-link">
+              Pricing
             </Link>
             <Link href="/register" className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
               Start free trial
@@ -75,147 +33,158 @@ export default function BookDemoPage() {
       </nav>
 
       <main>
-        <div
-          style={{
-            maxWidth: 560,
-            margin: "64px auto",
-            padding: "0 24px",
-          }}
-        >
-          {done ? (
-            <div className="card" style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 48, marginBottom: 16 }}>✓</div>
-              <h2 style={{ marginBottom: 8 }}>We'll be in touch!</h2>
-              <p style={{ color: "var(--muted)", marginBottom: 24 }}>
-                Expect a reply within one business day to schedule your call.
-              </p>
-              <Link href="/" className="btn btn-secondary">
-                Back to home
-              </Link>
+        <section style={{ padding: "80px 0 60px", borderBottom: "1px solid var(--border)" }}>
+          <div className="container" style={{ maxWidth: 680 }}>
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: 20,
+                padding: "4px 14px",
+                fontSize: 13,
+                color: "var(--muted)",
+                marginBottom: 28,
+              }}
+            >
+              <span style={{ color: "var(--accent)" }}>●</span>
+              Free · No commitment · 20 minutes
             </div>
-          ) : (
-            <>
-              <div style={{ marginBottom: 32 }}>
-                <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 8 }}>Book a demo</h1>
-                <p style={{ color: "var(--muted)", fontSize: 15 }}>
-                  See how AgentFlow works for your team. We'll walk through your specific use case and answer all your questions.
-                </p>
-              </div>
 
-              <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-                <div className="form-group">
-                  <label className="form-label" htmlFor="name">Full name</label>
-                  <input
-                    id="name"
-                    className="form-input"
-                    type="text"
-                    required
-                    value={form.name}
-                    onChange={(e) => set("name", e.target.value)}
-                    placeholder="Jane Smith"
-                    autoComplete="name"
-                  />
-                </div>
+            <h1
+              style={{
+                fontSize: "clamp(1.75rem, 4.5vw, 2.75rem)",
+                fontWeight: 800,
+                lineHeight: 1.15,
+                letterSpacing: "-0.02em",
+                marginBottom: 20,
+              }}
+            >
+              See AgentFlow close a real GitHub issue —{" "}
+              <span style={{ color: "var(--accent)" }}>20 minutes</span>
+            </h1>
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="workEmail">Work email</label>
-                  <input
-                    id="workEmail"
-                    className="form-input"
-                    type="email"
-                    required
-                    value={form.workEmail}
-                    onChange={(e) => set("workEmail", e.target.value)}
-                    placeholder="jane@acme.com"
-                    autoComplete="email"
-                  />
-                </div>
+            <p style={{ fontSize: 18, color: "var(--muted)", lineHeight: 1.7, marginBottom: 48 }}>
+              We will connect AgentFlow to one of your repos, run an agent on a real issue, and show you the PR it opens. No commitment, no credit card.
+            </p>
 
-                <div className="form-group">
-                  <label className="form-label" htmlFor="company">Company</label>
-                  <input
-                    id="company"
-                    className="form-input"
-                    type="text"
-                    required
-                    value={form.company}
-                    onChange={(e) => set("company", e.target.value)}
-                    placeholder="Acme Corp"
-                    autoComplete="organization"
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="role">Your role</label>
-                  <select
-                    id="role"
-                    className="form-input"
-                    required
-                    value={form.role}
-                    onChange={(e) => set("role", e.target.value)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <option value="" disabled>Select a role…</option>
-                    {ROLES.map((r) => (
-                      <option key={r} value={r}>{r}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="teamSize">Engineering team size</label>
-                  <select
-                    id="teamSize"
-                    className="form-input"
-                    required
-                    value={form.teamSize}
-                    onChange={(e) => set("teamSize", e.target.value)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <option value="" disabled>Select team size…</option>
-                    {TEAM_SIZES.map((s) => (
-                      <option key={s} value={s}>{s}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="form-label" htmlFor="painPoint">
-                    What's your biggest backlog challenge? <span style={{ color: "var(--muted)" }}>(optional)</span>
-                  </label>
-                  <textarea
-                    id="painPoint"
-                    className="form-input"
-                    rows={3}
-                    value={form.painPoint}
-                    onChange={(e) => set("painPoint", e.target.value)}
-                    placeholder="e.g. Too many issues, not enough engineers to triage and ship them…"
-                    style={{ resize: "vertical" }}
-                  />
-                </div>
-
-                {error && <p className="form-error">{error}</p>}
-
-                <button
-                  type="submit"
-                  className="btn btn-primary btn-lg"
-                  disabled={submitting}
-                  style={{ width: "100%" }}
+            {/* Social proof bullets */}
+            <ul
+              style={{
+                listStyle: "none",
+                display: "flex",
+                flexDirection: "column",
+                gap: 12,
+                marginBottom: 48,
+              }}
+            >
+              {[
+                "Live agent run on your real repo",
+                "20 minutes",
+                "No commitment",
+              ].map((item) => (
+                <li
+                  key={item}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    fontSize: 16,
+                  }}
                 >
-                  {submitting ? "Sending…" : "Request a demo →"}
-                </button>
+                  <span
+                    style={{
+                      width: 22,
+                      height: 22,
+                      borderRadius: "50%",
+                      background: "rgba(99,102,241,0.15)",
+                      border: "1px solid rgba(99,102,241,0.3)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexShrink: 0,
+                      fontSize: 12,
+                      color: "var(--accent)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    ✓
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
 
-                <p style={{ textAlign: "center", fontSize: 13, color: "var(--muted)" }}>
-                  Prefer to jump straight in?{" "}
-                  <Link href="/register" style={{ color: "var(--accent)" }}>
-                    Start a free trial
-                  </Link>
-                </p>
-              </form>
-            </>
-          )}
-        </div>
+            {/* Primary CTA */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
+              <a href={MAILTO} className="btn btn-primary btn-lg">
+                Email to book →
+              </a>
+              <p style={{ fontSize: 14, color: "var(--muted)" }}>
+                Opens your email client with subject and body pre-filled. Reply within one business day.
+              </p>
+            </div>
+
+            {/* Secondary CTA — Calendly placeholder for when calendar link is set up */}
+            {/* TODO: replace this div with a Calendly embed once the board sets up a calendar link */}
+            <div id="calendly-placeholder" style={{ marginTop: 48 }} />
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section style={{ padding: "60px 0" }}>
+          <div className="container" style={{ maxWidth: 680 }}>
+            <h2 style={{ fontSize: "1.4rem", fontWeight: 700, marginBottom: 28 }}>
+              What happens in the demo
+            </h2>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+                gap: 16,
+              }}
+            >
+              {[
+                { step: "01", label: "Connect your repo", desc: "We point AgentFlow at a real GitHub repo you own" },
+                { step: "02", label: "Pick an issue", desc: "You choose an open issue — bug, feature, or chore" },
+                { step: "03", label: "Watch the agent run", desc: "Agent reads the issue, writes code, and opens a PR live" },
+                { step: "04", label: "Ask anything", desc: "Q&A — pricing, security, integrations, whatever you need" },
+              ].map(({ step, label, desc }) => (
+                <div
+                  key={step}
+                  style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "var(--radius)",
+                    padding: "20px",
+                  }}
+                >
+                  <div style={{ fontSize: 12, color: "var(--accent)", fontWeight: 700, marginBottom: 8 }}>
+                    {step}
+                  </div>
+                  <div style={{ fontWeight: 600, marginBottom: 6 }}>{label}</div>
+                  <div style={{ fontSize: 14, color: "var(--muted)" }}>{desc}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
+
+      <footer className="footer">
+        <div className="container">
+          <p>
+            © 2026 AgentFlow ·{" "}
+            <a href="/login">Log in</a> ·{" "}
+            <a href="/register">Sign up</a> ·{" "}
+            <a href="/pricing">Pricing</a> ·{" "}
+            <a href="/analyze">Free Analyzer</a> ·{" "}
+            <a href="/docs">Docs</a>
+          </p>
+        </div>
+      </footer>
     </>
   );
 }

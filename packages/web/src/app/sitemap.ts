@@ -4,6 +4,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const base = "https://agentflow.ai";
   return [
     { url: `${base}/`, lastModified: new Date(), changeFrequency: "weekly", priority: 1.0 },
+    { url: `${base}/book-demo`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/pricing`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/docs`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/security`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },

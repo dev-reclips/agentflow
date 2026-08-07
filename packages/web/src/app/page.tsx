@@ -101,6 +101,9 @@ export default function LandingPage() {
             <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
               Log in
             </Link>
+            <Link href="/book-demo" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
+              Book a demo
+            </Link>
             <Link href="/register" className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
               Get started
             </Link>
