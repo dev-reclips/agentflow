@@ -1,5 +1,17 @@
 # Deploy Runbook — AgentFlow Production
 
+## Quick Start (2 minutes) — Marketing Site via GitHub Pages
+
+> **Note:** This deploys the marketing site only (landing, pricing, blog, vs, docs, changelog, analyze demo). For the full app (sign-up, billing, GitHub integration), follow the full deploy guide below.
+
+1. Go to this repo → **Settings → Pages**
+2. Under **Source**, select **GitHub Actions**
+3. Push any commit to `main` — the site goes live automatically at `https://[username].github.io/[repo]`
+
+No accounts, tokens, or secrets required. The workflow at `.github/workflows/deploy-pages.yml` uses the built-in `GITHUB_TOKEN`.
+
+---
+
 This document covers the one-time setup required to deploy AgentFlow to the internet.
 After setup, every push to `main` automatically deploys API (Railway) then Web (Vercel) — no engineering help needed.
 

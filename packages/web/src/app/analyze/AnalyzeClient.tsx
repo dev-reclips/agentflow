@@ -17,6 +17,21 @@ const LABEL_CATEGORIES: Record<string, { label: string; hoursEach: number; color
 const DEV_HOURLY_RATE = 100;
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
 
+const DEMO_RESULT: AnalysisResult = {
+  repo: "vercel/next.js",
+  totalOpen: 2847,
+  byCategory: [
+    { key: "bug", count: 412, hours: 1236 },
+    { key: "enhancement", count: 287, hours: 1148 },
+    { key: "good first issue", count: 89, hours: 178 },
+    { key: "documentation", count: 156, hours: 156 },
+    { key: "help wanted", count: 64, hours: 256 },
+  ],
+  totalMatchingIssues: 1008,
+  totalHours: 2974,
+  totalCost: 297400,
+};
+
 interface GitHubIssue {
   number: number;
   title: string;
@@ -178,7 +193,7 @@ function StatCard({
   );
 }
 
-function ResultsDisplay({ result, resultId, fromQueryParam }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean }) {
+function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean; isDemo?: boolean }) {
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
   const ctaUrl = `/register?repo=${encodeURIComponent(result.repo)}`;
@@ -202,6 +217,30 @@ function ResultsDisplay({ result, resultId, fromQueryParam }: { result: Analysis
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      {isDemo && (
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 12,
+            background: "rgba(245,158,11,0.08)",
+            border: "1px solid rgba(245,158,11,0.35)",
+            borderRadius: 10,
+            padding: "12px 20px",
+          }}
+        >
+          <p style={{ fontSize: 14, color: "#d97706", fontWeight: 500 }}>
+            This is a demo result for{" "}
+            <span style={{ fontFamily: "var(--mono)", fontWeight: 700 }}>vercel/next.js</span>.
+            {" "}Paste your own repo above to see your real numbers.
+          </p>
+          <Link href="/register" className="btn btn-primary" style={{ fontSize: 13, padding: "6px 14px", whiteSpace: "nowrap" }}>
+            Connect your repo after sign-up →
+          </Link>
+        </div>
+      )}
       {fromQueryParam && (
         <div
           style={{
@@ -318,7 +357,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam }: { result: Analysis
   );
 }
 
-export default function AnalyzeClient({ initialResult, initialResultId, initialRepo }: { initialResult?: AnalysisResult; initialResultId?: string; initialRepo?: string }) {
+export default function AnalyzeClient({ initialResult, initialResultId, initialRepo, demoMode }: { initialResult?: AnalysisResult; initialResultId?: string; initialRepo?: string; demoMode?: boolean }) {
   const [url, setUrl] = useState(initialRepo ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -331,9 +370,10 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
   const [submittingEmail, setSubmittingEmail] = useState(false);
 
   // final shown result
-  const [result, setResult] = useState<AnalysisResult | null>(initialResult ?? null);
+  const [result, setResult] = useState<AnalysisResult | null>(initialResult ?? (demoMode ? DEMO_RESULT : null));
   const [resultId, setResultId] = useState<string | null>(initialResultId ?? null);
   const [fromQueryParam, setFromQueryParam] = useState(false);
+  const [isDemo, setIsDemo] = useState(demoMode ?? false);
 
   const resultsRef = useRef<HTMLDivElement>(null);
   const didAutoSubmit = useRef(false);
@@ -369,11 +409,18 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
     }
   }, []);
 
+  // For static export: read ?repo= from URL on the client (server searchParams unavailable)
   useEffect(() => {
-    if (!initialRepo || didAutoSubmit.current) return;
+    if (didAutoSubmit.current) return;
+    const repoParam = typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("repo") ?? ""
+      : (initialRepo ?? "");
+    const candidate = repoParam || initialRepo || "";
+    if (!candidate || !/^[^/\s]+\/[^/\s]+$/.test(candidate.trim())) return;
     didAutoSubmit.current = true;
+    setUrl(candidate.trim());
     setFromQueryParam(true);
-    const timer = setTimeout(() => runAnalysis(initialRepo), 500);
+    const timer = setTimeout(() => runAnalysis(candidate.trim()), 500);
     return () => clearTimeout(timer);
   }, [initialRepo, runAnalysis]);
 
@@ -394,6 +441,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
     if (pendingResultId) {
       await captureLead(trimmed, pendingResultId, pendingResult, false);
     }
+    setIsDemo(false);
     setResult(pendingResult);
     setResultId(pendingResultId);
     setPendingResult(null);
@@ -406,6 +454,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
     if (pendingResultId) {
       await captureLead("anonymous@skip", pendingResultId, pendingResult, true);
     }
+    setIsDemo(false);
     setResult(pendingResult);
     setResultId(pendingResultId);
     setPendingResult(null);
@@ -414,7 +463,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto" }}>
-      {!result && !pendingResult && (
+      {(!result || isDemo) && !pendingResult && (
         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             <input
@@ -518,7 +567,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
 
       {result && !loading && (
         <div ref={resultsRef} style={{ marginTop: 48 }}>
-          <ResultsDisplay result={result} resultId={resultId} fromQueryParam={fromQueryParam} />
+          <ResultsDisplay result={result} resultId={resultId} fromQueryParam={fromQueryParam} isDemo={isDemo} />
         </div>
       )}
     </div>

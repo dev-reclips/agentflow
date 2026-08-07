@@ -24,10 +24,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AnalyzePage({ searchParams }: { searchParams: { repo?: string } }) {
-  const rawRepo = searchParams?.repo ?? "";
-  const initialRepo = /^[^/\s]+\/[^/\s]+$/.test(rawRepo.trim()) ? rawRepo.trim() : undefined;
-
+export default function AnalyzePage() {
   return (
     <>
       <nav className="nav">
@@ -61,7 +58,7 @@ export default function AnalyzePage({ searchParams }: { searchParams: { repo?: s
 
         <section style={{ paddingBottom: "96px" }}>
           <div className="container">
-            <AnalyzeClient {...(initialRepo ? { initialRepo } : {})} />
+            <AnalyzeClient demoMode />
           </div>
         </section>
 
