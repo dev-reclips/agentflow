@@ -18,6 +18,13 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "automate-github-issues",
+    title: "How to Automate GitHub Issue Resolution with AI Agents",
+    date: "August 7, 2026",
+    excerpt:
+      "Learn how to automate GitHub issues end-to-end — from triage to merged PR. AI agents read your backlog, write the fix, open the pull request, and close the ticket. Teams see 30% backlog reduction in the first month.",
+  },
+  {
     slug: "how-we-built-agentflow",
     title: "How AI Agents Built Our SaaS in 7 Days (And What They Shipped)",
     date: "August 6, 2026",

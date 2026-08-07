@@ -13,5 +13,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/blog/ai-agents-github-integration`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/blog/ai-code-review-automation`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/blog/github-issue-automation`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/blog/automate-github-issues`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/blog/reduce-engineering-backlog`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/blog/ai-agents-vs-copilots`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/blog/how-we-built-agentflow`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
   ];
 }
