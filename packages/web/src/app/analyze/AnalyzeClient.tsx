@@ -16,6 +16,9 @@ const LABEL_CATEGORIES: Record<string, { label: string; hoursEach: number; color
 
 const DEV_HOURLY_RATE = 100;
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3001";
+const IS_STATIC_EXPORT = !process.env.NEXT_PUBLIC_API_URL;
+const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID ?? "";
+const FALLBACK_EMAIL = "dev@reclips.ai";
 
 const DEMO_RESULT: AnalysisResult = {
   repo: "vercel/next.js",
@@ -368,6 +371,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
   const [emailInput, setEmailInput] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const [submittingEmail, setSubmittingEmail] = useState(false);
+  const [emailSubmitted, setEmailSubmitted] = useState(false);
 
   // final shown result
   const [result, setResult] = useState<AnalysisResult | null>(initialResult ?? (demoMode ? DEMO_RESULT : null));
@@ -438,9 +442,33 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
       return;
     }
     setSubmittingEmail(true);
-    if (pendingResultId) {
-      await captureLead(trimmed, pendingResultId, pendingResult, false);
+
+    if (IS_STATIC_EXPORT) {
+      if (FORMSPREE_FORM_ID) {
+        try {
+          const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({ email: trimmed, repo: pendingResult.repo, totalCost: pendingResult.totalCost }),
+          });
+          if (!res.ok) {
+            setEmailError("Something went wrong. Please try again.");
+            setSubmittingEmail(false);
+            return;
+          }
+        } catch {
+          setEmailError("Something went wrong. Please try again.");
+          setSubmittingEmail(false);
+          return;
+        }
+        setEmailSubmitted(true);
+      }
+    } else {
+      if (pendingResultId) {
+        await captureLead(trimmed, pendingResultId, pendingResult, false);
+      }
     }
+
     setIsDemo(false);
     setResult(pendingResult);
     setResultId(pendingResultId);
@@ -526,47 +554,83 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
               Enter your work email to see the full breakdown for{" "}
               <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{pendingResult.repo}</span>.
             </p>
-            <form onSubmit={handleEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <input
-                className="form-input"
-                type="email"
-                value={emailInput}
-                onChange={(e) => { setEmailInput(e.target.value); setEmailError(null); }}
-                placeholder="you@company.com"
-                disabled={submittingEmail}
-                style={{ fontSize: 15, padding: "12px 16px", textAlign: "center" }}
-                autoFocus
-              />
-              {emailError && <p className="form-error">{emailError}</p>}
-              <button
-                type="submit"
-                className="btn btn-primary"
-                disabled={submittingEmail || !emailInput.trim()}
-                style={{ padding: "12px 28px", fontSize: 16 }}
-              >
-                {submittingEmail ? "Loading…" : "Show results"}
-              </button>
-            </form>
-            <button
-              onClick={handleSkip}
-              style={{
-                marginTop: 12,
-                background: "none",
-                border: "none",
-                color: "var(--muted)",
-                fontSize: 13,
-                cursor: "pointer",
-                textDecoration: "underline",
-              }}
-            >
-              Skip — just show me the results
-            </button>
+            {IS_STATIC_EXPORT && !FORMSPREE_FORM_ID ? (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+                <a
+                  href={`mailto:${FALLBACK_EMAIL}?subject=${encodeURIComponent(`AgentFlow early access — ${pendingResult.repo}`)}`}
+                  className="btn btn-primary"
+                  style={{ padding: "12px 28px", fontSize: 16, display: "inline-block" }}
+                  onClick={() => {
+                    setIsDemo(false);
+                    setResult(pendingResult);
+                    setResultId(pendingResultId);
+                    setPendingResult(null);
+                  }}
+                >
+                  Email us for early access
+                </a>
+                <p style={{ fontSize: 13, color: "var(--muted)" }}>
+                  {FALLBACK_EMAIL}
+                </p>
+                <button
+                  onClick={handleSkip}
+                  style={{ marginTop: 4, background: "none", border: "none", color: "var(--muted)", fontSize: 13, cursor: "pointer", textDecoration: "underline" }}
+                >
+                  Skip — just show me the results
+                </button>
+              </div>
+            ) : (
+              <>
+                <form onSubmit={handleEmailSubmit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <input
+                    className="form-input"
+                    type="email"
+                    value={emailInput}
+                    onChange={(e) => { setEmailInput(e.target.value); setEmailError(null); }}
+                    placeholder="you@company.com"
+                    disabled={submittingEmail}
+                    style={{ fontSize: 15, padding: "12px 16px", textAlign: "center" }}
+                    autoFocus
+                  />
+                  {emailError && <p className="form-error">{emailError}</p>}
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={submittingEmail || !emailInput.trim()}
+                    style={{ padding: "12px 28px", fontSize: 16 }}
+                  >
+                    {submittingEmail ? "Loading…" : "Show results"}
+                  </button>
+                </form>
+                <button
+                  onClick={handleSkip}
+                  style={{
+                    marginTop: 12,
+                    background: "none",
+                    border: "none",
+                    color: "var(--muted)",
+                    fontSize: 13,
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  }}
+                >
+                  Skip — just show me the results
+                </button>
+              </>
+            )}
           </div>
         </div>
       )}
 
       {result && !loading && (
-        <div ref={resultsRef} style={{ marginTop: 48 }}>
+        <div ref={resultsRef} style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 20 }}>
+          {emailSubmitted && (
+            <div style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)", borderRadius: 10, padding: "12px 20px" }}>
+              <p style={{ fontSize: 14, color: "#16a34a", fontWeight: 500 }}>
+                Thanks! We will reach out within 24 hours.
+              </p>
+            </div>
+          )}
           <ResultsDisplay result={result} resultId={resultId} fromQueryParam={fromQueryParam} isDemo={isDemo} />
         </div>
       )}
