@@ -5,8 +5,9 @@ import { useSearchParams } from "next/navigation";
 import { api, type Subscription } from "@/lib/api";
 
 const PLAN_LABELS: Record<string, string> = {
+  free: "Free Plan",
   trial: "Free Trial",
-  starter: "Starter — $499/mo",
+  starter: "Starter — $299/mo",
   growth: "Growth — $1,499/mo",
   scale: "Scale — Custom",
 };
@@ -116,7 +117,7 @@ export default function BillingPage() {
             </p>
           )}
 
-          {isActive && (
+          {isActive && sub.plan !== "free" && (
             <button
               onClick={handlePortal}
               disabled={actionLoading}
@@ -132,33 +133,40 @@ export default function BillingPage() {
         </div>
       )}
 
-      {(!sub || sub.status === "trialing" || sub.status === "canceled") && (
+      {(!sub || sub.plan === "free" || sub.status === "trialing" || sub.status === "canceled") && (
         <div>
-          <h2 className="text-lg font-medium mb-4">Upgrade your plan</h2>
+          <h2 className="text-lg font-medium mb-4">
+            {sub?.plan === "free" ? "Upgrade to unlock more" : "Upgrade your plan"}
+          </h2>
+          {sub?.plan === "free" && (
+            <div className="mb-4 rounded border border-yellow-700 bg-yellow-900/20 px-4 py-3 text-sm text-yellow-300">
+              You&apos;re on the Free plan (1 agent, 5 issues/month). Upgrade to remove limits.
+            </div>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
+            <div className="rounded-lg border border-indigo-700 bg-gray-800 p-6">
               <h3 className="font-semibold mb-1">Starter</h3>
-              <p className="text-2xl font-bold mb-1">$499<span className="text-sm font-normal text-gray-400">/mo</span></p>
-              <p className="text-sm text-gray-400 mb-4">3 agents · unlimited issues · 14-day trial</p>
+              <p className="text-2xl font-bold mb-1">$299<span className="text-sm font-normal text-gray-400">/mo</span></p>
+              <p className="text-sm text-gray-400 mb-4">3 agents · unlimited issues · 14-day free trial</p>
               <button
                 onClick={() => handleCheckout("starter")}
                 disabled={actionLoading}
                 className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium hover:bg-indigo-500 disabled:opacity-50"
               >
-                {actionLoading ? "Redirecting…" : "Start trial"}
+                {actionLoading ? "Redirecting…" : "Upgrade to Starter →"}
               </button>
             </div>
 
-            <div className="rounded-lg border border-indigo-700 bg-gray-800 p-6">
+            <div className="rounded-lg border border-gray-700 bg-gray-800 p-6">
               <h3 className="font-semibold mb-1">Growth</h3>
               <p className="text-2xl font-bold mb-1">$1,499<span className="text-sm font-normal text-gray-400">/mo</span></p>
-              <p className="text-sm text-gray-400 mb-4">10 agents · priority support · 14-day trial</p>
+              <p className="text-sm text-gray-400 mb-4">10 agents · priority support · 14-day free trial</p>
               <button
                 onClick={() => handleCheckout("growth")}
                 disabled={actionLoading}
                 className="w-full rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium hover:bg-indigo-500 disabled:opacity-50"
               >
-                {actionLoading ? "Redirecting…" : "Start trial"}
+                {actionLoading ? "Redirecting…" : "Upgrade to Growth →"}
               </button>
             </div>
           </div>

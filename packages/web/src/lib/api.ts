@@ -37,7 +37,7 @@ export interface MeResult {
 export type IssueStatus = "backlog" | "todo" | "in_progress" | "in_review" | "done" | "blocked" | "cancelled";
 export type IssuePriority = "critical" | "high" | "medium" | "low";
 export type AgentStatus = "idle" | "running" | "error";
-export type SubscriptionPlan = "trial" | "starter" | "growth" | "scale";
+export type SubscriptionPlan = "free" | "trial" | "starter" | "growth" | "scale";
 export type SubscriptionStatus = "trialing" | "active" | "past_due" | "canceled" | "incomplete";
 
 export interface Issue {
