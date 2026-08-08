@@ -20,9 +20,19 @@ export const PRICE_IDS = {
 };
 
 export const PLAN_AGENT_LIMITS: Record<string, number> = {
+  free: 1,
   trial: 1,
   starter: 3,
   growth: 10,
+  scale: Infinity,
+};
+
+// Monthly issue creation limits (Infinity = unlimited)
+export const PLAN_ISSUE_LIMITS: Record<string, number> = {
+  free: 5,
+  trial: Infinity,
+  starter: Infinity,
+  growth: Infinity,
   scale: Infinity,
 };
 

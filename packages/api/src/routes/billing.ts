@@ -40,7 +40,7 @@ billingRouter.post("/checkout", async (req: Request, res: Response, next: NextFu
     });
 
     let customerId: string;
-    if (sub) {
+    if (sub?.stripeCustomerId) {
       customerId = sub.stripeCustomerId;
     } else {
       const customer = await getStripe().customers.create({
@@ -48,12 +48,20 @@ billingRouter.post("/checkout", async (req: Request, res: Response, next: NextFu
         metadata: { companyId: req.companyId, companySlug: company.slug },
       });
       customerId = customer.id;
-      await db.insert(subscriptions).values({
-        companyId: req.companyId,
-        stripeCustomerId: customerId,
-        plan: "trial",
-        status: "trialing",
-      });
+      if (sub) {
+        // Free-tier user upgrading — attach Stripe customer to existing subscription
+        await db
+          .update(subscriptions)
+          .set({ stripeCustomerId: customerId, updatedAt: new Date() })
+          .where(eq(subscriptions.companyId, req.companyId));
+      } else {
+        await db.insert(subscriptions).values({
+          companyId: req.companyId,
+          stripeCustomerId: customerId,
+          plan: "trial",
+          status: "trialing",
+        });
+      }
     }
 
     const webUrl = process.env.WEB_URL ?? "http://localhost:3001";
@@ -81,7 +89,7 @@ billingRouter.post("/portal", async (req: Request, res: Response, next: NextFunc
     const sub = await db.query.subscriptions.findFirst({
       where: eq(subscriptions.companyId, req.companyId),
     });
-    if (!sub) throw new AppError(404, "No subscription found");
+    if (!sub?.stripeCustomerId) throw new AppError(400, "No paid subscription to manage. Upgrade first.");
 
     const webUrl = process.env.WEB_URL ?? "http://localhost:3001";
     const session = await getStripe().billingPortal.sessions.create({

@@ -26,6 +26,7 @@ export const agentStatusEnum = pgEnum("agent_status", [
 export const userRoleEnum = pgEnum("user_role", ["owner", "member"]);
 
 export const subscriptionPlanEnum = pgEnum("subscription_plan", [
+  "free",
   "trial",
   "starter",
   "growth",
@@ -121,7 +122,7 @@ export const subscriptions = pgTable("subscriptions", {
     .notNull()
     .references(() => companies.id, { onDelete: "cascade" })
     .unique(),
-  stripeCustomerId: text("stripe_customer_id").notNull().unique(),
+  stripeCustomerId: text("stripe_customer_id").unique(),
   stripeSubscriptionId: text("stripe_subscription_id").unique(),
   plan: subscriptionPlanEnum("plan").notNull().default("trial"),
   status: subscriptionStatusEnum("status").notNull().default("trialing"),

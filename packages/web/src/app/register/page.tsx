@@ -21,8 +21,7 @@ export default function RegisterPage() {
       setToken(result.token);
       sessionStorage.setItem("agentflow_new_api_key", result.apiKey);
       identifyUser(result.user.id, result.company.id);
-      capture("user_signed_up", { company_id: result.company.id });
-      capture("trial_started", { company_id: result.company.id });
+      capture("user_signed_up", { company_id: result.company.id, plan: "free" });
       router.push("/onboarding");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
@@ -38,7 +37,7 @@ export default function RegisterPage() {
       </Link>
       <div className="auth-card">
         <h1 className="auth-title">Create your account</h1>
-        <p className="auth-sub">Get your first agent running in under 2 minutes.</p>
+        <p className="auth-sub">Free plan — no credit card required. Get your first agent running in under 2 minutes.</p>
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label className="form-label" htmlFor="email">Work email</label>

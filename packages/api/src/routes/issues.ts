@@ -1,9 +1,11 @@
 import { type Router as IRouter, Router } from "express";
 import { z } from "zod";
-import { and, eq } from "drizzle-orm";
+import { and, eq, gte, count } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { githubIntegrations, issues } from "../db/schema.js";
+import { githubIntegrations, issues, subscriptions } from "../db/schema.js";
 import { AppError } from "../middleware/error.js";
+import { PLAN_ISSUE_LIMITS } from "../services/stripe.js";
 import { postIssueComment, createPullRequest, getPullRequest } from "../services/github.js";
 
 export const issuesRouter: IRouter = Router();
@@ -41,6 +43,28 @@ issuesRouter.get("/", async (req, res, next) => {
 issuesRouter.post("/", async (req, res, next) => {
   try {
     const body = createIssueSchema.parse(req.body);
+
+    // Enforce monthly issue limit for free plan
+    const sub = await db.query.subscriptions.findFirst({
+      where: eq(subscriptions.companyId, req.companyId),
+    });
+    const plan = sub?.plan ?? "free";
+    const issueLimit = PLAN_ISSUE_LIMITS[plan] ?? Infinity;
+    if (isFinite(issueLimit)) {
+      const monthStart = sql`date_trunc('month', now())`;
+      const [countRow] = await db
+        .select({ value: count() })
+        .from(issues)
+        .where(and(eq(issues.companyId, req.companyId), gte(issues.createdAt, monthStart)));
+      const monthCount = countRow?.value ?? 0;
+      if (monthCount >= issueLimit) {
+        throw new AppError(
+          403,
+          `Free plan limit reached: ${issueLimit} issues/month. Upgrade to Starter ($299/mo) for unlimited issues.`
+        );
+      }
+    }
+
     const [issue] = await db
       .insert(issues)
       .values({

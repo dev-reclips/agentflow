@@ -3,7 +3,7 @@ import { z } from "zod";
 import { randomBytes, scryptSync } from "crypto";
 import { eq } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { companies, users, apiKeys } from "../db/schema.js";
+import { companies, users, apiKeys, subscriptions } from "../db/schema.js";
 import { hashApiKey } from "../middleware/auth.js";
 import { signToken, requireSession } from "../middleware/session.js";
 import { AppError } from "../middleware/error.js";
@@ -75,6 +75,14 @@ authRouter.post("/register", async (req, res, next) => {
       .values({ companyId: company.id, keyHash: hashApiKey(rawKey), name: "Default" })
       .returning();
     if (!apiKey) throw new AppError(500, "Failed to create API key");
+
+    // Create free-tier subscription (no Stripe required)
+    await db.insert(subscriptions).values({
+      companyId: company.id,
+      stripeCustomerId: null,
+      plan: "free",
+      status: "active",
+    });
 
     const token = await signToken({ userId: user.id, companyId: company.id });
 

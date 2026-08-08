@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import ROICalculator from "./ROICalculator";
 
 export const metadata: Metadata = {
-  title: "Pricing — AgentFlow | Plans from $499/mo",
+  title: "Pricing — AgentFlow | Free plan available",
   description:
-    "AgentFlow plans start at $499/mo. Deploy AI agents to automate GitHub issue resolution, PR creation, and backlog management. 14-day free trial, no credit card required.",
+    "AgentFlow offers a free plan with 1 agent and 5 issues/month — no credit card required. Paid plans from $299/mo for unlimited issues.",
   openGraph: {
-    title: "Pricing — AgentFlow | Plans from $499/mo",
+    title: "Pricing — AgentFlow | Free plan available",
     description:
-      "AgentFlow plans start at $499/mo. Deploy AI agents to automate GitHub issue resolution, PR creation, and backlog management. 14-day free trial.",
+      "AgentFlow offers a free plan with 1 agent and 5 issues/month — no credit card required. Paid plans from $299/mo.",
     url: "https://agentflow.ai/pricing",
     siteName: "AgentFlow",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow Pricing" }],
@@ -44,7 +44,7 @@ export default function PricingPage() {
               Straightforward <span>plans</span>
             </h1>
             <p className="hero-sub">
-              Deploy AI developer agents to your GitHub backlog. 14-day free trial on all plans. No credit card required.
+              Start free — no credit card required. Upgrade when you need more.
             </p>
           </div>
         </section>
@@ -53,10 +53,26 @@ export default function PricingPage() {
 
         <section className="pricing" style={{ paddingTop: 0 }}>
           <div className="container">
-            <div className="pricing-grid">
+            <div className="pricing-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))" }}>
               <div className="pricing-card">
+                <p className="pricing-name">Free</p>
+                <p className="pricing-price">$0<span> / mo</span></p>
+                <p className="pricing-desc">Get started with no credit card. Perfect for trying AgentFlow.</p>
+                <ul className="pricing-features">
+                  <li>1 AI developer agent</li>
+                  <li>5 issues/month</li>
+                  <li>Automatic PR creation</li>
+                  <li>GitHub integration</li>
+                  <li>Community support</li>
+                </ul>
+                <Link href="/register" className="btn btn-secondary" style={{ width: "100%", textAlign: "center" }}>
+                  Get started free
+                </Link>
+              </div>
+              <div className="pricing-card featured">
+                <div className="pricing-badge">Most popular</div>
                 <p className="pricing-name">Starter</p>
-                <p className="pricing-price">$499<span> / mo</span></p>
+                <p className="pricing-price">$299<span> / mo</span></p>
                 <p className="pricing-desc">For teams ready to start automating GitHub backlog delivery.</p>
                 <ul className="pricing-features">
                   <li>3 AI developer agents</li>
@@ -65,12 +81,11 @@ export default function PricingPage() {
                   <li>GitHub integration</li>
                   <li>Standard support</li>
                 </ul>
-                <Link href="/register" className="btn btn-secondary" style={{ width: "100%", textAlign: "center" }}>
-                  Start free trial
+                <Link href="/register" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>
+                  Start 14-day trial
                 </Link>
               </div>
-              <div className="pricing-card featured">
-                <div className="pricing-badge">Most popular</div>
+              <div className="pricing-card">
                 <p className="pricing-name">Growth</p>
                 <p className="pricing-price">$1,499<span> / mo</span></p>
                 <p className="pricing-desc">For teams shipping at scale with full AI agent automation power.</p>
@@ -82,8 +97,8 @@ export default function PricingPage() {
                   <li>Priority support</li>
                   <li>Custom integrations</li>
                 </ul>
-                <Link href="/register" className="btn btn-primary" style={{ width: "100%", textAlign: "center" }}>
-                  Start free trial
+                <Link href="/register" className="btn btn-secondary" style={{ width: "100%", textAlign: "center" }}>
+                  Start 14-day trial
                 </Link>
               </div>
             </div>
