@@ -54,6 +54,15 @@ The DMs are written and have live URLs. The site is live at dev-reclips.github.i
 
 Go to LinkedIn. Open each profile. Hit Message. Paste. Send.
 
+### Steven Tey — Founder, Dub.co
+LinkedIn: search "Steven Tey Dub.co"
+
+> Hey Steven — Dub.co opened 3 Playwright test migration issues this week (#4298, #4299, #4300). These are exactly what AgentFlow closes automatically — agent reads the issue, writes the tests, opens a PR. You review and merge.
+>
+> Made you a personalized page: https://dev-reclips.github.io/lp/dub/
+>
+> Worth a 20-min demo?
+
 ### James Ritchie — CTO, Trigger.dev
 LinkedIn: search "James Ritchie Trigger.dev"
 

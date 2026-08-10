@@ -20,11 +20,9 @@ These are pure mechanical tasks — exactly what AgentFlow closes autonomously.
 **LinkedIn DM:**
 > Hey Steven — noticed Dub.co opened 3 Playwright test migration issues this week (#4298, #4299, #4300). These are exactly what AgentFlow closes automatically — agent reads the issue, writes the tests, opens a PR. You review and merge.
 >
-> Personalized page: https://dev-reclips.github.io/lp/cal/
+> Made you a personalized page: https://dev-reclips.github.io/lp/dub/
 >
 > Worth a 20-min demo?
-
-*(Note: Dub.co doesn't have a personalized landing page yet — use the Cal.com page or the homepage: https://dev-reclips.github.io)*
 
 ---
 
