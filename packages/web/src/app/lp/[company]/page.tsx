@@ -72,6 +72,18 @@ const companies: Record<string, CompanyData> = {
       "Integration issues — Google Meet links not generated for some event types when calendar permissions are scoped",
     ],
   },
+  dub: {
+    name: "Dub.co",
+    slug: "dub",
+    contactName: "Steven",
+    contactTitle: "founder",
+    issueCount: "160+",
+    bullets: [
+      "Playwright test migrations (#4298–4300) — three open issues to migrate API integration tests to Playwright, pure mechanical work with no design ambiguity",
+      "Analytics edge cases — click attribution drops on redirects with non-standard UTM parameters, affecting campaign measurement accuracy",
+      "SDK type gaps — TypeScript types for workspace and UTM template APIs are incomplete, blocking typed client usage in strict codebases",
+    ],
+  },
 };
 
 export function generateStaticParams() {
