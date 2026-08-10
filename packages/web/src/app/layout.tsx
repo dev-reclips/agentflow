@@ -3,6 +3,7 @@ import "./globals.css";
 import { PostHogProvider } from "@/components/PostHogProvider";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://dev-reclips.github.io"),
   title: "AgentFlow — Your GitHub backlog, on autopilot",
   description: "Deploy AI agents to work your GitHub backlog. Assign an issue, agent writes the code, opens a PR, closes the ticket.",
   openGraph: {
