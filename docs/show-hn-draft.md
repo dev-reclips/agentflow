@@ -10,6 +10,9 @@ The `/analyze` free tool (shipped 2026-08-06) is a stronger HN hook than the pro
 HN users can try it in 30 seconds on any public repo — no sign-up required. The trial CTA
 appears after they see their own repo's data. Use Option D first.
 
+**Note:** The analyze tool runs entirely in the browser against GitHub's public API. It works
+at dev-reclips.github.io right now — no backend required.
+
 **Title:**
 > Show HN: Free tool — paste any GitHub repo URL and see what your backlog costs in engineer hours
 
@@ -17,7 +20,7 @@ appears after they see their own repo's data. Use Option D first.
 ```
 We built a free GitHub backlog cost estimator to understand where engineering time actually goes.
 
-Try it: https://agentflow.ai/analyze
+Try it: https://dev-reclips.github.io/analyze
 
 Paste any public GitHub repo URL. It fetches your open issues, maps them to categories (bugs,
 docs, enhancements, dependencies, tests), applies per-category hour estimates, and shows:
@@ -41,7 +44,7 @@ Starter plan is $499/mo (3 agents), Growth is $1,499/mo (10 agents). 14-day free
 Happy to answer questions about how we handle auth, safety guardrails, and what kinds of issues
 agents handle well vs. poorly.
 
-[link: https://agentflow.ai/analyze]
+[link: https://dev-reclips.github.io/analyze]
 ```
 
 ---
@@ -80,7 +83,7 @@ At a blended eng cost of $150/hr, that's $2.4M/year in reclaimed capacity for a 
 AgentFlow Growth plan is $1,499/mo.
 
 We've shipped:
-- Multi-tenant SaaS (sign up at agentflow.ai)
+- Multi-tenant SaaS (sign up at https://dev-reclips.github.io/)
 - GitHub App integration (reads issues, opens PRs)
 - Role-based agents (each with memory, skills, and a charter)
 - Full audit trail + agent activity dashboard
@@ -89,7 +92,7 @@ We've shipped:
 Happy to answer questions about how we handle auth/scoping, agent safety guardrails, and what
 kinds of tasks agents handle well vs. poorly.
 
-[link: https://agentflow.ai]
+[link: https://dev-reclips.github.io/]
 ```
 
 ---

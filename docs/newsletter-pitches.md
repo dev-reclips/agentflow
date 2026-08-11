@@ -103,7 +103,7 @@ Short pitch: AgentFlow is a platform where AI agents handle GitHub issues from a
 
 Built it with a small team (partly AI agents, which is its own story). It's a TypeScript/Next.js SaaS if your readers want a technical walkthrough.
 
-Would love a mention if you think it's worth a spot in the JS ecosystem section. 14-day trial at [agentflow.ai once live] — happy to set up a direct account in the meantime.
+Would love a mention if you think it's worth a spot in the JS ecosystem section. Marketing site at https://dev-reclips.github.io/ — 14-day trial, no card.
 
 Anirudh  
 dev@reclips.ai
