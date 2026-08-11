@@ -321,17 +321,24 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
 
       <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 12, padding: "28px 32px", textAlign: "center" }}>
         <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
-          AgentFlow can close {result.totalMatchingIssues} of these issues
+          {result.totalMatchingIssues > 0
+            ? `AgentFlow can close ${result.totalMatchingIssues} of these issues`
+            : `AgentFlow can close ~${Math.round(result.totalOpen * 0.3)} of these issues`}
         </p>
         <p style={{ color: "var(--muted)", marginBottom: 24, fontSize: 15 }}>
           Agents read the issue, write the code, open a PR, and close the ticket — automatically.
-          Start your free trial and connect{" "}
-          <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span> in minutes.
+          {IS_STATIC_EXPORT ? (
+            <> Book a 20-minute demo and we&apos;ll run one live on <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span>.</>
+          ) : (
+            <> Start your free trial and connect <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span> in minutes.</>
+          )}
         </p>
         <Link href={ctaUrl} className="btn btn-primary btn-lg" style={{ display: "inline-flex" }}>
           {IS_STATIC_EXPORT ? "Book a demo — close these issues" : "Start free trial — connect this repo"}
         </Link>
-        <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12 }}>14-day free trial · No credit card required</p>
+        <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12 }}>
+          {IS_STATIC_EXPORT ? "Free · 20 minutes · No commitment" : "14-day free trial · No credit card required"}
+        </p>
       </div>
 
       <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -356,7 +363,8 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           className="btn btn-secondary"
           style={{ fontSize: 14, padding: "8px 18px" }}
           onClick={() => {
-            const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can handle ${result.totalMatchingIssues} of them and save ~${Math.round(result.totalHours)}h/mo. Free analyzer:`;
+            const agentHandled = result.totalMatchingIssues > 0 ? result.totalMatchingIssues : Math.round(result.totalOpen * 0.3);
+            const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can auto-close ~${agentHandled} of them. Free analyzer:`;
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
             window.open(twitterUrl, "_blank", "noopener,noreferrer");
           }}
