@@ -38,23 +38,33 @@ These 15 companies match the ICP exactly: 5–50 engineers, GitHub-native, Serie
 
 ## Tier 2 — Strong fit (second wave)
 
-| # | Company | Why ICP | Contact Target | LinkedIn / GitHub |
-|---|---------|---------|---------------|-------------------|
-| 6 | **Liveblocks** | Real-time collab platform, ~10 engineers, Series A | Steven Fabre (CTO) | github.com/liveblocks |
-| 7 | **Tinybird** | Analytics platform, ~25 engineers, very technical team | Alejandro (CTO) | github.com/tinybirdco |
-| 8 | **Infisical** | Open-source secrets management, ~10 engineers, Y-Combinator backed | Maidul Islam / Tony Dang | github.com/infisical |
-| 9 | **Supaglue** | CRM integration platform, ~10–15 engineers, Series A | Robert Wu (CTO) | github.com/supaglue-labs |
-| 10 | **Fern API** | API dev tools, ~10 engineers, Y-Combinator backed | Deep Singhvi (CTO) | github.com/fern-api |
+| # | Company | Why ICP | Contact Target | LinkedIn / GitHub | LP |
+|---|---------|---------|---------------|-------------------|----|
+| 6 | **Liveblocks** | Real-time collab platform, ~10 engineers, Series A | Steven Fabre (CTO) | github.com/liveblocks | — |
+| 7 | **Tinybird** | Analytics platform, ~25 engineers, very technical team | Alejandro (CTO) | github.com/tinybirdco | — |
+| 8 | **Infisical** | Open-source secrets management, ~10 engineers, Y-Combinator backed, **712 open issues** | Maidul Islam (co-founder) | github.com/infisical/infisical | https://dev-reclips.github.io/lp/infisical |
+| 9 | **Supaglue** | CRM integration platform, ~10–15 engineers, Series A | Robert Wu (CTO) | github.com/supaglue-labs | — |
+| 10 | **Fern API** | API dev tools, ~10 engineers, Y-Combinator backed | Deep Singhvi (CTO) | github.com/fern-api | — |
+
+**DM for Maidul Islam (Infisical):**
+> Hey Maidul — Infisical has 712 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/infisical — 14-day trial, no card. Worth 20 min?
 
 ## Tier 3 — Good fit (third wave)
 
-| # | Company | Why ICP | Contact Target | LinkedIn / GitHub |
-|---|---------|---------|---------------|-------------------|
-| 11 | **Nango** | Unified API integrations, ~15 engineers, European Series A | Bastian Hafner (CTO) | github.com/nangohq |
-| 12 | **Dub.co** | Link management SaaS, ~5 engineers, dev-focused | Steven Tey (CTO/founder) | github.com/dubinc/dub |
-| 13 | **Uploadthing** | File upload service, ~5–8 engineers, very GitHub active | Julius Marminge | github.com/pingdotgg |
-| 14 | **Plane.so** | Open-source Jira alt, ~20 engineers, very active issues | Vihar Kurama (CTO) | github.com/makeplane |
-| 15 | **Documenso** | Open-source DocuSign, ~10 engineers, Y-Combinator backed | Timur Ercan (CTO) | github.com/documenso |
+| # | Company | Why ICP | Contact Target | LinkedIn / GitHub | LP |
+|---|---------|---------|---------------|-------------------|----|
+| 11 | **Nango** | Unified API integrations, ~15 engineers, European Series A | Bastian Hafner (CTO) | github.com/nangohq | — |
+| 12 | **Dub.co** | Link management SaaS, ~5 engineers, dev-focused | Steven Tey (CTO/founder) | github.com/dubinc/dub | — |
+| 13 | **Uploadthing** | File upload service, ~5–8 engineers, very GitHub active | Julius Marminge | github.com/pingdotgg | — |
+| 14 | **Plane.so** | Open-source Jira alt, ~20 engineers, **1,004 open issues** | Vihar Kurama (CTO) | github.com/makeplane/plane | https://dev-reclips.github.io/lp/plane |
+| 15 | **Documenso** | Open-source DocuSign, ~10 engineers, Y-Combinator backed | Timur Ercan (CTO) | github.com/documenso | — |
+| 16 | **Supabase** | Open-source Firebase alt, engineering-first, **1,253 open issues** (largest after PostHog in this batch) | Ant Wilson (CTO/co-founder) | github.com/supabase/supabase | https://dev-reclips.github.io/lp/supabase |
+
+**DM for Vihar Kurama (Plane):**
+> Hey Vihar — Plane has 1,004 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/plane — 14-day trial, no card. Worth 20 min?
+
+**DM for Ant Wilson (Supabase):**
+> Hey Ant — Supabase has 1,253 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/supabase — 14-day trial, no card. Worth 20 min?
 
 ---
 

@@ -108,6 +108,42 @@ const companies: Record<string, CompanyData> = {
       "Plugin upgrade compatibility breaks — community data source plugins lose authentication config silently after minor Grafana version bumps, requiring manual reconfiguration with no migration path",
     ],
   },
+  supabase: {
+    name: "Supabase",
+    slug: "supabase",
+    contactName: "Ant",
+    contactTitle: "CTO",
+    issueCount: "1,253",
+    bullets: [
+      "Row Level Security edge cases — RLS policies using `auth.uid()` inside transactions silently return empty result sets instead of erroring, causing data-visibility bugs in multi-tenant apps with no server-side indication of the failure",
+      "Realtime subscription reliability — channels disconnect silently on mobile clients when the network switches between wifi and cellular, requiring manual reconnect logic that most teams only discover after user complaints",
+      "CLI migration conflicts — `supabase db push` throws constraint violation errors when a migration references a function not yet in scope, blocking automated deployment pipelines with an error message that doesn't identify the offending file",
+    ],
+  },
+  plane: {
+    name: "Plane",
+    slug: "plane",
+    contactName: "Vihar",
+    contactTitle: "CTO",
+    issueCount: "1,004",
+    bullets: [
+      "Cycle analytics sync lag — issues added to an active cycle don't update the burndown chart until a full page reload, making sprint velocity data unreliable for teams checking progress mid-cycle",
+      "Webhook delivery failures — state-change webhooks fail silently when the target URL returns a non-200 response, with no failure log surfaced in the UI and no automatic retry, causing integrations to drift out of sync",
+      "GitHub import label loss — issues imported from GitHub drop custom labels when label names contain colons or slashes, silently discarding triage metadata that teams rely on for prioritization",
+    ],
+  },
+  infisical: {
+    name: "Infisical",
+    slug: "infisical",
+    contactName: "Maidul",
+    contactTitle: "co-founder",
+    issueCount: "712",
+    bullets: [
+      "Secret reference resolution hang — circular references between environments cause the CLI to spin indefinitely instead of returning an actionable error, blocking CI/CD pipelines until the process is manually killed",
+      "Kubernetes operator sync gaps — secrets don't re-sync after rotation when the target pod hasn't restarted, creating stale-secret drift in long-running deployments that's invisible until an auth failure surfaces in production",
+      "RBAC metadata leak — users with viewer permissions on one project can enumerate secret names (not values) in sibling projects via the API's metadata endpoint, violating the principle of least privilege in multi-team organizations",
+    ],
+  },
 };
 
 export function generateStaticParams() {
