@@ -405,8 +405,16 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
       const issues = await fetchIssues(parsed.owner, parsed.repo);
       const analysis = analyzeIssues(issues, parsed.owner, parsed.repo);
       const id = await persistResult(analysis);
-      setPendingResult(analysis);
-      setPendingResultId(id);
+      // On static export with no Formspree, skip the email gate — show results directly
+      if (IS_STATIC_EXPORT && !FORMSPREE_FORM_ID) {
+        setIsDemo(false);
+        setResult(analysis);
+        setResultId(id);
+        setTimeout(() => resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+      } else {
+        setPendingResult(analysis);
+        setPendingResultId(id);
+      }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "api_error";
       if (msg === "not_found") {
