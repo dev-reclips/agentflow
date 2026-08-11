@@ -335,7 +335,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
       </div>
 
       <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-        {shareUrl && (
+        {shareUrl ? (
           <button
             className="btn btn-primary"
             style={{ fontSize: 14, padding: "8px 18px" }}
@@ -343,13 +343,21 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           >
             {copied ? "Link copied!" : "Share this analysis"}
           </button>
+        ) : (
+          <button
+            className="btn btn-primary"
+            style={{ fontSize: 14, padding: "8px 18px" }}
+            onClick={handleCopyQueryLink}
+          >
+            {copiedQueryLink ? "Copied!" : "Copy shareable link"}
+          </button>
         )}
         <button
           className="btn btn-secondary"
           style={{ fontSize: 14, padding: "8px 18px" }}
           onClick={() => {
             const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can handle ${result.totalMatchingIssues} of them and save ~${Math.round(result.totalHours)}h/mo. Free analyzer:`;
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? "https://agentflow.ai/analyze")}`;
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
             window.open(twitterUrl, "_blank", "noopener,noreferrer");
           }}
         >
