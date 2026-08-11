@@ -67,6 +67,7 @@ async function fetchIssues(owner: string, repo: string): Promise<GitHubIssue[]> 
       { headers: { Accept: "application/vnd.github.v3+json" } }
     );
     if (res.status === 404) throw new Error("not_found");
+    if (res.status === 429 || (res.status === 403 && res.headers.get("X-RateLimit-Remaining") === "0")) throw new Error("rate_limit");
     if (res.status === 403 || res.status === 401) throw new Error("private");
     if (!res.ok) throw new Error("api_error");
     const data: GitHubIssue[] = await res.json();
@@ -277,12 +278,20 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
         <p style={{ fontWeight: 700, fontSize: 20, fontFamily: "var(--mono)" }}>{result.repo}</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
-        <StatCard label="Open issues" value={result.totalOpen.toString()} sub="fetched from GitHub API" />
-        <StatCard label="AgentFlow can handle" value={result.totalMatchingIssues.toString()} sub="matching issues" accent="var(--accent)" />
-        <StatCard label="Estimated hours saved" value={`${Math.round(result.totalHours)}h`} sub="per month" accent="var(--green)" />
-        <StatCard label="Estimated cost saved" value={fmt(result.totalCost)} sub={`at $${DEV_HOURLY_RATE}/hr`} accent="var(--green)" />
-      </div>
+      {(() => {
+        const zeroMatch = result.totalMatchingIssues === 0 && result.totalOpen > 0;
+        const estHandled = zeroMatch ? Math.round(result.totalOpen * 0.3) : result.totalMatchingIssues;
+        const estHours = zeroMatch ? estHandled * 2 : result.totalHours;
+        const estCost = zeroMatch ? estHours * DEV_HOURLY_RATE : result.totalCost;
+        return (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+            <StatCard label="Open issues" value={result.totalOpen.toString()} sub="fetched from GitHub API" />
+            <StatCard label="AgentFlow can handle" value={zeroMatch ? `~${estHandled}` : result.totalMatchingIssues.toString()} sub={zeroMatch ? "estimated (unlabeled repo)" : "matching issues"} accent="var(--accent)" />
+            <StatCard label="Estimated hours saved" value={`${Math.round(estHours)}h`} sub="per month" accent="var(--green)" />
+            <StatCard label="Estimated cost saved" value={fmt(estCost)} sub={`at $${DEV_HOURLY_RATE}/hr`} accent="var(--green)" />
+          </div>
+        );
+      })()}
 
       {result.byCategory.length > 0 ? (
         <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "24px 28px" }}>
@@ -427,6 +436,8 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
       const msg = err instanceof Error ? err.message : "api_error";
       if (msg === "not_found") {
         setError("Repo not found — is it public? Double-check the URL.");
+      } else if (msg === "rate_limit") {
+        setError("GitHub rate limit reached — try again in a minute, or sign up for a free trial to skip limits.");
       } else if (msg === "private") {
         setError("This looks like a private repo. Connect your GitHub account during your free trial to analyze private repos.");
       } else {

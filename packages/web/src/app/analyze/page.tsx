@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   },
 };
 
+const IS_STATIC = !process.env.NEXT_PUBLIC_API_URL;
+
 export default function AnalyzePage() {
   return (
     <>
@@ -33,11 +35,13 @@ export default function AnalyzePage() {
             AgentFlow
           </Link>
           <div className="nav-links">
-            <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
-              Log in
-            </Link>
-            <Link href="/register" className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
-              Get started
+            {!IS_STATIC && (
+              <Link href="/login" className="btn btn-secondary" style={{ padding: "8px 16px", fontSize: "14px" }}>
+                Log in
+              </Link>
+            )}
+            <Link href={IS_STATIC ? "/book-demo" : "/register"} className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
+              {IS_STATIC ? "Book a demo" : "Get started"}
             </Link>
           </div>
         </div>
@@ -145,10 +149,10 @@ export default function AnalyzePage() {
               Ready to clear your backlog?
             </h2>
             <p style={{ color: "var(--muted)", marginBottom: 32, fontSize: 16 }}>
-              14-day free trial. No credit card required. Cancel any time.
+              {IS_STATIC ? "Free 20-minute demo on your real repo. No commitment." : "14-day free trial. No credit card required. Cancel any time."}
             </p>
-            <Link href="/register" className="btn btn-primary btn-lg">
-              Start your free trial
+            <Link href={IS_STATIC ? "/book-demo" : "/register"} className="btn btn-primary btn-lg">
+              {IS_STATIC ? "Book a demo →" : "Start your free trial"}
             </Link>
           </div>
         </section>
