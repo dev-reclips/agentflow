@@ -84,6 +84,18 @@ const companies: Record<string, CompanyData> = {
       "SDK type gaps — TypeScript types for workspace and UTM template APIs are incomplete, blocking typed client usage in strict codebases",
     ],
   },
+  posthog: {
+    name: "PostHog",
+    slug: "posthog",
+    contactName: "James",
+    contactTitle: "CEO",
+    issueCount: "6,084",
+    bullets: [
+      "Session recording gaps — recordings truncate or drop entirely on SPAs using hash-based routing, silently losing up to 20% of user sessions with no error surfaced to the dashboard",
+      "ClickHouse query timeouts — funnel and retention queries on event tables with 90+ days of data hit the 30-second timeout in standard self-hosted Docker deployments, blocking analytics for high-volume customers",
+      "Feature flag SDK inconsistency — React SDK caches flag values across user sessions when distinctId changes without a full page reload, causing new users to see stale flag state after login",
+    ],
+  },
 };
 
 export function generateStaticParams() {

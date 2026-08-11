@@ -15,6 +15,17 @@ These 15 companies match the ICP exactly: 5–50 engineers, GitHub-native, Serie
 
 ---
 
+## Tier 0 — Maximum priority (added 2026-08-11)
+
+| # | Company | Why ICP | Contact Target | LinkedIn / GitHub |
+|---|---------|---------|---------------|-------------------|
+| 0 | **PostHog** | Open-source analytics, 6,084 open issues (largest backlog identified), engineering-first culture | **James Hawkins (CEO)** / Tim Glaser (CTO) | github.com/posthog/posthog |
+
+**DM for James Hawkins:**
+> Hey James — PostHog has 6,084 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/posthog — 14-day trial, no card. Worth 20 min?
+
+---
+
 ## Tier 1 — Highest probability (reach first)
 
 | # | Company | Why ICP | Contact Target | LinkedIn / GitHub |

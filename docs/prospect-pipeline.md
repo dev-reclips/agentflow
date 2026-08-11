@@ -8,7 +8,7 @@
 
 | Stage | Count | ARR Potential |
 |-------|-------|---------------|
-| Target | 15 | $22,485/mo potential (15× Growth) |
+| Target | 16 | $23,984/mo potential (16× Growth) |
 | Contacted | 0 | — |
 | Replied | 0 | — |
 | Demo Scheduled | 0 | — |
@@ -41,6 +41,7 @@
 
 | # | Company | Contact | Role | Source | Status | Last Touch | Next Action | Plan Target | Notes |
 |---|---------|---------|------|--------|--------|-----------|------------|-------------|-------|
+| 0 | **PostHog** | **James Hawkins** | **CEO** | Cold | **Target** | — | **LinkedIn DM (ready in day-17-brief.md) — HIGHEST PRIORITY** | Growth | 6,084 open issues — largest backlog of any ICP-matched target; LP live at /lp/posthog |
 | 1 | Trigger.dev | James Ritchie | CTO | Cold | Target | — | LinkedIn DM (ready in day-8-brief.md) | Growth | OSS job queue, GitHub-native, pre-written DM |
 | 2 | Mintlify | Han Wang | CTO/co-founder | Cold | Target | — | LinkedIn DM | Growth | Docs platform, 100+ open issues, Series A |
 | 3 | Loops.so | Chris Frantz | co-founder | Cold | Target | — | LinkedIn DM | Growth | Email SaaS, dev-led, GitHub-first |
