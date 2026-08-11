@@ -54,6 +54,16 @@ The DMs are written and have live URLs. The site is live at dev-reclips.github.i
 
 Go to LinkedIn. Open each profile. Hit Message. Paste. Send.
 
+### James Hawkins — CEO, PostHog ⭐ (send first — 6,084 issues)
+LinkedIn: search "James Hawkins PostHog"
+
+> Hey James — PostHog has 6,084 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/posthog/ — 14-day trial, no card. Worth 20 min?
+
+### Raj Dutt — CEO, Grafana
+LinkedIn: search "Raj Dutt Grafana Labs"
+
+> Hey Raj — Grafana has 820+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/grafana/ — 14-day trial, no card. Worth 20 min?
+
 ### Steven Tey — Founder, Dub.co
 LinkedIn: search "Steven Tey Dub.co"
 

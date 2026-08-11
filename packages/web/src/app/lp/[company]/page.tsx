@@ -96,6 +96,18 @@ const companies: Record<string, CompanyData> = {
       "Feature flag SDK inconsistency — React SDK caches flag values across user sessions when distinctId changes without a full page reload, causing new users to see stale flag state after login",
     ],
   },
+  grafana: {
+    name: "Grafana",
+    slug: "grafana",
+    contactName: "Raj",
+    contactTitle: "CEO",
+    issueCount: "820+",
+    bullets: [
+      "Dashboard variable propagation failures — template variables in linked panels don't refresh when parent variable changes, causing stale data to display silently without user-visible errors",
+      "Alerting multi-dimensional query edge cases — alert rules on high-cardinality label sets fire duplicate notifications when series flap across evaluation windows, creating alert fatigue for oncall teams",
+      "Plugin upgrade compatibility breaks — community data source plugins lose authentication config silently after minor Grafana version bumps, requiring manual reconfiguration with no migration path",
+    ],
+  },
 };
 
 export function generateStaticParams() {
