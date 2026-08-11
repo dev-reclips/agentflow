@@ -118,6 +118,21 @@ LinkedIn: search "Peer Richelsen Cal.com"
 >
 > Worth a 20-minute demo?
 
+### Ant Wilson — CTO, Supabase ⭐ (1,253 issues — second largest backlog)
+LinkedIn: search "Ant Wilson Supabase"
+
+> Hey Ant — Supabase has 1,253 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/supabase — 14-day trial, no card. Worth 20 min?
+
+### Vihar Kurama — CTO, Plane
+LinkedIn: search "Vihar Kurama Plane"
+
+> Hey Vihar — Plane has 1,004 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/plane — 14-day trial, no card. Worth 20 min?
+
+### Maidul Islam — Co-founder, Infisical
+LinkedIn: search "Maidul Islam Infisical"
+
+> Hey Maidul — Infisical has 712 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/infisical — 14-day trial, no card. Worth 20 min?
+
 ---
 
 ## Pivot C — Send 5 newsletter pitches (30 minutes)
@@ -138,27 +153,26 @@ Expected turnaround: 1–2 weeks. Expected outcome: 1–2 features → 200–2,0
 
 ---
 
-## Pivot D — Show HN post (30 minutes, requires agentflow.ai live)
+## Pivot D — Show HN post (2 minutes — ready now, no agentflow.ai required)
 
-**Blocked on production deploy (ANI-56). Do this only if agentflow.ai is live.**
+**Ready to post today.** The free `/analyze` tool runs client-side at https://dev-reclips.github.io/analyze — no backend needed.
 
-Full draft at docs/show-hn-draft.md. Post at news.ycombinator.com/submit.
+Full draft at docs/show-hn-draft.md (Option D). Post at news.ycombinator.com/submit.
 Best window: Tuesday–Thursday, 9–11am US Eastern.
 
-If agentflow.ai is NOT live, substitute the URL with https://dev-reclips.github.io/ and note
-it's the marketing site (not the live product). This is a weaker pitch but still works.
+> **Title:** Show HN: Free tool — paste any GitHub repo URL and see what your backlog costs in engineer hours
+> **Link:** https://dev-reclips.github.io/analyze
 
 ---
 
 ## Decision tree
 
 ```
-Is agentflow.ai live?
-  YES → Do Pivot D (Show HN) + Pivot A (Marketplace) + Pivot B (LinkedIn DMs)
-  NO  → Do Pivot A (Marketplace, 45 min) + Pivot B (LinkedIn DMs, 10 min) + Pivot C (newsletter pitches, 30 min)
+Do Pivot D first (2 min — post Show HN, it's ready)
+Then: Pivot B (11 LinkedIn DMs, 20 min) + Pivot A (Marketplace, 45 min) + Pivot C (newsletter pitches, 30 min)
 ```
 
-If you have 85 minutes total: do A + B + C. That's the maximum first-contact surface area without a live product URL.
+If you have 97 minutes total: do D + B + A + C. That's full first-contact surface area.
 
 ---
 
