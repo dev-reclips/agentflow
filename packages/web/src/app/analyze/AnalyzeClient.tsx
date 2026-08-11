@@ -199,7 +199,7 @@ function StatCard({
 function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean; isDemo?: boolean }) {
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
-  const ctaUrl = `/register?repo=${encodeURIComponent(result.repo)}`;
+  const ctaUrl = IS_STATIC_EXPORT ? `/book-demo` : `/register?repo=${encodeURIComponent(result.repo)}`;
   const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
   const queryParamUrl = `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze?repo=${encodeURIComponent(result.repo)}`;
 
@@ -239,8 +239,8 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
             <span style={{ fontFamily: "var(--mono)", fontWeight: 700 }}>vercel/next.js</span>.
             {" "}Paste your own repo above to see your real numbers.
           </p>
-          <Link href="/register" className="btn btn-primary" style={{ fontSize: 13, padding: "6px 14px", whiteSpace: "nowrap" }}>
-            Connect your repo after sign-up →
+          <Link href={IS_STATIC_EXPORT ? "/book-demo" : "/register"} className="btn btn-primary" style={{ fontSize: 13, padding: "6px 14px", whiteSpace: "nowrap" }}>
+            {IS_STATIC_EXPORT ? "Book a demo →" : "Connect your repo after sign-up →"}
           </Link>
         </div>
       )}
@@ -329,7 +329,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           <span style={{ fontFamily: "var(--mono)", color: "var(--accent)" }}>{result.repo}</span> in minutes.
         </p>
         <Link href={ctaUrl} className="btn btn-primary btn-lg" style={{ display: "inline-flex" }}>
-          Start free trial — connect this repo
+          {IS_STATIC_EXPORT ? "Book a demo — close these issues" : "Start free trial — connect this repo"}
         </Link>
         <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 12 }}>14-day free trial · No credit card required</p>
       </div>
