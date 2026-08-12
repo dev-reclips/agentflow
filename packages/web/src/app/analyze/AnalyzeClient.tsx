@@ -59,8 +59,11 @@ function parseRepoUrl(input: string): { owner: string; repo: string } | null {
   return null;
 }
 
-async function fetchIssues(owner: string, repo: string): Promise<GitHubIssue[]> {
+async function fetchIssues(owner: string, repo: string): Promise<{ issues: GitHubIssue[]; totalCount: number }> {
   const allIssues: GitHubIssue[] = [];
+  let estimatedTotal = 0;
+  let totalItemsInSample = 0;
+
   for (let page = 1; page <= 3; page++) {
     const res = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=100&page=${page}`,
@@ -70,15 +73,34 @@ async function fetchIssues(owner: string, repo: string): Promise<GitHubIssue[]> 
     if (res.status === 429 || (res.status === 403 && res.headers.get("X-RateLimit-Remaining") === "0")) throw new Error("rate_limit");
     if (res.status === 403 || res.status === 401) throw new Error("private");
     if (!res.ok) throw new Error("api_error");
+
+    // Parse Link header on first page to estimate total item count
+    if (page === 1) {
+      const linkHeader = res.headers.get("Link");
+      if (linkHeader) {
+        const lastMatch = linkHeader.match(/[?&]page=(\d+)>;\s*rel="last"/);
+        if (lastMatch?.[1]) estimatedTotal = parseInt(lastMatch[1]) * 100;
+      }
+    }
+
     const data: GitHubIssue[] = await res.json();
+    totalItemsInSample += data.length;
     const issues = data.filter((i) => !("pull_request" in i));
     allIssues.push(...issues);
     if (data.length < 100) break;
   }
-  return allIssues;
+
+  // Scale estimated total by the issue-to-item ratio observed in sample (filters out PRs)
+  let totalCount = allIssues.length;
+  if (estimatedTotal > 0 && totalItemsInSample > 0) {
+    const issueRatio = allIssues.length / totalItemsInSample;
+    totalCount = Math.max(allIssues.length, Math.round(estimatedTotal * issueRatio));
+  }
+
+  return { issues: allIssues, totalCount };
 }
 
-function analyzeIssues(issues: GitHubIssue[], owner: string, repo: string): AnalysisResult {
+function analyzeIssues(issues: GitHubIssue[], owner: string, repo: string, totalCount: number): AnalysisResult {
   const counts: Record<string, number> = {};
   for (const issue of issues) {
     for (const label of issue.labels) {
@@ -89,12 +111,15 @@ function analyzeIssues(issues: GitHubIssue[], owner: string, repo: string): Anal
     }
   }
 
+  // Scale category counts proportionally when we only sampled a subset
+  const sampleSize = issues.length;
+  const scaleFactor = sampleSize > 0 && totalCount > sampleSize ? totalCount / sampleSize : 1;
+
   const byCategory = Object.entries(counts)
-    .map(([key, count]) => ({
-      key,
-      count,
-      hours: count * (LABEL_CATEGORIES[key]?.hoursEach ?? 0),
-    }))
+    .map(([key, count]) => {
+      const scaled = Math.round(count * scaleFactor);
+      return { key, count: scaled, hours: scaled * (LABEL_CATEGORIES[key]?.hoursEach ?? 0) };
+    })
     .sort((a, b) => b.count - a.count);
 
   const totalMatchingIssues = byCategory.reduce((s, c) => s + c.count, 0);
@@ -103,7 +128,7 @@ function analyzeIssues(issues: GitHubIssue[], owner: string, repo: string): Anal
 
   return {
     repo: `${owner}/${repo}`,
-    totalOpen: issues.length,
+    totalOpen: totalCount,
     byCategory,
     totalMatchingIssues,
     totalHours,
@@ -419,8 +444,8 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
 
     setLoading(true);
     try {
-      const issues = await fetchIssues(parsed.owner, parsed.repo);
-      const analysis = analyzeIssues(issues, parsed.owner, parsed.repo);
+      const { issues, totalCount } = await fetchIssues(parsed.owner, parsed.repo);
+      const analysis = analyzeIssues(issues, parsed.owner, parsed.repo, totalCount);
       const id = await persistResult(analysis);
       // On static export with no Formspree, skip the email gate — show results directly
       if (IS_STATIC_EXPORT && !FORMSPREE_FORM_ID) {
