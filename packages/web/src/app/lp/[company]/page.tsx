@@ -144,6 +144,54 @@ const companies: Record<string, CompanyData> = {
       "RBAC metadata leak — users with viewer permissions on one project can enumerate secret names (not values) in sibling projects via the API's metadata endpoint, violating the principle of least privilege in multi-team organizations",
     ],
   },
+  liveblocks: {
+    name: "Liveblocks",
+    slug: "liveblocks",
+    contactName: "Steven",
+    contactTitle: "CTO",
+    issueCount: "300+",
+    bullets: [
+      "Presence sync drift on reconnect — awareness states don't reliably restore when clients reconnect after a network interruption, causing stale presence indicators for other collaborators until they manually refresh",
+      "Storage conflict resolution edge case — Yjs conflict merges produce incorrect state on high-frequency concurrent list mutations, silently corrupting document state with no error surfaced to the client",
+      "TypeScript inference gaps — schema type inference doesn't cover nested LiveMap and LiveList mutation patterns, forcing teams to cast to `any` in production code and losing type safety for collaborative state",
+    ],
+  },
+  tinybird: {
+    name: "Tinybird",
+    slug: "tinybird",
+    contactName: "Alejandro",
+    contactTitle: "CTO",
+    issueCount: "400+",
+    bullets: [
+      "Pipe dependency ordering failures — data pipes with cross-dependencies fail with ambiguous errors when upstream pipes aren't materialized yet, requiring manual deploy ordering that breaks automated CI pipelines",
+      "Rate limit response missing Retry-After header — API endpoints return 429 with no Retry-After header, making client-side backoff implementations guesswork and causing cascading retry storms under load",
+      "CLI workspace context leak — `tb push` applies migrations to the wrong workspace when TINYBIRD_TOKEN is set in both environment and config file, with no warning displayed before overwriting production data",
+    ],
+  },
+  nango: {
+    name: "Nango",
+    slug: "nango",
+    contactName: "Bastian",
+    contactTitle: "CTO",
+    issueCount: "500+",
+    bullets: [
+      "OAuth token refresh race condition — concurrent API requests fire multiple refresh calls when the access token expires simultaneously, causing the first refresh to succeed and subsequent ones to fail with invalid_grant errors that terminate the sync",
+      "Sync checkpoint loss on temporary failure — integration syncs restart from page 0 instead of resuming from the last checkpoint after a transient fetch error, causing unnecessary re-ingestion of already-processed records and duplicates downstream",
+      "Webhook signature verification gaps — several integrations skip HMAC verification for non-standard payload formats (e.g. multipart/form-data events from Shopify and Stripe), silently accepting potentially forged events",
+    ],
+  },
+  documenso: {
+    name: "Documenso",
+    slug: "documenso",
+    contactName: "Timur",
+    contactTitle: "CTO",
+    issueCount: "300+",
+    bullets: [
+      "PDF field positioning drift — signature and text fields shift by 2–5px on certain PDF versions with embedded fonts or non-standard page sizes, causing misaligned signature blocks on signed documents that fail legal verification",
+      "Completion email race condition — signing-complete notification emails send before the final sealed PDF is fully generated and attached, causing recipients to receive emails with missing or corrupted attachments",
+      "Team invitation stale after email change — pending team invites remain valid after the invitee changes their email address in their auth provider, allowing the original email to accept an invite belonging to a different identity",
+    ],
+  },
 };
 
 export function generateStaticParams() {
