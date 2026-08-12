@@ -409,7 +409,10 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           style={{ fontSize: 14, padding: "8px 18px" }}
           onClick={() => {
             const agentHandled = result.totalMatchingIssues > 0 ? result.totalMatchingIssues : Math.round(result.totalOpen * 0.3);
-            const text = `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can auto-close ~${agentHandled} of them. Free analyzer:`;
+            const isPopular = POPULAR_REPOS.includes(result.repo);
+            const text = isPopular
+              ? `${result.repo} has ${result.totalOpen} open issues. AgentFlow estimates it can auto-close ~${agentHandled} of them. Free backlog analyzer:`
+              : `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can auto-close ~${agentHandled} of them. Free analyzer:`;
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
             window.open(twitterUrl, "_blank", "noopener,noreferrer");
           }}
