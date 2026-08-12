@@ -63,6 +63,7 @@ async function fetchIssues(owner: string, repo: string): Promise<{ issues: GitHu
   const allIssues: GitHubIssue[] = [];
   let estimatedTotal = 0;
   let totalItemsInSample = 0;
+  let fetchedAll = false;
 
   for (let page = 1; page <= 3; page++) {
     const res = await fetch(
@@ -87,12 +88,12 @@ async function fetchIssues(owner: string, repo: string): Promise<{ issues: GitHu
     totalItemsInSample += data.length;
     const issues = data.filter((i) => !("pull_request" in i));
     allIssues.push(...issues);
-    if (data.length < 100) break;
+    if (data.length < 100) { fetchedAll = true; break; }
   }
 
-  // Scale estimated total by the issue-to-item ratio observed in sample (filters out PRs)
+  // Only use Link header estimate when we hit the page cap — exact count when we fetched everything
   let totalCount = allIssues.length;
-  if (estimatedTotal > 0 && totalItemsInSample > 0) {
+  if (!fetchedAll && estimatedTotal > 0 && totalItemsInSample > 0) {
     const issueRatio = allIssues.length / totalItemsInSample;
     totalCount = Math.max(allIssues.length, Math.round(estimatedTotal * issueRatio));
   }
