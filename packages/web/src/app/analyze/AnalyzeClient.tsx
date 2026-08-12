@@ -24,8 +24,10 @@ const FALLBACK_EMAIL = "dev@reclips.ai";
 const POPULAR_REPOS = [
   "facebook/react",
   "microsoft/vscode",
-  "golang/go",
-  "rust-lang/rust",
+  "supabase/supabase",
+  "vercel/next.js",
+  "shadcn-ui/ui",
+  "trpc/trpc",
 ];
 
 const DEMO_RESULT: AnalysisResult = {
@@ -680,7 +682,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
           </div>
           {error && <p className="form-error">{error}</p>}
           <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-            <span style={{ fontSize: 13, color: "var(--muted)", flexShrink: 0 }}>Try an example:</span>
+            <span style={{ fontSize: 13, color: "var(--muted)", flexShrink: 0 }}>Try it on:</span>
             {POPULAR_REPOS.map((repo) => (
               <button
                 key={repo}
