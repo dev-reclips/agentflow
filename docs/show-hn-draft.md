@@ -105,12 +105,19 @@ kinds of tasks agents handle well vs. poorly.
 
 ## What to expect
 
-**Common questions to prepare for:**
-1. "How do you handle agent mistakes / bad PRs?" → All PRs go through normal review. Agent opens PR, human merges.
-2. "What kinds of issues can it handle?" → Bug fixes with clear repro steps, boilerplate, docs, test coverage gaps. Not architecture decisions.
-3. "How does the GitHub auth work?" → GitHub App with repo-scoped read/write. Agents can't push to protected branches by default.
-4. "Is this just another wrapper around GPT-4?" → No. Multi-agent orchestration, memory, skills system, company-level isolation.
-5. "What's the pricing?" → Starter $499/mo (3 agents), Growth $1,499/mo (10 agents). Free 14-day trial.
+**Common questions — analyzer tool (will dominate since that's the hook):**
+1. "How does the analyzer work technically?" → Fetches open issues from GitHub's public API (no auth needed), maps issue labels to standard categories (bug, enhancement, documentation, etc.), applies per-category hour estimates, shows total cost at $100/hr. All runs in the browser — no server involved, no data stored.
+2. "Why does my repo show 0 or very few issues?" → Your repo may not use standard GitHub labels (bug, enhancement, documentation). The tool falls back to estimating ~30% of open issues as agentable. Add standard labels and rerun for exact numbers.
+3. "I'm getting a rate limit error" → GitHub's unauthenticated API allows 60 requests/hour per IP. Under high traffic or if you ran it several times quickly, you'll hit this. Try again in a minute, or sign up (free trial) to use authenticated requests.
+4. "Can it analyze private repos?" → The free tool is public repos only (GitHub's unauthenticated API). AgentFlow itself works with private repos via GitHub App installation.
+5. "The issue count looks wrong / too high" → For repos with 300+ open issues, the tool estimates the total using the GitHub pagination header and scales the category breakdown proportionally. The estimate is within ~10-20% of the true count.
+
+**Common questions — product:**
+6. "How do you handle agent mistakes / bad PRs?" → All PRs go through normal review. Agent opens PR, human merges.
+7. "What kinds of issues can it handle?" → Bug fixes with clear repro steps, boilerplate, docs, test coverage gaps. Not architecture decisions.
+8. "How does the GitHub auth work?" → GitHub App with repo-scoped read/write. Agents can't push to protected branches by default.
+9. "Is this just another wrapper around GPT-4?" → No. Multi-agent orchestration, memory, skills system, company-level isolation.
+10. "What's the pricing?" → Starter $499/mo (3 agents), Growth $1,499/mo (10 agents). Free 14-day trial.
 
 ## Post-HN actions (first 2 hours)
 
