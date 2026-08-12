@@ -1,33 +1,46 @@
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { api } from "@/lib/api";
-import { setToken } from "@/lib/auth";
-import { capture, identifyUser } from "@/lib/posthog";
+
+const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID ?? "";
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const trimmed = email.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setError("Enter a valid work email.");
+      return;
+    }
     setError("");
     setLoading(true);
-    try {
-      const result = await api.register(form.email, form.password);
-      setToken(result.token);
-      sessionStorage.setItem("agentflow_new_api_key", result.apiKey);
-      identifyUser(result.user.id, result.company.id);
-      capture("user_signed_up", { company_id: result.company.id, plan: "free" });
-      router.push("/onboarding");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
-    } finally {
-      setLoading(false);
+    if (FORMSPREE_FORM_ID) {
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ email: trimmed, source: "register_waitlist" }),
+        });
+        if (!res.ok) {
+          setError("Something went wrong. Please try again.");
+          setLoading(false);
+          return;
+        }
+      } catch {
+        setError("Something went wrong. Please try again.");
+        setLoading(false);
+        return;
+      }
     }
+    setSubmittedEmail(trimmed);
+    setSubmitted(true);
+    setLoading(false);
   }
 
   return (
@@ -36,42 +49,50 @@ export default function RegisterPage() {
         AgentFlow
       </Link>
       <div className="auth-card">
-        <h1 className="auth-title">Create your account</h1>
-        <p className="auth-sub">Free plan — no credit card required. Get your first agent running in under 2 minutes.</p>
-        <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label className="form-label" htmlFor="email">Work email</label>
-            <input
-              id="email"
-              className="form-input"
-              type="email"
-              placeholder="you@company.com"
-              required
-              value={form.email}
-              onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
-            />
-          </div>
-          <div className="form-group">
-            <label className="form-label" htmlFor="password">Password</label>
-            <input
-              id="password"
-              className="form-input"
-              type="password"
-              placeholder="Minimum 8 characters"
-              required
-              minLength={8}
-              value={form.password}
-              onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
-            />
-          </div>
-          {error && <p className="form-error">{error}</p>}
-          <button className="btn btn-primary" type="submit" disabled={loading} style={{ width: "100%", padding: "12px" }}>
-            {loading ? "Creating account…" : "Create account →"}
-          </button>
-        </form>
-        <p className="auth-footer">
-          Already have an account? <Link href="/login">Log in</Link>
-        </p>
+        {submitted ? (
+          <>
+            <div style={{ fontSize: 40, marginBottom: 16, textAlign: "center" }}>✓</div>
+            <h1 className="auth-title" style={{ textAlign: "center" }}>You are in.</h1>
+            <p className="auth-sub" style={{ textAlign: "center" }}>
+              We will email you at <strong>{submittedEmail}</strong> when production is live.
+            </p>
+            <Link href="/" className="btn btn-secondary" style={{ display: "block", textAlign: "center", marginTop: 8 }}>
+              Back to home
+            </Link>
+          </>
+        ) : (
+          <>
+            <h1 className="auth-title">You are on the list.</h1>
+            <p className="auth-sub">
+              AgentFlow is in early access. Enter your work email and we will notify you the moment
+              your account is ready — no card required, 14-day free trial.
+            </p>
+            <form className="auth-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label" htmlFor="email">Work email</label>
+                <input
+                  id="email"
+                  className="form-input"
+                  type="email"
+                  placeholder="you@company.com"
+                  required
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); setError(""); }}
+                  disabled={loading}
+                />
+              </div>
+              {error && <p className="form-error">{error}</p>}
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading || !email.trim()}
+                style={{ width: "100%", padding: "12px" }}
+              >
+                {loading ? "Saving your spot…" : "Notify me when ready"}
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
