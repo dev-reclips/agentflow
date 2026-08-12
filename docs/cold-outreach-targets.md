@@ -78,6 +78,33 @@ These 15 companies match the ICP exactly: 5–50 engineers, GitHub-native, Serie
 
 ---
 
+## Tier 4 — Wave 3 (added 2026-08-12)
+
+| # | Company | Why ICP | Contact Target | GitHub | LP |
+|---|---------|---------|---------------|--------|----|
+| 15 | **Linear** | Project management tool, 500+ open issues on linear-app/linear, engineering-first culture | **Tuomas Artman (CTO)** | github.com/linear-app/linear | https://dev-reclips.github.io/lp/linear |
+| 16 | **Raycast** | Developer launcher, 2,000+ open issues on raycast/extensions, high-backlog dev tool | **Thomas Paul Mann (CTO/co-founder)** | github.com/raycast/extensions | https://dev-reclips.github.io/lp/raycast |
+| 17 | **Clerk** | Auth platform, 300+ open issues on clerk/javascript, very developer-first | **Colin Sidoti (CEO)** | github.com/clerk/javascript | https://dev-reclips.github.io/lp/clerk |
+| 18 | **Sanity** | Content platform, 400+ open issues on sanity-io/sanity, active GitHub community | **Even Westvang (CTO)** | github.com/sanity-io/sanity | https://dev-reclips.github.io/lp/sanity |
+| 19 | **Vercel** | Deployment platform, 2,800+ open issues on vercel/next.js, very visible backlog | **Guillermo Rauch (CEO)** | github.com/vercel/next.js | https://dev-reclips.github.io/lp/vercel |
+
+**DM for Tuomas Artman (Linear):**
+> Hey Tuomas — Linear has 500+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs. Made you a page: https://dev-reclips.github.io/lp/linear — 14-day trial, no card. Worth 20 min?
+
+**DM for Thomas Paul Mann (Raycast):**
+> Hey Thomas — Raycast has 2,000+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs. Made you a page: https://dev-reclips.github.io/lp/raycast — 14-day trial, no card. Worth 20 min?
+
+**DM for Colin Sidoti (Clerk):**
+> Hey Colin — Clerk has 300+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs. Made you a page: https://dev-reclips.github.io/lp/clerk — 14-day trial, no card. Worth 20 min?
+
+**DM for Even Westvang (Sanity):**
+> Hey Even — Sanity has 400+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs. Made you a page: https://dev-reclips.github.io/lp/sanity — 14-day trial, no card. Worth 20 min?
+
+**DM for Guillermo Rauch (Vercel):**
+> Hey Guillermo — Vercel has 2,800+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs. Made you a page: https://dev-reclips.github.io/lp/vercel — 14-day trial, no card. Worth 20 min?
+
+---
+
 ## Email Template — Tier 1 (personalized, 5 min each)
 
 **Subject:** AgentFlow — close more GitHub issues automatically
