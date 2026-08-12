@@ -310,7 +310,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
         const estCost = zeroMatch ? estHours * DEV_HOURLY_RATE : result.totalCost;
         return (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
-            <StatCard label="Open issues" value={result.totalOpen.toString()} sub="fetched from GitHub API" />
+            <StatCard label="Open issues" value={result.totalOpen.toString()} sub="open on GitHub" />
             <StatCard label="AgentFlow can handle" value={zeroMatch ? `~${estHandled}` : result.totalMatchingIssues.toString()} sub={zeroMatch ? "estimated (unlabeled repo)" : "matching issues"} accent="var(--accent)" />
             <StatCard label="Estimated hours saved" value={`${Math.round(estHours)}h`} sub="per month" accent="var(--green)" />
             <StatCard label="Estimated cost saved" value={fmt(estCost)} sub={`at $${DEV_HOURLY_RATE}/hr`} accent="var(--green)" />
