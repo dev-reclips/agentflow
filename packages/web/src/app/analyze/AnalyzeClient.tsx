@@ -623,6 +623,9 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
               </button>
             ))}
           </div>
+          <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
+            Runs entirely in your browser via the GitHub public API — no data sent to our servers.
+          </p>
         </form>
       )}
 
