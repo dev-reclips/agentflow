@@ -237,6 +237,10 @@ function StatCard({
 function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean; isDemo?: boolean }) {
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
+  const [postResultEmail, setPostResultEmail] = useState("");
+  const [postResultEmailError, setPostResultEmailError] = useState<string | null>(null);
+  const [postResultSubmitting, setPostResultSubmitting] = useState(false);
+  const [postResultSubmitted, setPostResultSubmitted] = useState(false);
   function trackShare(channel: string) { capture("analyze_share", { repo: result.repo, channel }); }
   const ctaUrl = IS_STATIC_EXPORT ? `/book-demo?repo=${encodeURIComponent(result.repo)}` : `/register?repo=${encodeURIComponent(result.repo)}`;
   const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
@@ -257,6 +261,37 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
       setCopiedQueryLink(true);
       setTimeout(() => setCopiedQueryLink(false), 2000);
     });
+  }
+
+  async function handlePostResultEmailSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const trimmed = postResultEmail.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setPostResultEmailError("Enter a valid work email.");
+      return;
+    }
+    setPostResultSubmitting(true);
+    if (FORMSPREE_FORM_ID) {
+      try {
+        const res = await fetch(`https://formspree.io/f/${FORMSPREE_FORM_ID}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ email: trimmed, repo: result.repo, totalCost: result.totalCost, source: "post_results" }),
+        });
+        if (!res.ok) {
+          setPostResultEmailError("Something went wrong. Please try again.");
+          setPostResultSubmitting(false);
+          return;
+        }
+      } catch {
+        setPostResultEmailError("Something went wrong. Please try again.");
+        setPostResultSubmitting(false);
+        return;
+      }
+    }
+    try { await navigator.clipboard.writeText(shareUrl ?? queryParamUrl); } catch { /* ok */ }
+    setPostResultSubmitted(true);
+    setPostResultSubmitting(false);
   }
 
   return (
@@ -368,6 +403,43 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
         </div>
       )}
 
+      {!isDemo && (
+        <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 12, padding: "24px 28px" }}>
+          {postResultSubmitted ? (
+            <p style={{ fontSize: 15, color: "#16a34a", fontWeight: 600, textAlign: "center" }}>
+              ✓ Check your inbox! Your shareable link is already in your clipboard.
+            </p>
+          ) : (
+            <>
+              <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Email me this analysis</p>
+              <p style={{ fontSize: 14, color: "var(--muted)", marginBottom: 16 }}>
+                We&apos;ll send your personalized analysis + how to cut your backlog by 30%
+              </p>
+              <form onSubmit={handlePostResultEmailSubmit} style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <input
+                  className="form-input"
+                  type="email"
+                  value={postResultEmail}
+                  onChange={(e) => { setPostResultEmail(e.target.value); setPostResultEmailError(null); }}
+                  placeholder="you@company.com"
+                  disabled={postResultSubmitting}
+                  style={{ flex: 1, minWidth: 200, fontSize: 15, padding: "10px 14px" }}
+                />
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={postResultSubmitting || !postResultEmail.trim()}
+                  style={{ padding: "10px 20px", fontSize: 15, whiteSpace: "nowrap" }}
+                >
+                  {postResultSubmitting ? "Sending…" : "Get the full report"}
+                </button>
+              </form>
+              {postResultEmailError && <p className="form-error" style={{ marginTop: 8 }}>{postResultEmailError}</p>}
+            </>
+          )}
+        </div>
+      )}
+
       <div style={{ background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.3)", borderRadius: 12, padding: "28px 32px", textAlign: "center" }}>
         <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 8 }}>
           {result.totalMatchingIssues > 0
@@ -414,10 +486,8 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           onClick={() => {
             trackShare("twitter");
             const agentHandled = result.totalMatchingIssues > 0 ? result.totalMatchingIssues : Math.round(result.totalOpen * 0.3);
-            const isPopular = POPULAR_REPOS.includes(result.repo);
-            const text = isPopular
-              ? `${result.repo} has ${result.totalOpen} open issues. AgentFlow estimates it can auto-close ~${agentHandled} of them. Free backlog analyzer:`
-              : `My GitHub repo ${result.repo} has ${result.totalOpen} open issues. AgentFlow says it can auto-close ~${agentHandled} of them. Free analyzer:`;
+            const estHours = result.totalMatchingIssues === 0 && result.totalOpen > 0 ? agentHandled * 2 : result.totalHours;
+            const text = `Analyzed ${result.repo} with @AgentFlow — ${agentHandled} issues that AI agents can close automatically. That's ${Math.round(estHours)}h/month. Try your repo:`;
             const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
             window.open(twitterUrl, "_blank", "noopener,noreferrer");
           }}
