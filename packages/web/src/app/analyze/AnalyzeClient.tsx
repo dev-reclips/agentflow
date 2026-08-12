@@ -20,6 +20,13 @@ const IS_STATIC_EXPORT = !process.env.NEXT_PUBLIC_API_URL;
 const FORMSPREE_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FORM_ID ?? "";
 const FALLBACK_EMAIL = "dev@reclips.ai";
 
+const POPULAR_REPOS = [
+  "facebook/react",
+  "microsoft/vscode",
+  "golang/go",
+  "rust-lang/rust",
+];
+
 const DEMO_RESULT: AnalysisResult = {
   repo: "vercel/next.js",
   totalOpen: 2847,
@@ -406,6 +413,16 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
         >
           Share on X (Twitter)
         </button>
+        <button
+          className="btn btn-secondary"
+          style={{ fontSize: 14, padding: "8px 18px" }}
+          onClick={() => {
+            const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
+            window.open(linkedInUrl, "_blank", "noopener,noreferrer");
+          }}
+        >
+          Share on LinkedIn
+        </button>
       </div>
     </div>
   );
@@ -575,6 +592,32 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
             </button>
           </div>
           {error && <p className="form-error">{error}</p>}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 13, color: "var(--muted)", flexShrink: 0 }}>Try an example:</span>
+            {POPULAR_REPOS.map((repo) => (
+              <button
+                key={repo}
+                type="button"
+                disabled={loading}
+                onClick={() => { setUrl(repo); runAnalysis(repo); }}
+                style={{
+                  background: "var(--surface)",
+                  border: "1px solid var(--border)",
+                  borderRadius: 20,
+                  padding: "4px 12px",
+                  fontSize: 13,
+                  fontFamily: "var(--mono)",
+                  color: "var(--muted)",
+                  cursor: loading ? "not-allowed" : "pointer",
+                  transition: "border-color 0.15s, color 0.15s",
+                }}
+                onMouseEnter={(e) => { (e.target as HTMLButtonElement).style.borderColor = "var(--accent)"; (e.target as HTMLButtonElement).style.color = "var(--accent)"; }}
+                onMouseLeave={(e) => { (e.target as HTMLButtonElement).style.borderColor = "var(--border)"; (e.target as HTMLButtonElement).style.color = "var(--muted)"; }}
+              >
+                {repo}
+              </button>
+            ))}
+          </div>
         </form>
       )}
 
