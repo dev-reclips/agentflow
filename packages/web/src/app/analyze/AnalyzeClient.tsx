@@ -66,13 +66,14 @@ function parseRepoUrl(input: string): { owner: string; repo: string } | null {
   return null;
 }
 
-async function fetchIssues(owner: string, repo: string): Promise<{ issues: GitHubIssue[]; totalCount: number }> {
+async function fetchIssues(owner: string, repo: string, onProgress?: (msg: string) => void): Promise<{ issues: GitHubIssue[]; totalCount: number }> {
   const allIssues: GitHubIssue[] = [];
   let estimatedTotal = 0;
   let totalItemsInSample = 0;
   let fetchedAll = false;
 
   for (let page = 1; page <= 3; page++) {
+    onProgress?.(page === 1 ? `Fetching issues from ${owner}/${repo}…` : `Found ${allIssues.length}+ issues, checking for more…`);
     const res = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/issues?state=open&per_page=100&page=${page}`,
       { headers: { Accept: "application/vnd.github.v3+json" } }
@@ -97,6 +98,8 @@ async function fetchIssues(owner: string, repo: string): Promise<{ issues: GitHu
     allIssues.push(...issues);
     if (data.length < 100) { fetchedAll = true; break; }
   }
+
+  onProgress?.(`Analyzing ${allIssues.length}${!fetchedAll && estimatedTotal > allIssues.length ? `+ (of ~${estimatedTotal})` : ""} issues…`);
 
   // Only use Link header estimate when we hit the page cap — exact count when we fetched everything
   let totalCount = allIssues.length;
@@ -431,6 +434,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
 export default function AnalyzeClient({ initialResult, initialResultId, initialRepo, demoMode }: { initialResult?: AnalysisResult; initialResultId?: string; initialRepo?: string; demoMode?: boolean }) {
   const [url, setUrl] = useState(initialRepo ?? "");
   const [loading, setLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   // gate states
@@ -461,8 +465,9 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
     }
 
     setLoading(true);
+    setLoadingMessage(`Fetching issues from ${parsed.owner}/${parsed.repo}…`);
     try {
-      const { issues, totalCount } = await fetchIssues(parsed.owner, parsed.repo);
+      const { issues, totalCount } = await fetchIssues(parsed.owner, parsed.repo, setLoadingMessage);
       const analysis = analyzeIssues(issues, parsed.owner, parsed.repo, totalCount);
       const id = await persistResult(analysis);
       // On static export with no Formspree, skip the email gate — show results directly
@@ -635,7 +640,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
             }}
           />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-          <p>Analyzing your backlog…</p>
+          <p style={{ fontSize: 14 }}>{loadingMessage || "Analyzing your backlog…"}</p>
         </div>
       )}
 
