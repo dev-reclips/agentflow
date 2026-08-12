@@ -736,6 +736,30 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
             </div>
           )}
           <ResultsDisplay result={result} resultId={resultId} fromQueryParam={fromQueryParam} isDemo={isDemo} />
+          {!isDemo && (
+            <form
+              onSubmit={async (e) => { e.preventDefault(); setResult(null); setResultId(null); await runAnalysis(url); }}
+              style={{ display: "flex", gap: 12, flexWrap: "wrap", paddingTop: 8, borderTop: "1px solid var(--border)" }}
+            >
+              <input
+                className="form-input"
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="github.com/owner/repo"
+                disabled={loading}
+                style={{ flex: 1, minWidth: 200, fontSize: 15, padding: "10px 14px" }}
+              />
+              <button
+                type="submit"
+                className="btn btn-secondary"
+                disabled={loading || !url.trim()}
+                style={{ padding: "10px 20px", fontSize: 15, whiteSpace: "nowrap" }}
+              >
+                Analyze another repo →
+              </button>
+            </form>
+          )}
         </div>
       )}
     </div>
