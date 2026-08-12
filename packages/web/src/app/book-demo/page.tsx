@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { BookDemoCtaClient } from "./BookDemoCtaClient";
 
 export const metadata: Metadata = {
   title: "Book a Demo — AgentFlow",
@@ -7,8 +8,7 @@ export const metadata: Metadata = {
     "See AgentFlow close a real GitHub issue in 20 minutes. We connect to your repo, run an agent on a real issue, and show you the PR it opens. No commitment.",
 };
 
-const MAILTO =
-  "mailto:dev@reclips.ai?subject=AgentFlow+Demo+Request&body=Hi%2C%20I%27d+like+to+see+a+demo+of+AgentFlow+for+[Company+Name].+Best+time+for+me%3A+[time+slot].";
+const IS_STATIC = !process.env.NEXT_PUBLIC_API_URL;
 
 export default function BookDemoPage() {
   return (
@@ -25,9 +25,11 @@ export default function BookDemoPage() {
             <Link href="/pricing" className="nav-text-link">
               Pricing
             </Link>
-            <Link href="/register" className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
-              Start free trial
-            </Link>
+            {!IS_STATIC && (
+              <Link href="/register" className="btn btn-primary" style={{ padding: "8px 16px", fontSize: "14px" }}>
+                Start free trial
+              </Link>
+            )}
           </div>
         </div>
       </nav>
@@ -118,14 +120,7 @@ export default function BookDemoPage() {
             </ul>
 
             {/* Primary CTA */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 16 }}>
-              <a href={MAILTO} className="btn btn-primary btn-lg">
-                Email to book →
-              </a>
-              <p style={{ fontSize: 14, color: "var(--muted)" }}>
-                Opens your email client with subject and body pre-filled. Reply within one business day.
-              </p>
-            </div>
+            <BookDemoCtaClient />
 
             {/* Secondary CTA — Calendly placeholder for when calendar link is set up */}
             {/* TODO: replace this div with a Calendly embed once the board sets up a calendar link */}
@@ -177,8 +172,7 @@ export default function BookDemoPage() {
         <div className="container">
           <p>
             © 2026 AgentFlow ·{" "}
-            <a href="/login">Log in</a> ·{" "}
-            <a href="/register">Sign up</a> ·{" "}
+            {!IS_STATIC && <><a href="/login">Log in</a> · <a href="/register">Sign up</a> · </>}
             <a href="/pricing">Pricing</a> ·{" "}
             <a href="/analyze">Free Analyzer</a> ·{" "}
             <a href="/docs">Docs</a>

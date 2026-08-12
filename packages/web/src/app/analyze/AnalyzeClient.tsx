@@ -238,7 +238,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
   function trackShare(channel: string) { capture("analyze_share", { repo: result.repo, channel }); }
-  const ctaUrl = IS_STATIC_EXPORT ? `/book-demo` : `/register?repo=${encodeURIComponent(result.repo)}`;
+  const ctaUrl = IS_STATIC_EXPORT ? `/book-demo?repo=${encodeURIComponent(result.repo)}` : `/register?repo=${encodeURIComponent(result.repo)}`;
   const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
   const queryParamUrl = `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze?repo=${encodeURIComponent(result.repo)}`;
 
