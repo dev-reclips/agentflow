@@ -133,6 +133,26 @@ LinkedIn: search "Maidul Islam Infisical"
 
 > Hey Maidul — Infisical has 712 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/infisical — 14-day trial, no card. Worth 20 min?
 
+### Steven Fabre — CTO, Liveblocks
+LinkedIn: search "Steven Fabre Liveblocks"
+
+> Hey Steven — Liveblocks has 300+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/liveblocks — 14-day trial, no card. Worth 20 min?
+
+### Alejandro — CTO, Tinybird
+LinkedIn: search "Alejandro Tinybird"
+
+> Hey Alejandro — Tinybird has 400+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/tinybird — 14-day trial, no card. Worth 20 min?
+
+### Bastian Hafner — CTO, Nango
+LinkedIn: search "Bastian Hafner Nango"
+
+> Hey Bastian — Nango has 500+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/nango — 14-day trial, no card. Worth 20 min?
+
+### Timur Ercan — CTO, Documenso
+LinkedIn: search "Timur Ercan Documenso"
+
+> Hey Timur — Documenso has 300+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them. Made you a page: https://dev-reclips.github.io/lp/documenso — 14-day trial, no card. Worth 20 min?
+
 ---
 
 ## Pivot C — Send 5 newsletter pitches (30 minutes)
