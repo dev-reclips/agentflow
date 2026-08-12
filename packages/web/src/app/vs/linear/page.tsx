@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs Linear — Automate Your Backlog Instead of Just Organizing It",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Linear is excellent for organizing and tracking issues. AgentFlow is for closing them automatically. Linear tracks your backlog. AgentFlow shrinks it.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs Linear — Automate Your Backlog Instead of Just Organizing It",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Linear is excellent for organizing and tracking issues. AgentFlow is for closing them automatically. Linear tracks your backlog. AgentFlow shrinks it.",
+    url: "https://agentflow.ai/vs/linear",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Linear" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/linear",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs Linear",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Linear is excellent for organizing and tracking issues. AgentFlow is for closing them automatically. Linear tracks your backlog. AgentFlow shrinks it.",
+  url: "https://agentflow.ai/vs/linear",
 };
 
-export default function VsCursorPage() {
+export default function VsLinearPage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs Linear
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Linear is excellent at organizing and tracking issues. AgentFlow is for closing them automatically. Linear tracks your backlog. AgentFlow shrinks it.
             </p>
           </div>
         </section>
@@ -86,7 +86,7 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "40%",
                     }}>
-                      Feature
+                      Capability
                     </th>
                     <th style={{
                       textAlign: "center",
@@ -106,50 +106,50 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Linear
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Automatically closes GitHub issues with PRs",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Works without a developer at the keyboard",
+                      feature: "Backlog organization & prioritization",
+                      agentflow: "Via GitHub labels",
+                      competitor: "Yes (best-in-class)",
+                      agentflowHighlight: false,
+                    },
+                    {
+                      feature: "Writes code from issue descriptions",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Native GitHub integration",
+                      feature: "Opens pull requests automatically",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Proactive — picks up issues automatically",
+                      feature: "GitHub-native integration",
                       agentflow: "Yes",
-                      competitor: "No (reactive only)",
+                      competitor: "Partial (via sync)",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "End-to-end: triage → PR → review",
+                      feature: "Real-time agent dashboard",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "IDE required",
-                      agentflow: "No",
-                      competitor: "Yes",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Inline code suggestions",
+                      feature: "Issue tracking & sprint planning",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: false,
@@ -157,7 +157,7 @@ export default function VsCursorPage() {
                     {
                       feature: "Pricing",
                       agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      competitor: "From $8/seat/mo",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -187,59 +187,59 @@ export default function VsCursorPage() {
         {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <p className="section-label">Why teams add AgentFlow alongside Linear</p>
+            <h2 className="section-title">Organize vs execute</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Linear organizes. AgentFlow executes.</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  Linear is the best tool for tracking issues, managing sprints, and communicating priorities. But it doesn't write code — that's still a human job. AgentFlow picks up where Linear leaves off and ships PRs for you.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Your backlog is costing you</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  Most engineering teams have hundreds of small, well-scoped issues sitting untouched — bugs, polish items, small features. They're perfectly described in Linear. They never get picked up because engineers have bigger priorities.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>GitHub-native, not a new tool</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  AgentFlow works directly in your GitHub repositories. Keep using Linear for planning — just label issues as agent-ready and AgentFlow handles the rest. No migration, no workflow change.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* How AgentFlow resolves an issue */}
+        {/* How AgentFlow works */}
         <section style={{ paddingBottom: "72px" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label" style={{ textAlign: "left" }}>How it works</p>
             <h2 className="section-title" style={{ textAlign: "left", fontSize: "clamp(20px, 2.5vw, 28px)" }}>
-              How AgentFlow resolves a GitHub issue end-to-end
+              How AgentFlow shrinks your backlog automatically
             </h2>
             <div style={{ marginTop: "32px", display: "flex", flexDirection: "column", gap: "24px" }}>
               {[
                 {
                   step: "1",
-                  title: "Issue detected",
-                  desc: "AgentFlow watches your GitHub board. When a new issue appears — or one is assigned to AgentFlow — it immediately picks it up, reads the full context, and plans the fix.",
+                  title: "Label issues as agent-ready",
+                  desc: "In your GitHub repo, label issues you want AgentFlow to handle. Small bugs, well-scoped features, documentation updates — anything a focused engineer could knock out in a few hours.",
                 },
                 {
                   step: "2",
-                  title: "Autonomous implementation",
-                  desc: "A coding agent reads the relevant parts of your codebase, writes the change, and runs your tests — no developer prompt, no IDE, no context-switch required.",
+                  title: "Agent picks up the work",
+                  desc: "AgentFlow's triage agent reads the issue, understands the codebase context, and assigns it to a coding agent automatically — no manual assignment, no Slack ping.",
                 },
                 {
                   step: "3",
-                  title: "PR opened with full context",
-                  desc: "AgentFlow opens a pull request with a clear description of what changed and why. A review agent checks for correctness and style before it reaches your team.",
+                  title: "Code is written and tested",
+                  desc: "The coding agent implements the fix inside your real codebase and runs your existing test suite. If tests fail, it iterates until they pass.",
                 },
                 {
                   step: "4",
-                  title: "Your team reviews and merges",
-                  desc: "Engineers review AI-authored PRs the same way they review any teammate's work. One approval and it merges — issue closed, backlog item done.",
+                  title: "PR opened, issue closed",
+                  desc: "A pull request is opened with a clear description. Your team reviews and merges — the Linear issue or GitHub issue closes, and your backlog is visibly smaller.",
                 },
               ].map((item) => (
                 <div key={item.step} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
@@ -262,13 +262,13 @@ export default function VsCursorPage() {
         <section className="cta-section">
           <div className="container">
             <div className="cta-box">
-              <h2 className="cta-title">Start your free trial</h2>
+              <h2 className="cta-title">Try AgentFlow free — 14-day trial, no card</h2>
               <p className="cta-sub">
-                Connect your GitHub repo in 10 minutes. No credit card required.
+                Connect your GitHub repo in 10 minutes. Start closing backlog issues automatically.
               </p>
               <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
                 <Link href="/register" className="btn btn-primary btn-lg">
-                  Start free trial →
+                  Get started free →
                 </Link>
                 <Link href="/book-demo" className="btn btn-secondary btn-lg">
                   Book a demo

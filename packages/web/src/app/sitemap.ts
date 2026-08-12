@@ -23,5 +23,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/lp/loops`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/lp/resend`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/lp/cal`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/vs/devin`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/cursor`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/github-copilot`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/sweep`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/coderabbit`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/tabnine`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/amazon-q`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/aider`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/vs/linear`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${base}/vs/jira`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
   ];
 }

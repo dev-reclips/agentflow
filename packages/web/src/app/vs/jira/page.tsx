@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs Jira — Close Your Backlog Instead of Managing It",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Jira is project management. AgentFlow is code execution. Jira shows you the backlog. AgentFlow closes it. See how many of your issues are agent-ready.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs Jira — Close Your Backlog Instead of Managing It",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Jira is project management. AgentFlow is code execution. Jira shows you the backlog. AgentFlow closes it. See how many of your issues are agent-ready.",
+    url: "https://agentflow.ai/vs/jira",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Jira" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/jira",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs Jira",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Jira is project management. AgentFlow is code execution. Jira shows you the backlog. AgentFlow closes it.",
+  url: "https://agentflow.ai/vs/jira",
 };
 
-export default function VsCursorPage() {
+export default function VsJiraPage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs Jira
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Jira is project management. AgentFlow is code execution. Jira shows you the backlog. AgentFlow closes it.
             </p>
           </div>
         </section>
@@ -86,7 +86,7 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "40%",
                     }}>
-                      Feature
+                      Capability
                     </th>
                     <th style={{
                       textAlign: "center",
@@ -106,14 +106,38 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Jira
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Automatically closes issues with shipped PRs",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Project & sprint management",
+                      agentflow: "No",
+                      competitor: "Yes (industry standard)",
+                      agentflowHighlight: false,
+                    },
+                    {
+                      feature: "Writes and ships code from ticket descriptions",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "GitHub-native issue resolution",
+                      agentflow: "Yes",
+                      competitor: "No",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Multi-agent orchestration (triage → code → review)",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
@@ -125,31 +149,7 @@ export default function VsCursorPage() {
                       agentflowHighlight: true,
                     },
                     {
-                      feature: "Native GitHub integration",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Proactive — picks up issues automatically",
-                      agentflow: "Yes",
-                      competitor: "No (reactive only)",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "End-to-end: triage → PR → review",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "IDE required",
-                      agentflow: "No",
-                      competitor: "Yes",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Inline code suggestions",
+                      feature: "Roadmaps & dependency tracking",
                       agentflow: "No",
                       competitor: "Yes",
                       agentflowHighlight: false,
@@ -157,7 +157,7 @@ export default function VsCursorPage() {
                     {
                       feature: "Pricing",
                       agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      competitor: "From $8.15/user/mo",
                       agentflowHighlight: false,
                     },
                   ].map((row, i) => (
@@ -187,59 +187,59 @@ export default function VsCursorPage() {
         {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <p className="section-label">The real problem with Jira backlogs</p>
+            <h2 className="section-title">Jira shows it. AgentFlow closes it.</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>80% of backlog dies there</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  The average engineering team has hundreds of well-written Jira tickets that never get resolved. Not because they're unimportant — because engineers are always pulled to bigger priorities. AgentFlow closes the long tail automatically.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Jira tracks status. AgentFlow changes it.</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  Jira is excellent at visualizing work, managing sprints, and tracking blockers. But it can't write code. AgentFlow picks up labeled GitHub issues and ships PRs — moving tickets from "In Progress" to "Done" without a human touch.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>No migration required</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  Keep Jira for planning and stakeholder communication. AgentFlow plugs into your GitHub repos directly. Sync issues from Jira to GitHub, label them for AgentFlow, and watch them close.
                 </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* How AgentFlow resolves an issue */}
+        {/* How AgentFlow works */}
         <section style={{ paddingBottom: "72px" }}>
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label" style={{ textAlign: "left" }}>How it works</p>
             <h2 className="section-title" style={{ textAlign: "left", fontSize: "clamp(20px, 2.5vw, 28px)" }}>
-              How AgentFlow resolves a GitHub issue end-to-end
+              How AgentFlow closes your Jira backlog
             </h2>
             <div style={{ marginTop: "32px", display: "flex", flexDirection: "column", gap: "24px" }}>
               {[
                 {
                   step: "1",
-                  title: "Issue detected",
-                  desc: "AgentFlow watches your GitHub board. When a new issue appears — or one is assigned to AgentFlow — it immediately picks it up, reads the full context, and plans the fix.",
+                  title: "Sync Jira tickets to GitHub issues",
+                  desc: "Use Jira's GitHub integration or a simple sync tool to mirror your agent-ready Jira tickets as GitHub issues. AgentFlow works natively with GitHub — no Jira API needed.",
                 },
                 {
                   step: "2",
-                  title: "Autonomous implementation",
-                  desc: "A coding agent reads the relevant parts of your codebase, writes the change, and runs your tests — no developer prompt, no IDE, no context-switch required.",
+                  title: "Label issues as agent-ready",
+                  desc: "Apply a label to the GitHub issues you want AgentFlow to handle. Small bugs, well-scoped tasks, polish items — anything with a clear definition of done.",
                 },
                 {
                   step: "3",
-                  title: "PR opened with full context",
-                  desc: "AgentFlow opens a pull request with a clear description of what changed and why. A review agent checks for correctness and style before it reaches your team.",
+                  title: "Agents write and test the code",
+                  desc: "AgentFlow's coding agents pick up the issue, read your codebase, implement the fix, and run your test suite — entirely autonomously.",
                 },
                 {
                   step: "4",
-                  title: "Your team reviews and merges",
-                  desc: "Engineers review AI-authored PRs the same way they review any teammate's work. One approval and it merges — issue closed, backlog item done.",
+                  title: "PR merged, Jira ticket closed",
+                  desc: "When the PR merges, the GitHub issue closes — and the linked Jira ticket updates automatically. Your backlog shrinks. Your team ships more without doing more.",
                 },
               ].map((item) => (
                 <div key={item.step} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
@@ -262,16 +262,16 @@ export default function VsCursorPage() {
         <section className="cta-section">
           <div className="container">
             <div className="cta-box">
-              <h2 className="cta-title">Start your free trial</h2>
+              <h2 className="cta-title">See how many of your issues are agent-ready</h2>
               <p className="cta-sub">
-                Connect your GitHub repo in 10 minutes. No credit card required.
+                Connect your GitHub repo and AgentFlow will analyze your backlog — showing exactly which issues agents can close autonomously.
               </p>
               <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-                <Link href="/register" className="btn btn-primary btn-lg">
-                  Start free trial →
+                <Link href="/analyze" className="btn btn-primary btn-lg">
+                  Analyze my repo →
                 </Link>
-                <Link href="/book-demo" className="btn btn-secondary btn-lg">
-                  Book a demo
+                <Link href="/register" className="btn btn-secondary btn-lg">
+                  Get started free
                 </Link>
               </div>
             </div>

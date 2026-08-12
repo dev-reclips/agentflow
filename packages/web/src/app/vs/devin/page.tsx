@@ -288,7 +288,9 @@ export default function VsDevinPage() {
             <a href="/vs/coderabbit">AgentFlow vs CodeRabbit</a> ·{" "}
             <a href="/vs/tabnine">AgentFlow vs Tabnine</a> ·{" "}
             <a href="/vs/amazon-q">AgentFlow vs Amazon Q</a> ·{" "}
-            <a href="/vs/aider">AgentFlow vs Aider</a>
+            <a href="/vs/aider">AgentFlow vs Aider</a> ·{" "}
+            <a href="/vs/linear">AgentFlow vs Linear</a> ·{" "}
+            <a href="/vs/jira">AgentFlow vs Jira</a>
           </p>
         </div>
       </footer>
