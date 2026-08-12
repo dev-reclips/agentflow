@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { capture } from "@/lib/posthog";
 
 const LABEL_CATEGORIES: Record<string, { label: string; hoursEach: number; color: string }> = {
   bug: { label: "Bugs", hoursEach: 3, color: "#ef4444" },
@@ -236,12 +237,14 @@ function StatCard({
 function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean; isDemo?: boolean }) {
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
+  function trackShare(channel: string) { capture("analyze_share", { repo: result.repo, channel }); }
   const ctaUrl = IS_STATIC_EXPORT ? `/book-demo` : `/register?repo=${encodeURIComponent(result.repo)}`;
   const shareUrl = resultId ? `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze/results/${resultId}` : null;
   const queryParamUrl = `${typeof window !== "undefined" ? window.location.origin : "https://agentflow.ai"}/analyze?repo=${encodeURIComponent(result.repo)}`;
 
   function handleCopyLink() {
     if (!shareUrl) return;
+    trackShare("copy_link");
     navigator.clipboard.writeText(shareUrl).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
@@ -249,6 +252,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
   }
 
   function handleCopyQueryLink() {
+    trackShare("copy_query_link");
     navigator.clipboard.writeText(queryParamUrl).then(() => {
       setCopiedQueryLink(true);
       setTimeout(() => setCopiedQueryLink(false), 2000);
@@ -408,6 +412,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           className="btn btn-secondary"
           style={{ fontSize: 14, padding: "8px 18px" }}
           onClick={() => {
+            trackShare("twitter");
             const agentHandled = result.totalMatchingIssues > 0 ? result.totalMatchingIssues : Math.round(result.totalOpen * 0.3);
             const isPopular = POPULAR_REPOS.includes(result.repo);
             const text = isPopular
@@ -423,6 +428,7 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           className="btn btn-secondary"
           style={{ fontSize: 14, padding: "8px 18px" }}
           onClick={() => {
+            trackShare("linkedin");
             const linkedInUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl ?? queryParamUrl)}`;
             window.open(linkedInUrl, "_blank", "noopener,noreferrer");
           }}
@@ -469,9 +475,11 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
 
     setLoading(true);
     setLoadingMessage(`Fetching issues from ${parsed.owner}/${parsed.repo}…`);
+    capture("analyze_submitted", { repo: `${parsed.owner}/${parsed.repo}` });
     try {
       const { issues, totalCount } = await fetchIssues(parsed.owner, parsed.repo, setLoadingMessage);
       const analysis = analyzeIssues(issues, parsed.owner, parsed.repo, totalCount);
+      capture("analyze_complete", { repo: analysis.repo, totalOpen: analysis.totalOpen, agentHandled: analysis.totalMatchingIssues, totalCost: analysis.totalCost });
       const id = await persistResult(analysis);
       // On static export with no Formspree, skip the email gate — show results directly
       if (IS_STATIC_EXPORT && !FORMSPREE_FORM_ID) {
@@ -485,6 +493,7 @@ export default function AnalyzeClient({ initialResult, initialResultId, initialR
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "api_error";
+      capture("analyze_error", { repo: `${parsed.owner}/${parsed.repo}`, error: msg });
       if (msg === "not_found") {
         setError("Repo not found — is it public? Double-check the URL.");
       } else if (msg === "rate_limit") {
