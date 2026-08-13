@@ -529,6 +529,16 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
         >
           {copiedHN ? "Copied!" : "Copy for HN comment"}
         </button>
+        <a
+          href="https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fdev-reclips.github.io%2Fanalyze&t=Show%20HN%3A%20Free%20tool%20%E2%80%94%20paste%20any%20GitHub%20repo%20URL%20and%20see%20what%20your%20backlog%20costs%20in%20engineer%20hours"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-secondary"
+          style={{ fontSize: 14, padding: "8px 18px" }}
+          onClick={() => trackShare("hn_submit")}
+        >
+          Post to HN
+        </a>
       </div>
     </div>
   );
