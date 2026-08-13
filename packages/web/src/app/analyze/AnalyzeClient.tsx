@@ -239,6 +239,7 @@ function StatCard({
 function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: AnalysisResult; resultId: string | null; fromQueryParam?: boolean; isDemo?: boolean }) {
   const [copied, setCopied] = useState(false);
   const [copiedQueryLink, setCopiedQueryLink] = useState(false);
+  const [copiedHN, setCopiedHN] = useState(false);
   const [postResultEmail, setPostResultEmail] = useState("");
   const [postResultEmailError, setPostResultEmailError] = useState<string | null>(null);
   const [postResultSubmitting, setPostResultSubmitting] = useState(false);
@@ -262,6 +263,20 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
     navigator.clipboard.writeText(queryParamUrl).then(() => {
       setCopiedQueryLink(true);
       setTimeout(() => setCopiedQueryLink(false), 2000);
+    });
+  }
+
+  function handleCopyForHN() {
+    const zeroMatch = result.totalMatchingIssues === 0 && result.totalOpen > 0;
+    const agentHandled = zeroMatch ? Math.round(result.totalOpen * 0.3) : result.totalMatchingIssues;
+    const estHours = zeroMatch ? agentHandled * 2 : result.totalHours;
+    const pct = result.totalOpen > 0 ? Math.round((agentHandled / result.totalOpen) * 100) : 0;
+    const [owner, repo] = result.repo.split("/");
+    const hnText = `Analyzed ${owner}/${repo}: ${result.totalOpen.toLocaleString()} open issues. ${agentHandled.toLocaleString()} (${pct}%) match AI-solvable patterns — ~${Math.round(estHours)} engineer-hours/month recoverable. ${queryParamUrl}`;
+    trackShare("hn_comment");
+    navigator.clipboard.writeText(hnText).then(() => {
+      setCopiedHN(true);
+      setTimeout(() => setCopiedHN(false), 2000);
     });
   }
 
@@ -506,6 +521,13 @@ function ResultsDisplay({ result, resultId, fromQueryParam, isDemo }: { result: 
           }}
         >
           Share on LinkedIn
+        </button>
+        <button
+          className="btn btn-secondary"
+          style={{ fontSize: 14, padding: "8px 18px" }}
+          onClick={handleCopyForHN}
+        >
+          {copiedHN ? "Copied!" : "Copy for HN comment"}
         </button>
       </div>
     </div>
