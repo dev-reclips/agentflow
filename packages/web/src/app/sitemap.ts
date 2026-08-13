@@ -18,6 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/blog/reduce-engineering-backlog`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/blog/ai-agents-vs-copilots`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
     { url: `${base}/blog/how-we-built-agentflow`, lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: `${base}/show-hn`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/lp/trigger-dev`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/lp/mintlify`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
     { url: `${base}/lp/loops`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.5 },
