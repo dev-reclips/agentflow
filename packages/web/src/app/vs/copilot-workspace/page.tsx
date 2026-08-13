@@ -2,33 +2,33 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+  title: "AgentFlow vs GitHub Copilot Workspace: Always-On Agent vs Session Tool",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
+    "Copilot Workspace requires a new task description and an active session. AgentFlow works on any backlog issue, opens real PRs, and runs 24/7 in your GitHub workflow.",
   openGraph: {
-    title: "AgentFlow vs Cursor — Autonomous GitHub Issue Resolution vs AI Code Editor",
+    title: "AgentFlow vs GitHub Copilot Workspace: Always-On Agent vs Session Tool",
     description:
-      "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-    url: "https://agentflow.ai/vs/cursor",
+      "Copilot Workspace requires a new task description and an active session. AgentFlow works on any backlog issue, opens real PRs, and runs 24/7 in your GitHub workflow.",
+    url: "https://agentflow.ai/vs/copilot-workspace",
     siteName: "AgentFlow",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs Cursor" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow vs GitHub Copilot Workspace" }],
     type: "website",
   },
   alternates: {
-    canonical: "https://agentflow.ai/vs/cursor",
+    canonical: "https://agentflow.ai/vs/copilot-workspace",
   },
 };
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "AgentFlow vs Cursor",
+  name: "AgentFlow vs GitHub Copilot Workspace",
   description:
-    "Cursor is an AI code editor that needs a developer at the keyboard. AgentFlow autonomously picks up GitHub issues and resolves them end-to-end while your team sleeps.",
-  url: "https://agentflow.ai/vs/cursor",
+    "Copilot Workspace requires a new task description and an active session. AgentFlow works on any backlog issue, opens real PRs, and runs 24/7 in your GitHub workflow.",
+  url: "https://agentflow.ai/vs/copilot-workspace",
 };
 
-export default function VsCursorPage() {
+export default function VsCopilotWorkspacePage() {
   return (
     <>
       <script
@@ -58,10 +58,10 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "800px" }}>
             <div className="hero-badge">Comparison</div>
             <h1 className="hero-title" style={{ fontSize: "clamp(24px, 3.5vw, 44px)", lineHeight: 1.2 }}>
-              AgentFlow vs Cursor
+              AgentFlow vs GitHub Copilot Workspace
             </h1>
             <p className="hero-sub" style={{ maxWidth: "640px", margin: "16px auto 0" }}>
-              Cursor makes you a faster developer. AgentFlow replaces the developer for entire classes of work — picking up GitHub issues autonomously and shipping PRs while your team focuses on what matters.
+              Copilot Workspace is a session-based coding tool that starts from a new task description. AgentFlow is an always-on agent that works your existing backlog, opens real PRs, and integrates with your CI/CD — no active session required.
             </p>
           </div>
         </section>
@@ -106,59 +106,59 @@ export default function VsCursorPage() {
                       fontWeight: 600,
                       width: "30%",
                     }}>
-                      Cursor
+                      Copilot Workspace
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {[
                     {
-                      feature: "Autonomous issue resolution",
+                      feature: "Works on existing backlog issues",
+                      agentflow: "Yes",
+                      competitor: "No — requires new task description",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Opens real PRs in your repo",
+                      agentflow: "Yes",
+                      competitor: "No — creates workspaces requiring manual file copy",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Always-on / async operation",
+                      agentflow: "Yes",
+                      competitor: "No — session-based, requires active user",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "CI/CD integration",
+                      agentflow: "Yes",
+                      competitor: "No — standalone tool",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Multi-agent orchestration",
+                      agentflow: "Yes",
+                      competitor: "No (single assistant)",
+                      agentflowHighlight: true,
+                    },
+                    {
+                      feature: "Real-time dashboard",
                       agentflow: "Yes",
                       competitor: "No",
                       agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Works without a developer at the keyboard",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Native GitHub integration",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Proactive — picks up issues automatically",
-                      agentflow: "Yes",
-                      competitor: "No (reactive only)",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "End-to-end: triage → PR → review",
-                      agentflow: "Yes",
-                      competitor: "No",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "IDE required",
-                      agentflow: "No",
-                      competitor: "Yes",
-                      agentflowHighlight: true,
-                    },
-                    {
-                      feature: "Inline code suggestions",
-                      agentflow: "No",
-                      competitor: "Yes",
-                      agentflowHighlight: false,
                     },
                     {
                       feature: "Pricing",
-                      agentflow: "From $499/mo",
-                      competitor: "From $20/mo per seat",
+                      agentflow: "$499–$1,499/mo",
+                      competitor: "Included with Copilot Enterprise (~$39/user/mo)",
                       agentflowHighlight: false,
+                    },
+                    {
+                      feature: "GitHub-native workflow",
+                      agentflow: "Yes",
+                      competitor: "Partial",
+                      agentflowHighlight: true,
                     },
                   ].map((row, i) => (
                     <tr key={i} style={{ borderBottom: "1px solid #1a1a28" }}>
@@ -187,25 +187,31 @@ export default function VsCursorPage() {
         {/* Key differentiators */}
         <section className="features" style={{ paddingTop: "0" }}>
           <div className="container" style={{ maxWidth: "800px" }}>
-            <p className="section-label">Why teams add AgentFlow</p>
-            <h2 className="section-title">Reactive vs proactive AI</h2>
+            <p className="section-label">Why teams choose AgentFlow</p>
+            <h2 className="section-title">The fundamental difference</h2>
             <div className="steps-grid" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>Cursor waits for you</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Your backlog, not a blank canvas</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor is a reactive tool: you open the IDE, highlight code, and ask it to help. Every suggestion still requires a developer at the keyboard to prompt, review, and apply changes.
+                  Copilot Workspace starts from a new task you describe from scratch. AgentFlow picks up issues directly from your GitHub backlog — no re-describing work that already exists.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>AgentFlow acts on its own</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Real PRs, not workspaces</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  AgentFlow watches your GitHub board. The moment an issue lands, it triages, plans, implements, and opens a PR — no developer prompt needed, no IDE open. It works while your team sleeps.
+                  Copilot Workspace produces a "workspace" that engineers must manually copy into their repo. AgentFlow opens a real pull request — reviewable and mergeable the same day it runs.
                 </p>
               </div>
               <div className="step-card">
-                <h3 className="feature-title" style={{ fontSize: "16px" }}>No IDE required</h3>
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Async by default</h3>
                 <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
-                  Cursor lives inside a desktop app. AgentFlow integrates directly with GitHub — no editor to install, no local setup to maintain, no context-switching out of your existing workflow.
+                  Copilot Workspace requires an engineer to be present in an active session. AgentFlow runs overnight, on weekends, and across time zones — shipping progress while your team sleeps.
+                </p>
+              </div>
+              <div className="step-card">
+                <h3 className="feature-title" style={{ fontSize: "16px" }}>Built into your CI/CD</h3>
+                <p style={{ color: "var(--muted)", fontSize: "14px", lineHeight: 1.7, marginTop: "12px" }}>
+                  Copilot Workspace is a standalone browser tool. AgentFlow hooks into your existing pipeline — tests run, checks pass, and nothing merges without your green light.
                 </p>
               </div>
             </div>
@@ -217,29 +223,29 @@ export default function VsCursorPage() {
           <div className="container" style={{ maxWidth: "720px" }}>
             <p className="section-label" style={{ textAlign: "left" }}>How it works</p>
             <h2 className="section-title" style={{ textAlign: "left", fontSize: "clamp(20px, 2.5vw, 28px)" }}>
-              How AgentFlow resolves a GitHub issue end-to-end
+              How AgentFlow handles your sprint backlog
             </h2>
             <div style={{ marginTop: "32px", display: "flex", flexDirection: "column", gap: "24px" }}>
               {[
                 {
                   step: "1",
-                  title: "Issue detected",
-                  desc: "AgentFlow watches your GitHub board. When a new issue appears — or one is assigned to AgentFlow — it immediately picks it up, reads the full context, and plans the fix.",
+                  title: "Triage",
+                  desc: "AgentFlow's triage agent reads new issues as they land, labels them, estimates complexity, and routes them to the right agent — automatically.",
                 },
                 {
                   step: "2",
-                  title: "Autonomous implementation",
-                  desc: "A coding agent reads the relevant parts of your codebase, writes the change, and runs your tests — no developer prompt, no IDE, no context-switch required.",
+                  title: "Implement",
+                  desc: "A coding agent pulls context from your repo, writes the fix, and runs your existing tests — all inside your real codebase, not a workspace.",
                 },
                 {
                   step: "3",
-                  title: "PR opened with full context",
-                  desc: "AgentFlow opens a pull request with a clear description of what changed and why. A review agent checks for correctness and style before it reaches your team.",
+                  title: "Review",
+                  desc: "A review agent checks the diff for correctness and style before a PR is opened. Your engineers review AI work the same way they review a teammate's PR.",
                 },
                 {
                   step: "4",
-                  title: "Your team reviews and merges",
-                  desc: "Engineers review AI-authored PRs the same way they review any teammate's work. One approval and it merges — issue closed, backlog item done.",
+                  title: "Merge and close",
+                  desc: "Merge when satisfied. The issue closes, the backlog shrinks, and your team stays focused on the work only humans can do.",
                 },
               ].map((item) => (
                 <div key={item.step} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
@@ -258,17 +264,43 @@ export default function VsCursorPage() {
           </div>
         </section>
 
+        {/* Analyze CTA */}
+        <section style={{ paddingBottom: "48px" }}>
+          <div className="container" style={{ maxWidth: "720px" }}>
+            <div style={{
+              background: "var(--card-bg, #13131f)",
+              border: "1px solid #222230",
+              borderRadius: "12px",
+              padding: "32px",
+              textAlign: "center",
+            }}>
+              <h2 style={{ fontSize: "clamp(18px, 2vw, 24px)", fontWeight: 700, marginBottom: "12px" }}>
+                See how AgentFlow handles your backlog
+              </h2>
+              <p style={{ color: "var(--muted)", fontSize: "15px", marginBottom: "24px" }}>
+                Paste your GitHub repo URL and get an instant breakdown of which issues AgentFlow can resolve today.
+              </p>
+              <Link
+                href="/analyze?repo=https://github.com/"
+                className="btn btn-primary btn-lg"
+              >
+                Analyze my repo →
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="cta-section">
           <div className="container">
             <div className="cta-box">
-              <h2 className="cta-title">Start your free trial</h2>
+              <h2 className="cta-title">Start your 14-day free trial</h2>
               <p className="cta-sub">
                 Connect your GitHub repo in 10 minutes. No credit card required.
               </p>
               <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
                 <Link href="/register" className="btn btn-primary btn-lg">
-                  Start free trial →
+                  Get started free →
                 </Link>
                 <Link href="/book-demo" className="btn btn-secondary btn-lg">
                   Book a demo
