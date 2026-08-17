@@ -51,7 +51,8 @@ Made you a page showing what AgentFlow would close first in your repo: https://d
 
 14-day trial, no credit card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -66,7 +67,8 @@ PostHog has 6,084 open GitHub issues. We built AgentFlow to close engineering ba
 
 Made you a page: https://dev-reclips.github.io/lp/posthog — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -81,7 +83,8 @@ Trigger.dev has 800+ open GitHub issues. We built AgentFlow to close engineering
 
 Made you a page: https://dev-reclips.github.io/lp/trigger-dev — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -96,7 +99,8 @@ Trigger.dev has 800+ open GitHub issues. We built AgentFlow to close engineering
 
 Made you a page: https://dev-reclips.github.io/lp/trigger-dev — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -111,7 +115,8 @@ Mintlify has 100+ open GitHub issues and a small team moving fast. We built Agen
 
 Made you a page: https://dev-reclips.github.io/lp/mintlify — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -126,7 +131,8 @@ Resend has 200+ open GitHub issues. We built AgentFlow to close engineering back
 
 Made you a page: https://dev-reclips.github.io/lp/resend — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -141,7 +147,8 @@ Cal.com has 500+ open GitHub issues. We built AgentFlow to close engineering bac
 
 Made you a page: https://dev-reclips.github.io/lp/cal — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -156,7 +163,8 @@ Infisical has 712 open GitHub issues. We built AgentFlow to close engineering ba
 
 Made you a page: https://dev-reclips.github.io/lp/infisical — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -171,7 +179,8 @@ Liveblocks has 300+ open GitHub issues. We built AgentFlow to close engineering 
 
 Made you a page: https://dev-reclips.github.io/lp/liveblocks — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -186,7 +195,8 @@ Dub.co has 160+ open GitHub issues. We built AgentFlow to close engineering back
 
 Made you a page: https://dev-reclips.github.io/lp/dub — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 
@@ -201,7 +211,8 @@ Plane has 1,004 open GitHub issues. We built AgentFlow to close engineering back
 
 Made you a page: https://dev-reclips.github.io/lp/plane — 14-day trial, no card. Worth 20 min?
 
-— [Board name]
+— Anirudh
+dev@reclips.ai
 
 ---
 

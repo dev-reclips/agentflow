@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentFlow Outreach Launcher</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0f0f0f; color: #e8e8e8; padding: 40px 24px; }
+  .header { max-width: 720px; margin: 0 auto 40px; }
+  .header h1 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .header p { font-size: 14px; color: #888; line-height: 1.6; }
+  .badge { display: inline-block; background: #1a1a2e; border: 1px solid #6366f1; color: #818cf8; font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 12px; margin-bottom: 16px; }
+  .cards { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .card { background: #161616; border: 1px solid #2a2a2a; border-radius: 10px; padding: 20px 24px; }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+  .card-meta { flex: 1; }
+  .card-meta .name { font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .card-meta .company { font-size: 13px; color: #888; }
+  .card-meta .email-addr { font-size: 13px; color: #6366f1; margin-top: 4px; font-family: monospace; }
+  .btn-open { display: inline-flex; align-items: center; gap: 6px; background: #6366f1; color: #fff; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 6px; text-decoration: none; white-space: nowrap; flex-shrink: 0; }
+  .btn-open:hover { background: #4f52d0; }
+  .subject-line { font-size: 12px; color: #666; margin-bottom: 8px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
+  .body-box { background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 6px; padding: 14px 16px; font-size: 13px; line-height: 1.7; color: #c8c8c8; white-space: pre-wrap; font-family: inherit; cursor: text; user-select: text; }
+  .copy-hint { font-size: 11px; color: #555; margin-top: 8px; }
+  .confidence { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; margin-left: 8px; vertical-align: middle; }
+  .high { background: rgba(34,197,94,0.1); color: #22c55e; border: 1px solid rgba(34,197,94,0.2); }
+  .medium { background: rgba(234,179,8,0.1); color: #eab308; border: 1px solid rgba(234,179,8,0.2); }
+  .divider { border: none; border-top: 1px solid #1e1e1e; margin: 8px 0; }
+  .instructions { max-width: 720px; margin: 0 auto 32px; background: #161616; border: 1px solid #2a2a2a; border-radius: 10px; padding: 20px 24px; }
+  .instructions h2 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .instructions ol { padding-left: 20px; font-size: 13px; color: #aaa; line-height: 2; }
+  .instructions li strong { color: #e8e8e8; }
+  .section-label { max-width: 720px; margin: 0 auto 12px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #555; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">9 HIGH-CONFIDENCE CONTACTS · SEND ORDER: TOP → BOTTOM</div>
+  <h1>AgentFlow Outreach Launcher</h1>
+  <p>One card per prospect. Click "Open in Mail" → your email client opens with TO + SUBJECT pre-filled. Copy the body from the box below. Hit send.</p>
+</div>
+
+<div class="instructions">
+  <h2>How to use this page (takes ~15 min for all 9)</h2>
+  <ol>
+    <li><strong>Click "Open in Mail"</strong> — your email app opens with the recipient and subject pre-filled</li>
+    <li><strong>Select all text in the body box</strong> (click → Cmd+A) and copy it</li>
+    <li><strong>Paste into the email body</strong> and hit Send</li>
+    <li>Repeat for next card</li>
+  </ol>
+</div>
+
+<div class="section-label">Tier 0 — Highest Priority</div>
+<div class="cards">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">James Hawkins <span class="confidence high">High</span></div>
+        <div class="company">PostHog · CEO &amp; co-founder</div>
+        <div class="email-addr">james@posthog.com</div>
+      </div>
+      <a class="btn-open" href="mailto:james@posthog.com?subject=AgentFlow%20%E2%80%94%20PostHog%27s%206%2C084%20open%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — PostHog's 6,084 open issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi James,
+
+PostHog has 6,084 open GitHub issues. That's not a backlog problem — it's a staffing problem that won't be solved by hiring.
+
+We built AgentFlow to close engineering backlogs automatically: it reads issues, writes code, opens PRs, and merges them without a human writing the brief. Teams typically cut their backlog 30% in the first month.
+
+Made you a page showing what AgentFlow would close first in your repo: https://dev-reclips.github.io/lp/posthog
+
+14-day trial, no credit card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+</div>
+
+<div class="section-label" style="margin-top:24px">Tier 1 — High Priority</div>
+<div class="cards">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Eric Allam <span class="confidence high">High</span></div>
+        <div class="company">Trigger.dev · CTO &amp; co-founder</div>
+        <div class="email-addr">eric@trigger.dev</div>
+      </div>
+      <a class="btn-open" href="mailto:eric@trigger.dev?subject=AgentFlow%20%E2%80%94%20close%20Trigger.dev%27s%20backlog%20automatically">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Trigger.dev's backlog automatically</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Eric,
+
+Trigger.dev has 800+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/trigger-dev — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Peer Richelsen <span class="confidence high">High</span></div>
+        <div class="company">Cal.com · Co-founder &amp; Chairman</div>
+        <div class="email-addr">peer@cal.com</div>
+      </div>
+      <a class="btn-open" href="mailto:peer@cal.com?subject=AgentFlow%20%E2%80%94%20close%20Cal.com%27s%20500%2B%20open%20GitHub%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Cal.com's 500+ open GitHub issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Peer,
+
+Cal.com has 500+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/cal — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">James Ritchie <span class="confidence high">High</span></div>
+        <div class="company">Trigger.dev · Co-founder</div>
+        <div class="email-addr">james@trigger.dev</div>
+      </div>
+      <a class="btn-open" href="mailto:james@trigger.dev?subject=AgentFlow%20%E2%80%94%20close%20Trigger.dev%27s%20backlog%20automatically">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Trigger.dev's backlog automatically</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi James,
+
+Trigger.dev has 800+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them — without anyone writing a brief.
+
+Made you a page: https://dev-reclips.github.io/lp/trigger-dev — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Han Wang <span class="confidence high">High</span></div>
+        <div class="company">Mintlify · CEO &amp; co-founder</div>
+        <div class="email-addr">han@mintlify.com</div>
+      </div>
+      <a class="btn-open" href="mailto:han@mintlify.com?subject=AgentFlow%20%E2%80%94%20close%20Mintlify%27s%20open%20GitHub%20issues%20automatically">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Mintlify's open GitHub issues automatically</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Han,
+
+Mintlify has 100+ open GitHub issues and a small team moving fast. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/mintlify — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Zeno Rocha <span class="confidence high">High</span></div>
+        <div class="company">Resend · CEO &amp; co-founder</div>
+        <div class="email-addr">hi@zenorocha.com</div>
+      </div>
+      <a class="btn-open" href="mailto:hi@zenorocha.com?subject=AgentFlow%20%E2%80%94%20close%20Resend%27s%20200%2B%20open%20GitHub%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Resend's 200+ open GitHub issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Zeno,
+
+Resend has 200+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them — no engineer writes the brief.
+
+Made you a page: https://dev-reclips.github.io/lp/resend — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+</div>
+
+<div class="section-label" style="margin-top:24px">Tier 2 — Good Pipeline</div>
+<div class="cards">
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Maidul Islam <span class="confidence high">High</span></div>
+        <div class="company">Infisical · Co-founder</div>
+        <div class="email-addr">maidul98@gmail.com</div>
+      </div>
+      <a class="btn-open" href="mailto:maidul98@gmail.com?subject=AgentFlow%20%E2%80%94%20close%20Infisical%27s%20712%20open%20GitHub%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Infisical's 712 open GitHub issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Maidul,
+
+Infisical has 712 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/infisical — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Vihar Kurama <span class="confidence high">High</span></div>
+        <div class="company">Plane · Co-founder &amp; COO</div>
+        <div class="email-addr">vihar.kurama@gmail.com</div>
+      </div>
+      <a class="btn-open" href="mailto:vihar.kurama@gmail.com?subject=AgentFlow%20%E2%80%94%20close%20Plane%27s%201%2C004%20open%20GitHub%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Plane's 1,004 open GitHub issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Vihar,
+
+Plane has 1,004 open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/plane — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-meta">
+        <div class="name">Steven Fabre <span class="confidence medium">Medium</span></div>
+        <div class="company">Liveblocks · CEO &amp; co-founder</div>
+        <div class="email-addr">hello@stevenfabre.com</div>
+      </div>
+      <a class="btn-open" href="mailto:hello@stevenfabre.com?subject=AgentFlow%20%E2%80%94%20close%20Liveblocks%27%20300%2B%20open%20GitHub%20issues">Open in Mail ↗</a>
+    </div>
+    <hr class="divider">
+    <div class="subject-line">Subject line</div>
+    <div class="body-box">AgentFlow — close Liveblocks' 300+ open GitHub issues</div>
+    <div class="subject-line" style="margin-top:12px">Body — select all and copy</div>
+    <div class="body-box">Hi Steven,
+
+Liveblocks has 300+ open GitHub issues. We built AgentFlow to close engineering backlogs automatically: reads issues, writes code, opens PRs, merges them.
+
+Made you a page: https://dev-reclips.github.io/lp/liveblocks — 14-day trial, no card. Worth 20 min?
+
+— Anirudh
+dev@reclips.ai</div>
+    <div class="copy-hint">Click in the box above, then Cmd+A / Ctrl+A to select all, then copy</div>
+  </div>
+
+</div>
+
+<div style="max-width:720px; margin: 32px auto 0; padding: 20px 0; border-top: 1px solid #1e1e1e; font-size: 12px; color: #444;">
+  After each reply, log it on the prospect pipeline: docs/prospect-pipeline.md · CEO | 2026-08-17
+</div>
+
+</body>
+</html>

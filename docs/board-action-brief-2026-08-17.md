@@ -2,7 +2,8 @@
 
 **Prepared by:** CEO  
 **Status:** Everything below is copy-paste ready. No API keys required.  
-**Goal:** First outreach sent today.
+**Updated:** 2026-08-17 (heartbeat 2) — added outreach launcher and Twitter thread  
+**TOMORROW WINDOW:** Show HN + Twitter thread, **Aug 18, 9–11am US Eastern**
 
 ---
 
@@ -10,14 +11,15 @@
 
 | Action | Time | Dependency | Impact |
 |--------|------|------------|--------|
-| Show HN post | 5 min | HN account (any) | High — developer traffic, free trial sign-ups |
+| **Direct emails (9 contacts)** | **15 min** | **Email client — open `docs/outreach-launcher.html` in browser** | **Highest — direct to founders/CTOs** |
+| Show HN post | 5 min | HN account (any) — best window **tomorrow Aug 18, 9–11am ET** | High — developer traffic, free trial sign-ups |
+| Twitter thread (6 tweets) | 5 min | Twitter/X account — post same moment as HN | High — amplifies HN, reaches devs on Twitter |
 | Newsletter pitches (5 emails) | 30 min | Email client only | High — TLDR.tech alone is 500k engineers |
 | LinkedIn DMs (6 prospects) | 30–45 min | LinkedIn account | High — direct to ICP buyers |
 | Provide RESEND_API_KEY | 5 min | Resend account | Enables agent-autonomous email to 19 prospects |
 
-**If you have 5 minutes:** Post Show HN (see below).  
-**If you have 30 minutes:** Send newsletter pitches (see below).  
-**If you have 35 minutes:** Do both.
+**Fastest path (15 min):** Open `docs/outreach-launcher.html` in your browser. Click "Open in Mail" for each card → paste body → send.  
+**Tomorrow 9am ET:** Post Show HN + Twitter thread simultaneously.
 
 ---
 
@@ -60,6 +62,100 @@ agents handle well vs. poorly.
 ```
 
 **Best window:** Tuesday–Thursday, 9–11am US Eastern. **Tomorrow (Aug 18) is optimal.**
+
+---
+
+## Action 0: Direct email outreach (15 min — DO THIS FIRST)
+
+Open `docs/outreach-launcher.html` in any browser. You'll see 9 cards, one per prospect:
+
+1. Click **"Open in Mail"** → your default email client opens with TO and SUBJECT pre-filled
+2. Select all text in the body box → copy → paste into email body
+3. Hit send
+4. Move to the next card
+
+9 emails, ~90 seconds each, ~15 minutes total. No login required beyond your email client.
+
+**Send order:** James Hawkins (PostHog) → Eric Allam (Trigger.dev) → Peer Richelsen (Cal.com) → James Ritchie (Trigger.dev) → Han Wang (Mintlify) → Zeno Rocha (Resend) → then Maidul, Vihar, Steven F.
+
+---
+
+## Action 1.5: Twitter/X thread (5 min — post same moment as Show HN tomorrow)
+
+Post this 6-tweet thread at **9am ET on Aug 18** immediately after you submit to HN. Paste the HN link into Tweet 1.
+
+**Tweet 1:**
+```
+We built a free tool: paste any public GitHub repo URL and see what your engineering backlog is actually costing you.
+
+No sign-up. Results in 5 seconds.
+
+Try it → https://dev-reclips.github.io/analyze
+
+Also on HN: [paste HN link here once submitted]
+
+🧵
+```
+
+**Tweet 2:**
+```
+Most open-source teams have 500–6,000+ open GitHub issues.
+
+The average senior eng spends 15h/week on:
+- Bug triage and fixes
+- Boilerplate and tests
+- Dependency bumps
+- Docs updates
+
+At $150/hr blended, that's $117k/yr per engineer — gone to mechanical work.
+```
+
+**Tweet 3:**
+```
+We built AgentFlow to close those issues automatically.
+
+You assign a GitHub issue to an agent the same way you'd assign it to an engineer.
+
+The agent:
+→ reads the issue + repo context
+→ writes the fix
+→ opens a PR with tests
+→ closes the ticket
+
+Engineers review PRs, not write them.
+```
+
+**Tweet 4:**
+```
+The free backlog analyzer:
+
+Paste any repo URL → fetches open issues via GitHub API → categorizes them → shows hours/cost per category
+
+Free. No sign-up. Client-side only.
+
+https://dev-reclips.github.io/analyze
+```
+
+**Tweet 5:**
+```
+Try it on some repos:
+
+PostHog → https://dev-reclips.github.io/analyze?repo=posthog/posthog
+Supabase → https://dev-reclips.github.io/analyze?repo=supabase/supabase
+Cal.com → https://dev-reclips.github.io/analyze?repo=calcom/cal.com
+
+Or paste your own.
+```
+
+**Tweet 6:**
+```
+If you want to actually close those issues — not just see them:
+
+AgentFlow Starter is $499/mo (3 agents), Growth is $1,499/mo (10 agents).
+14-day free trial, no card.
+
+DM me or → https://dev-reclips.github.io/book-demo
+```
 
 ---
 
