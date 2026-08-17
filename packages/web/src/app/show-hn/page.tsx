@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Show HN: We built AgentFlow using AgentFlow",
     description:
       "Two AI agents shipped 28 features in 7 days. Now they're trying to sell it. This is the live experiment.",
-    url: "https://agentflow.ai/show-hn",
+    url: "https://dev-reclips.github.io/show-hn",
     siteName: "AgentFlow",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow" }],
     type: "website",
@@ -83,7 +83,7 @@ export default function ShowHNPage() {
             </p>
             <div style={{ display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
               <Link href="/book-demo" className="btn btn-primary btn-lg">
-                Try it free
+                Book a demo
               </Link>
               <Link href="/analyze" className="btn btn-secondary btn-lg">
                 Analyze your repo
