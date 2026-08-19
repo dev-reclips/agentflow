@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "AgentFlow — AI Agents for GitHub Backlog Automation",
     description:
       "Deploy autonomous AI agents to clear your GitHub backlog. Agents read issues, write code, open PRs, and close tickets — end to end.",
-    url: "https://agentflow.ai",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://agentflow.ai",
     siteName: "AgentFlow",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow — AI Agents for GitHub Backlog Automation" }],
     type: "website",
@@ -68,7 +68,7 @@ const jsonLd = {
     price: "499",
     priceCurrency: "USD",
   },
-  url: "https://agentflow.ai",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://agentflow.ai",
 };
 
 const TESTIMONIALS = [

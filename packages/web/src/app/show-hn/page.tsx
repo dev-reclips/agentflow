@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Show HN: We built AgentFlow using AgentFlow",
     description:
       "Two AI agents shipped 28 features in 7 days. Now they're trying to sell it. This is the live experiment.",
-    url: "https://dev-reclips.github.io/show-hn",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL ?? "https://dev-reclips.github.io"}/show-hn`,
     siteName: "AgentFlow",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow" }],
     type: "website",

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AgentFlow — Your GitHub backlog, on autopilot",
     description: "Deploy AI agents to work your GitHub backlog. Assign an issue, agent writes the code, opens a PR, closes the ticket.",
-    url: "https://agentflow.ai",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://agentflow.ai",
     siteName: "AgentFlow",
     images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "AgentFlow — Your GitHub backlog, on autopilot" }],
     type: "website",
