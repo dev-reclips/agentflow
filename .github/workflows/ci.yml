@@ -58,6 +58,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - name: Run database migrations
+        run: pnpm --filter @agentflow/api db:migrate
+
       - run: pnpm test
 
   build:
