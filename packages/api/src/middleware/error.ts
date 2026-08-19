@@ -28,6 +28,7 @@ export function errorHandler(
     return;
   }
 
-  log.error(err, "unhandled error");
-  res.status(500).json({ error: "Internal server error" });
+  const msg = err instanceof Error ? err.message : String(err);
+  console.error("[unhandled]", msg, err);
+  res.status(500).json({ error: "Internal server error", _debug: msg });
 }
