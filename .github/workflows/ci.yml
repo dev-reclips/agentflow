@@ -58,8 +58,8 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Run database migrations
-        run: pnpm --filter @agentflow/api db:migrate
+      - name: Push database schema
+        run: pnpm --filter @agentflow/api db:push
 
       - run: pnpm test
 
