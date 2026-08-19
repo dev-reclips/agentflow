@@ -62,7 +62,6 @@ describe("multi-tenant isolation", () => {
       .set("Authorization", `Bearer ${keyA}`)
       .send({ title: "Issue for A", priority: "low" });
 
-    if (create.status !== 201) console.error("[test debug]", create.status, JSON.stringify(create.body));
     expect(create.status).toBe(201);
     expect(create.body.companyId).toBe(companyADbId);
 
