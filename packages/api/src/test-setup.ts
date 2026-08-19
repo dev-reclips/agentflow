@@ -11,8 +11,8 @@ if (!process.env.DATABASE_URL) {
     for (const line of lines) {
       const match = line.match(/^([^#=\s][^=]*)=(.*)$/);
       if (match) {
-        const key = match[1].trim();
-        const val = match[2].trim().replace(/^["']|["']$/g, "");
+        const key = (match[1] ?? "").trim();
+        const val = (match[2] ?? "").trim().replace(/^["']|["']$/g, "");
         if (!process.env[key]) process.env[key] = val;
       }
     }
