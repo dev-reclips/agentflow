@@ -14,7 +14,7 @@ import { db } from "../../db/client.js";
 import { companies, apiKeys, issues, agents } from "../../db/schema.js";
 import { hashApiKey } from "../../middleware/auth.js";
 import app from "../../index.js";
-import { eq, inArray } from "drizzle-orm";
+import { inArray } from "drizzle-orm";
 
 const companyAId = randomBytes(8).toString("hex");
 const companyBId = randomBytes(8).toString("hex");

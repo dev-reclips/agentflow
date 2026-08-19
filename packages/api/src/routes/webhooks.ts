@@ -2,7 +2,7 @@ import { type Router as IRouter, Router, type Request, type Response, type NextF
 import { createHmac, timingSafeEqual } from "crypto";
 import { eq, and } from "drizzle-orm";
 import { db } from "../db/client.js";
-import { githubIntegrations, issues } from "../db/schema.js";
+import { issues } from "../db/schema.js";
 
 export const webhooksRouter: IRouter = Router();
 

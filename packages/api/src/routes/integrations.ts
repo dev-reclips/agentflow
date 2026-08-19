@@ -3,7 +3,6 @@ import { z } from "zod";
 import { eq } from "drizzle-orm";
 import { db } from "../db/client.js";
 import { githubIntegrations } from "../db/schema.js";
-import { AppError } from "../middleware/error.js";
 
 export const integrationsRouter: IRouter = Router();
 

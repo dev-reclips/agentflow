@@ -5,7 +5,7 @@ import { db } from "../db/client.js";
 import { analyzeResults } from "../db/schema.js";
 import { captureServer } from "../services/posthog.js";
 import { sendAnalyzeLeadEmail } from "../services/email.js";
-import { eq, gt } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const analyzeRouter: IRouter = Router();
 
