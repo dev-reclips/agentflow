@@ -2,8 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    // .env.test provides DATABASE_URL for local test runs.
-    // CI sets it directly via environment variable.
-    envFile: ".env.test",
+    // Runs before test files so DATABASE_URL is set before db/client.ts lazy pool init
+    setupFiles: ["./src/test-setup.ts"],
   },
 });
