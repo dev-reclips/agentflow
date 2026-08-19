@@ -58,8 +58,12 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Push database schema
-        run: pnpm --filter @agentflow/api db:push
+      - name: Apply database migrations
+        run: |
+          for f in $(ls packages/api/drizzle/*.sql | sort); do
+            echo "Applying $f..."
+            PGPASSWORD=agentflow psql -h localhost -U agentflow -d agentflow_test -f "$f"
+          done
 
       - run: pnpm test
 
