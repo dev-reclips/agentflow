@@ -5,10 +5,41 @@ on:
     branches: [main]
 
 jobs:
+  check-secrets:
+    name: Check deployment secrets
+    runs-on: ubuntu-latest
+    outputs:
+      api-ready: ${{ steps.check.outputs.api-ready }}
+      web-ready: ${{ steps.check.outputs.web-ready }}
+    steps:
+      - name: Check secrets configured
+        id: check
+        run: |
+          api_ready=true
+          web_ready=true
+          [ -z "$DATABASE_URL" ] && api_ready=false
+          [ -z "$RAILWAY_TOKEN" ] && api_ready=false
+          [ -z "$VERCEL_TOKEN" ] && web_ready=false
+          [ -z "$VERCEL_ORG_ID" ] && web_ready=false
+          [ -z "$VERCEL_PROJECT_ID" ] && web_ready=false
+          echo "api-ready=$api_ready" >> "$GITHUB_OUTPUT"
+          echo "web-ready=$web_ready" >> "$GITHUB_OUTPUT"
+          if [ "$api_ready" = "false" ] || [ "$web_ready" = "false" ]; then
+            echo "::notice::Production secrets not yet configured — deployment skipped. See docs/DEPLOY.md."
+          fi
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
   deploy-api:
     name: Deploy API (Railway)
     runs-on: ubuntu-latest
     environment: production
+    needs: [check-secrets]
+    if: needs.check-secrets.outputs.api-ready == 'true'
     steps:
       - uses: actions/checkout@v4
 
@@ -44,7 +75,8 @@ jobs:
     name: Deploy Web (Vercel)
     runs-on: ubuntu-latest
     environment: production
-    needs: [deploy-api]
+    needs: [check-secrets, deploy-api]
+    if: needs.check-secrets.outputs.web-ready == 'true'
     steps:
       - uses: actions/checkout@v4
 
