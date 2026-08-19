@@ -2,7 +2,8 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    // Load .env.test when present; CI sets DATABASE_URL directly via env, so this is a no-op there.
+    // .env.test provides DATABASE_URL for local test runs.
+    // CI sets it directly via environment variable.
     envFile: ".env.test",
   },
 });
